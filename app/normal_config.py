@@ -1,0 +1,2 @@
+DEBUG = True  # 开启DEBUG模式
+LENGTH_OF_STUDENT_ID = 10
