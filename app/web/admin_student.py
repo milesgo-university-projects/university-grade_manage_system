@@ -1,6 +1,6 @@
 from flask import jsonify, request
 from . import web
-from app.models.admin_student import StudentListReader, StudentUpdater, StudentInserter
+from app.models.admin_student import StudentListReader, StudentUpdater, StudentInserter, StudentDeleter
 from app.validate.student import GetStudentInformationForm
 from app.models.student import StudentReader
 from app.web.general import transform_errors
@@ -60,9 +60,14 @@ def admin_insert_student():
             return jsonify(updater.data), 404 if updater.data.get('error') else 200
         else:
             return jsonify(transform_errors(form.errors)), 404
-    pass
 
 
 @web.route('/admin/student/delete', methods=['POST'])
 def admin_delete_student():
-    pass
+    form = GetStudentInformationForm(request.args)
+    if form.validate():
+        student_id = form.student_id.data
+        deleter = StudentDeleter(student_id)
+        return jsonify(deleter.data), 404 if deleter.data.get('error') else 200
+    else:
+        return jsonify(transform_errors(form.errors)), 404
