@@ -8,6 +8,7 @@ def admin_select_major():
 
 @web.route('/admin/major/insert')
 def admin_insert_major():
+    # 自动生成major_id
     pass
 
 

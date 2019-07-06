@@ -18,8 +18,33 @@ class StudentListReader:
 
 
 class StudentUpdater:
-    def __init__(self, student_id, student_name, sex, birth_year, province, major_id):
-        self.data = update_student(student_id, student_name, sex, birth_year, province, major_id)
+    def __init__(self, student_id, student_name, sex, birth_year, province, enter_year, major_id):
+        self.data = update_student(student_id, student_name, sex, birth_year, province, enter_year, major_id)
+
+
+class StudentInserter:
+    def __init__(self, student_name, sex, birth_year, province, enter_year, major_id):
+        self.data = insert_student(student_name, sex, birth_year, province, enter_year, major_id)
+
+
+def insert_student(student_name, sex, birth_year, province, enter_year, major_id):
+    connection = connect_to_sql()
+    data = {}
+    try:
+        with connection.cursor() as cursor:
+            student_id = '2015211255'
+            password = '123'
+            sql = 'insert into student values ' \
+                  '(\'%s\', \'%s\', \'%s\', \'%s\', \'%s\', \'%s\', \'%s\', \'%s\'); ' \
+                  % (student_id, student_name, sex, birth_year, province, enter_year, major_id, password)
+            cursor.execute(sql)
+            connection.commit()
+    except Exception as e:
+        data['error'] = str(e)
+    finally:
+        connection.close()
+    return data
+    pass
 
 
 def update_student(student_id, student_name, sex, birth_year, province, major_id):
