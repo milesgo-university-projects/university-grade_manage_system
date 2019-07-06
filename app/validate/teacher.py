@@ -14,7 +14,7 @@ class GetCourseInformationForm(Form):
 
 class PostGradeInformationForm(Form):
     # 课程编号为5位数字
-    course_id = StringField(validators=[Regexp(regex=r'^[0-9]{5}$', message='教师编号应为5位数字')])
+    course_id = StringField(validators=[Regexp(regex=r'^[0-9]{5}$', message='课程编号应为5位数字')])
     # 学生编号为10位数字
     student_id = StringField(validators=[Regexp(regex=r'^[0-9]{10}$', message='学生编号应为10位数字')])
     # grade为0~100
