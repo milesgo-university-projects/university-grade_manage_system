@@ -26,7 +26,7 @@ def read_base_information(student_id):
     try:
         with connection.cursor() as cursor:
             # 查询学生基本信息
-            sql = 'select student_id, student_name, sex, birth_year, province, enter_year, major_name ' \
+            sql = 'select student_id, student_name, sex, birth_year, province, enter_year, major_name, s.major_id ' \
                   'from student as s, major as m ' \
                   'where s.student_id = %s and s.major_id = m.major_id;' % student_id
             cursor.execute(sql)
@@ -39,6 +39,7 @@ def read_base_information(student_id):
                 data['province'] = result[4]
                 data['enter_year'] = result[5]
                 data['major_name'] = result[6]
+                data['major_id'] = result[7]
             else:
                 data['error'] = 'student id ' + student_id + ' not found in database'
     except Exception as e:
