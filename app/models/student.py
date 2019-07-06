@@ -127,11 +127,10 @@ def read_selected_courses(student_id):
             cursor.execute(sql)
             result = cursor.fetchall()
             data['courses'] = []
-            if result:
-                for row in result:
-                    tmp = {'course_id': row[0], 'course_name': row[1], 'year': row[2], 'semester': row[3],
-                           'teacher_name': row[4], 'credit': row[5], 'grade': row[6]}
-                    data['courses'].append(tmp)
+            for row in result:
+                tmp = {'course_id': row[0], 'course_name': row[1], 'year': row[2], 'semester': row[3],
+                       'teacher_name': row[4], 'credit': row[5], 'grade': row[6]}
+                data['courses'].append(tmp)
     except Exception as e:
         data['error'] = str(e)
     finally:
