@@ -31,4 +31,4 @@ class TeacherChangePasswordForm(Form):
 
 
 class AdminLoginForm(Form):
-    pass
+    password = StringField(validators=[Regexp(regex=r'^[0-9a-zA-Z]{5,18}$', message='旧密码应为5~18位数字或字母组成')])
