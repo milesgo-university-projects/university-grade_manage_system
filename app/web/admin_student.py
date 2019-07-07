@@ -1,4 +1,7 @@
 from flask import jsonify, request
+from flask_login import login_required
+
+from app.validate.general import check_authority
 from . import web
 from app.models.admin_student import StudentListReader, StudentUpdater, StudentInserter, StudentDeleter
 from app.validate.student import GetStudentInformationForm
@@ -9,13 +12,21 @@ from app.validate.admin_student import UpdateStudentInformationForm, InsertStude
 
 
 @web.route('/admin/student/select', methods=['GET'])
+@login_required
 def admin_select_student():
+    authority = check_authority('admin', 'default')
+    if authority.get('error'):
+        return jsonify(authority), 404
     student_list = StudentListReader()
     return jsonify(student_list.data), 404 if student_list.data.get('error') else 200
 
 
 @web.route('/admin/student/update', methods=['GET', 'POST'])
+@login_required
 def admin_update_student():
+    authority = check_authority('admin', 'default')
+    if authority.get('error'):
+        return jsonify(authority), 404
     if request.method == 'GET':
         form = GetStudentInformationForm(request.args)
         if form.validate():
@@ -43,7 +54,11 @@ def admin_update_student():
 
 
 @web.route('/admin/student/insert', methods=['GET', 'POST'])
+@login_required
 def admin_insert_student():
+    authority = check_authority('admin', 'default')
+    if authority.get('error'):
+        return jsonify(authority), 404
     if request.method == 'GET':
         major_id = MajorIdReader()  # 获取可供选择的id列表
         return jsonify(major_id.data), 404 if major_id.data.get('error') else 200
@@ -63,7 +78,11 @@ def admin_insert_student():
 
 
 @web.route('/admin/student/delete', methods=['POST'])
+@login_required
 def admin_delete_student():
+    authority = check_authority('admin', 'default')
+    if authority.get('error'):
+        return jsonify(authority), 404
     form = GetStudentInformationForm(request.args)
     if form.validate():
         student_id = form.student_id.data
