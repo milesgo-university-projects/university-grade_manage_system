@@ -56,8 +56,8 @@ def admin_insert_student():
             province = form.province.data
             enter_year = form.enter_year.data
             major_id = form.major_id.data
-            updater = StudentInserter(student_name, sex, birth_year, province, enter_year, major_id)
-            return jsonify(updater.data), 404 if updater.data.get('error') else 200
+            inserter = StudentInserter(student_name, sex, birth_year, province, enter_year, major_id)
+            return jsonify(inserter.data), 404 if inserter.data.get('error') else 200
         else:
             return jsonify(transform_errors(form.errors)), 404
 
