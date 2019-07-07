@@ -26,6 +26,30 @@ class CourseUpdater:
         self.data = update_course(course_id, course_name, year, semester, teacher_id, credit)
 
 
+class CourseTeacherReader:
+    def __init__(self, course_id):
+        self.data = get_teacher_of_course(course_id)
+
+
+def get_teacher_of_course(course_id):
+    connection = connect_to_sql()
+    data = {}
+    try:
+        with connection.cursor() as cursor:
+            sql = 'select teacher_id from course where course_id = \'%s\';' % course_id
+            cursor.execute(sql)
+            result = cursor.fetchone()
+            if result is None:
+                data['error'] = '课程编号不存在'
+                return data
+            data['teacher_id'] = result[0]
+    except Exception as e:
+        data['error'] = str(e)
+    finally:
+        connection.close()
+    return data
+
+
 def update_course(course_id, course_name, year, semester, teacher_id, credit):
     connection = connect_to_sql()
     data = {}

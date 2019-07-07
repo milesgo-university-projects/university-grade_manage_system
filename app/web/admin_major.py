@@ -1,5 +1,6 @@
 from flask import jsonify, request
-
+from flask_login import login_required
+from app.validate.general import check_authority
 from app.web.general import transform_errors
 from . import web
 from app.models.admin_major import MajorReader, SingleMajorReader, MajorUpdater, MajorInserter, MajorDeleter
@@ -7,14 +8,21 @@ from app.validate.admin_major import AdminSelectSingleMajorForm, AdminUpdateMajo
 
 
 @web.route('/admin/major/select', methods=['GET'])
+@login_required
 def admin_select_major():
+    authority = check_authority('admin', 'default')
+    if authority.get('error'):
+        return jsonify(authority), 404
     major_reader = MajorReader()
     return jsonify(major_reader.data), 404 if major_reader.data.get('error') else 200
-    pass
 
 
 @web.route('/admin/major/update', methods=['GET', 'POST'])
+@login_required
 def admin_update_major():
+    authority = check_authority('admin', 'default')
+    if authority.get('error'):
+        return jsonify(authority), 404
     if request.method == 'GET':
         form = AdminSelectSingleMajorForm(request.args)
         if form.validate():
@@ -35,7 +43,11 @@ def admin_update_major():
 
 
 @web.route('/admin/major/insert', methods=['POST'])
+@login_required
 def admin_insert_major():
+    authority = check_authority('admin', 'default')
+    if authority.get('error'):
+        return jsonify(authority), 404
     form = AdminInsertMajorForm(request.args)
     if form.validate():
         major_name = form.major_name.data
@@ -46,7 +58,11 @@ def admin_insert_major():
 
 
 @web.route('/admin/major/delete', methods=['POST'])
+@login_required
 def admin_delete_major():
+    authority = check_authority('admin', 'default')
+    if authority.get('error'):
+        return jsonify(authority), 404
     form = AdminSelectSingleMajorForm(request.args)
     if form.validate():
         major_id = form.major_id.data

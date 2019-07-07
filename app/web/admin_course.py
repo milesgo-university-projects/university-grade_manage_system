@@ -1,5 +1,6 @@
 from flask import request, jsonify
-
+from flask_login import login_required
+from app.validate.general import check_authority
 from app.web.general import transform_errors
 from . import web
 from app.validate.admin_course import AdminSelectSingleCourseForm, AdminInsertCourseForm, AdminUpdateCourseForm
@@ -8,13 +9,21 @@ from app.models.admin_teacher import TeacherIdReader
 
 
 @web.route('/admin/course/select', methods=['GET'])
+@login_required
 def admin_select_course():
+    authority = check_authority('admin', 'default')
+    if authority.get('error'):
+        return jsonify(authority), 404
     course_list = CourseReader()
     return jsonify(course_list.data), 404 if course_list.data.get('error') else 200
 
 
 @web.route('/admin/course/update', methods=['GET', 'POST'])
+@login_required
 def admin_update_course():
+    authority = check_authority('admin', 'default')
+    if authority.get('error'):
+        return jsonify(authority), 404
     if request.method == 'GET':
         form = AdminSelectSingleCourseForm(request.args)
         if form.validate():
@@ -42,7 +51,11 @@ def admin_update_course():
 
 
 @web.route('/admin/course/insert', methods=['GET', 'POST'])
+@login_required
 def admin_insert_course():
+    authority = check_authority('admin', 'default')
+    if authority.get('error'):
+        return jsonify(authority), 404
     if request.method == 'GET':
         teacher_id = TeacherIdReader()  # 获取可供选择的id列表
         return jsonify(teacher_id.data), 404 if teacher_id.data.get('error') else 200
@@ -61,7 +74,11 @@ def admin_insert_course():
 
 
 @web.route('/admin/course/delete', methods=['POST'])
+@login_required
 def admin_delete_course():
+    authority = check_authority('admin', 'default')
+    if authority.get('error'):
+        return jsonify(authority), 404
     form = AdminSelectSingleCourseForm(request.args)
     if form.validate():
         course_id = form.course_id.data

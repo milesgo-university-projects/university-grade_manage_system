@@ -3,7 +3,8 @@ from wtforms.validators import Regexp
 
 
 class StudentLoginForm(Form):
-    pass
+    student_id = StringField(validators=[Regexp(regex=r'^[0-9]{10}$', message='学生编号应为10位数字')])
+    password = StringField(validators=[Regexp(regex=r'^[0-9a-zA-Z]{5,18}$', message='密码应为5~18位数字或字母组成')])
 
 
 class StudentChangePasswordForm(Form):
@@ -14,7 +15,12 @@ class StudentChangePasswordForm(Form):
 
 
 class TeacherLoginForm(Form):
-    pass
+    teacher_id = StringField(validators=[Regexp(regex=r'^[0-9]{5}$', message='教师编号应为5位数字')])
+    password = StringField(validators=[Regexp(regex=r'^[0-9a-zA-Z]{5,18}$', message='密码应为5~18位数字或字母组成')])
+
+
+class AdminLoginForm(Form):
+    password = StringField(validators=[Regexp(regex=r'^[0-9a-zA-Z]{5,18}$', message='密码应为5~18位数字或字母组成')])
 
 
 class TeacherChangePasswordForm(Form):
