@@ -62,6 +62,7 @@ def update_course(course_id, course_name, year, semester, teacher_id, credit):
             connection.commit()
     except Exception as e:
         data['error'] = str(e)
+        connection.rollback()
     finally:
         connection.close()
     return data
@@ -104,6 +105,7 @@ def insert_course(course_name, year, semester, teacher_id, credit):
             connection.commit()
     except Exception as e:
         data['error'] = str(e)
+        connection.rollback()
     finally:
         connection.close()
     return data

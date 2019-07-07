@@ -89,6 +89,7 @@ def teacher_change_password(teacher_id, old_password, new_password):
             connection.commit()
     except Exception as e:
         data['error'] = str(e)
+        connection.rollback()
     finally:
         connection.close()
     return data
@@ -111,6 +112,7 @@ def student_change_password(student_id, old_password, new_password):
             connection.commit()
     except Exception as e:
         data['error'] = str(e)
+        connection.rollback()
     finally:
         connection.close()
     return data

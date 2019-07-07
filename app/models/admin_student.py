@@ -43,6 +43,7 @@ def delete_student(student_id):
             connection.commit()
     except Exception as e:
         data['error'] = str(e)
+        connection.rollback()
     finally:
         connection.close()
     return data
@@ -62,6 +63,7 @@ def insert_student(student_name, sex, birth_year, province, enter_year, major_id
             connection.commit()
     except Exception as e:
         data['error'] = str(e)
+        connection.rollback()
     finally:
         connection.close()
     return data
@@ -79,6 +81,7 @@ def update_student(student_id, student_name, sex, birth_year, province, enter_ye
             connection.commit()
     except Exception as e:
         data['error'] = str(e)
+        connection.rollback()
     finally:
         connection.close()
     return data

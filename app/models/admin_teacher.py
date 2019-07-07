@@ -55,6 +55,7 @@ def delete_teacher(teacher_id):
             connection.commit()
     except Exception as e:
         data['error'] = str(e)
+        connection.rollback()
     finally:
         connection.close()
     return data
@@ -93,6 +94,7 @@ def insert_teacher(teacher_name, sex, birth_year):
             connection.commit()
     except Exception as e:
         data['error'] = str(e)
+        connection.rollback()
     finally:
         connection.close()
     return data
@@ -110,6 +112,7 @@ def update_teacher(teacher_id, teacher_name, sex, birth_year):
             connection.commit()
     except Exception as e:
         data['error'] = str(e)
+        connection.rollback()
     finally:
         connection.close()
     return data
