@@ -3,7 +3,6 @@ from flask_login import current_user
 
 def check_authority(role, tmp_id):
     data = {}
-    return data  # unready
     if current_user.get_role() == 'admin' and role == 'admin':
         return data
     if role != current_user.get_role() or tmp_id != current_user.get_true_id():
@@ -13,3 +12,4 @@ def check_authority(role, tmp_id):
         data['request_user_role'] = role
         data['request_user_id'] = tmp_id
     return data
+
