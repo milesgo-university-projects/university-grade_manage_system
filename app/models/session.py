@@ -23,11 +23,11 @@ class LoginChecker(UserMixin):
             if role == 'student':
                 self.data = student_login_check(tmp_id, password)
             elif role == 'teacher':
-                pass
+                self.data = teacher_login_check(tmp_id, password)
             elif role == 'admin':
-                pass
+                self.data = admin_login_check(password)
             else:
-                pass
+                self.data['error'] = 'role not among(student, teacher, admin)'
         else:
             self.role = role
             self.id = role + tmp_id
@@ -40,15 +40,6 @@ class LoginChecker(UserMixin):
         return self.true_id
 
 
-class StudentLoginChecker(UserMixin):
-    def __init__(self, student_id, password):
-        self.student_id = student_id
-        self.data = student_login_check(student_id, password)
-
-    def get_id(self):
-        return 'student' + self.student_id
-
-
 def student_login_check(student_id, password):
     connection = connect_to_sql()
     data = {}
@@ -58,7 +49,7 @@ def student_login_check(student_id, password):
             cursor.execute(sql)
             password_hash = cursor.fetchone()
             if password_hash is None:
-                data['error'] = '学生不存在，请检查学生编号';
+                data['error'] = '学生不存在，请检查学生编号'
                 return data
             password_hash = password_hash[0]
             if not check_password_hash(password_hash, password):
@@ -69,6 +60,36 @@ def student_login_check(student_id, password):
         data['error'] = str(e)
     finally:
         connection.close()
+    return data
+
+
+def teacher_login_check(teacher_id, password):
+    connection = connect_to_sql()
+    data = {}
+    try:
+        with connection.cursor() as cursor:
+            sql = 'select password from teacher where teacher_id = \'%s\'; ' % teacher_id
+            cursor.execute(sql)
+            password_hash = cursor.fetchone()
+            if password_hash is None:
+                data['error'] = '教师不存在，请检查教师编号'
+                return data
+            password_hash = password_hash[0]
+            if not check_password_hash(password_hash, password):
+                data['error'] = '密码错误，登录失败'
+                return data
+            cursor.execute(sql)
+    except Exception as e:
+        data['error'] = str(e)
+    finally:
+        connection.close()
+    return data
+
+
+def admin_login_check(password):
+    data = {}
+    if password != '330501':
+        data['error'] = '密码错误，登陆失败'
     return data
 
 
