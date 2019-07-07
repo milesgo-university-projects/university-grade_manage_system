@@ -168,6 +168,7 @@ def update_student_grade(course_id, student_id, grade):
             connection.commit()
     except Exception as e:
         data['error'] = str(e)
+        connection.rollback()
     finally:
         connection.close()
     return data

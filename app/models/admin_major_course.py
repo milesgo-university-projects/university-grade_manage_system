@@ -31,7 +31,6 @@ def insert_major_course(major_id, course_id):
     data = {}
     try:
         with connection.cursor() as cursor:
-            # 这里得用事务吧？
             sql = 'insert into major_course values(\'%s\', \'%s\');' % (major_id, course_id)
             cursor.execute(sql)
             sql = 'insert into student_course ( select student_id, \'%s\', ' \
@@ -40,6 +39,7 @@ def insert_major_course(major_id, course_id):
             connection.commit()
     except Exception as e:
         data['error'] = str(e)
+        connection.rollback()
     finally:
         connection.close()
     return data
@@ -50,7 +50,6 @@ def delete_major_course(major_id, course_id):
     data = {}
     try:
         with connection.cursor() as cursor:
-            # 这里得用事务吧？
             sql = 'delete from student_course ' \
                   'where student_id in ( ' \
                       'select student_id ' \
@@ -64,6 +63,7 @@ def delete_major_course(major_id, course_id):
             connection.commit()
     except Exception as e:
         data['error'] = str(e)
+        connection.rollback()
     finally:
         connection.close()
     return data

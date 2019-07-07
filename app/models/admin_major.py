@@ -41,6 +41,7 @@ def delete_major(major_id):
             connection.commit()
     except Exception as e:
         data['error'] = str(e)
+        connection.rollback()
     finally:
         connection.close()
     return data
@@ -77,6 +78,7 @@ def insert_major(major_name):
             connection.commit()
     except Exception as e:
         data['error'] = str(e)
+        connection.rollback()
     finally:
         connection.close()
     return data
@@ -92,6 +94,7 @@ def update_major(major_id, major_name):
             connection.commit()
     except Exception as e:
         data['error'] = str(e)
+        connection.rollback()
     finally:
         connection.close()
     return data
