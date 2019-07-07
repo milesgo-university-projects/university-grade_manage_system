@@ -11,7 +11,7 @@ class TeacherReader:
 
 class TeacherCoursesReader:
     def __init__(self, teacher_id):
-        self.data = read_selected_courses(teacher_id)
+        self.data = read_taught_courses(teacher_id)
 
 
 class TeacherCourseStudentReader:
@@ -75,7 +75,7 @@ def read_number_of_courses(teacher_id):
     return data
 
 
-def read_selected_courses(teacher_id):
+def read_taught_courses(teacher_id):
     connection = connect_to_sql()
     data = {}
     try:
@@ -130,18 +130,24 @@ def read_course_statistic(course_id):
     try:
         with connection.cursor() as cursor:
             # 查询某课程统计信息
-            sql = 'select s.student_id, s.student_name, s.sex, m.major_name, sc.grade ' \
-                  'from student_course as sc, student as s, major as m ' \
-                  'where sc.student_id = s.student_id and s.major_id = m.major_id ' \
-                  'and course_id = %s ' % course_id
+            sql = 'select ' \
+                  'count(case when grade between 0 and 59 then grade end) as \'0-59\',' \
+                  'count(case when grade between 60 and 69 then grade end) as \'60-69\',' \
+                  'count(case when grade between 70 and 79 then grade end) as \'70-79\',' \
+                  'count(case when grade between 80 and 89 then grade end) as \'80-89\',' \
+                  'count(case when grade between 90 and 100 then grade end) as \'90-100\' ' \
+                  'from student_course ' \
+                  'where course_id = %s;' % course_id
             cursor.execute(sql)
-            result = cursor.fetchall()
-            data['students'] = []
+            result = cursor.fetchone()
             if result:
-                for row in result:
-                    tmp = {'student_id': row[0], 'student_name': row[1], 'sex': row[2], 'major_name': row[3],
-                           'grade': row[4]}
-                    data['students'].append(tmp)
+                data['0-59'] = int(result[0])
+                data['60-69'] = int(result[1])
+                data['70-79'] = int(result[2])
+                data['80-89'] = int(result[3])
+                data['90-100'] = int(result[4])
+            else:
+                data['error'] = 'course_id ' + course_id + ' not found in database'
     except Exception as e:
         data['error'] = str(e)
     finally:
@@ -157,10 +163,9 @@ def update_student_grade(course_id, student_id, grade):
             # 更新学生某课程成绩
             sql = 'update student_course ' \
                   'set grade = %s ' \
-                  'where course_id = %s and student_id = %s;' % (grade, course_id, student_id)
-            result = cursor.execute(sql)
-            if result != 1:
-                data['error'] = 'update student_course table error'
+                  'where course_id = \'%s\' and student_id = \'%s\';' % (grade, course_id, student_id)
+            cursor.execute(sql)
+            connection.commit()
     except Exception as e:
         data['error'] = str(e)
     finally:
