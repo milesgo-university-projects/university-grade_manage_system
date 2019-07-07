@@ -1,5 +1,6 @@
 from app.models.general import connect_to_sql
 from app.models.student import StudentReader
+from werkzeug.security import generate_password_hash
 
 
 class StudentListReader:
@@ -27,16 +28,17 @@ class StudentInserter:
         self.data = insert_student(student_name, sex, birth_year, province, enter_year, major_id)
 
 
-def insert_student(student_name, sex, birth_year, province, enter_year, major_id):
+class StudentDeleter:
+    def __init__(self, student_id):
+        self.data = delete_student(student_id)
+
+
+def delete_student(student_id):
     connection = connect_to_sql()
     data = {}
     try:
         with connection.cursor() as cursor:
-            student_id = '2015211255'
-            password = '123'
-            sql = 'insert into student values ' \
-                  '(\'%s\', \'%s\', \'%s\', \'%s\', \'%s\', \'%s\', \'%s\', \'%s\'); ' \
-                  % (student_id, student_name, sex, birth_year, province, enter_year, major_id, password)
+            sql = 'delete from student where student_id = \'%s\'; ' % student_id
             cursor.execute(sql)
             connection.commit()
     except Exception as e:
@@ -44,17 +46,35 @@ def insert_student(student_name, sex, birth_year, province, enter_year, major_id
     finally:
         connection.close()
     return data
-    pass
 
 
-def update_student(student_id, student_name, sex, birth_year, province, major_id):
+def insert_student(student_name, sex, birth_year, province, enter_year, major_id):
+    connection = connect_to_sql()
+    data = {}
+    try:
+        with connection.cursor() as cursor:
+            student_id = get_new_student_id(enter_year, major_id)
+            password = generate_password_hash(student_id['student_id'])
+            sql = 'insert into student values ' \
+                  '(\'%s\', \'%s\', \'%s\', \'%s\', \'%s\', \'%s\', \'%s\', \'%s\'); ' \
+                  % (student_id['student_id'], student_name, sex, birth_year, province, enter_year, major_id, password)
+            cursor.execute(sql)
+            connection.commit()
+    except Exception as e:
+        data['error'] = str(e)
+    finally:
+        connection.close()
+    return data
+
+
+def update_student(student_id, student_name, sex, birth_year, province, enter_year, major_id):
     connection = connect_to_sql()
     data = {}
     try:
         with connection.cursor() as cursor:
             sql = 'update student set student_name = \'%s\', sex = \'%s\', birth_year = \'%s\', ' \
-                  'province = \'%s\', major_id = \'%s\' where student_id = \'%s\'; ' % \
-                  (student_name, sex, birth_year, province, major_id, student_id)
+                  'province = \'%s\', enter_year = \'%s\', major_id = \'%s\' where student_id = \'%s\'; ' % \
+                  (student_name, sex, birth_year, province, enter_year, major_id, student_id)
             cursor.execute(sql)
             connection.commit()
     except Exception as e:
@@ -72,6 +92,21 @@ def read_student_id_list():
             sql = 'select student_id from student'
             cursor.execute(sql)
             data['student_id'] = cursor.fetchall()
+    except Exception as e:
+        data['error'] = str(e)
+    finally:
+        connection.close()
+    return data
+
+
+def get_new_student_id(enter_year, major_id):
+    connection = connect_to_sql()
+    data = {}
+    try:
+        with connection.cursor() as cursor:
+            sql = 'select max(convert(right(student_id, 3), unsigned integer))+1 from student order by student_id'
+            cursor.execute(sql)
+            data['student_id'] = enter_year + major_id + str(cursor.fetchone()[0])
     except Exception as e:
         data['error'] = str(e)
     finally:

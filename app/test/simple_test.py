@@ -1,4 +1,4 @@
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 
 """
 str=[
@@ -53,6 +53,5 @@ str = [
 ]
 """
 
-f = open('tmp.txt', 'w')
-for s in str:
-    f.write(generate_password_hash(s) + '\n')
+password_hash = generate_password_hash('2016211328')
+print(check_password_hash(password_hash, '2016211328'))
