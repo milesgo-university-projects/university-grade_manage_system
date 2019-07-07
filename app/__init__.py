@@ -9,6 +9,10 @@ login_manager = LoginManager()
 def load_user(user_id):
     if 'student' in user_id:
         return LoginChecker('load', 'student', user_id[7:], 'default')
+    if 'teacher' in user_id:
+        return LoginChecker('load', 'teacher', user_id[7:], 'default')
+    if 'admin' in user_id:
+        return LoginChecker('load', 'admin', user_id[5:], 'default')
     return None
 
 

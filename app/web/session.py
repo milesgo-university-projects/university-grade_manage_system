@@ -78,7 +78,7 @@ def admin_login():
     form = AdminLoginForm(request.args)
     if form.validate():
         password = form.password.data
-        checker = LoginChecker('login', 'admin', 'default', password)
+        checker = LoginChecker('login', 'admin', 'admin', password)
         if checker.data.get('error'):
             return jsonify(checker.data), 404
         login_user(checker)
