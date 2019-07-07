@@ -2,7 +2,8 @@ from . import web
 from flask import request
 from flask import jsonify
 from app.validate.teacher import GetTeacherInformationForm, GetCourseInformationForm, PostGradeInformationForm
-from app.models.teacher import TeacherReader, TeacherCoursesReader, TeacherCourseStudentReader, TeacherGradeUpdater
+from app.models.teacher import TeacherReader, TeacherCoursesReader, TeacherCourseStudentReader, TeacherGradeUpdater, \
+    CourseStatisticReader
 from app.web.general import transform_errors
 
 
@@ -33,6 +34,7 @@ def get_teacher_courses_taught():
 @web.route('/teacher/course_information', methods=['GET', 'POST'])
 def get_teacher_course_information():
     if request.method == 'GET':
+        # 查看某课程选课学生信息
         form = GetCourseInformationForm(request.args)
         if form.validate():
             course_id = form.course_id.data
@@ -47,7 +49,6 @@ def get_teacher_course_information():
             course_id = form.course_id.data
             student_id = form.student_id.data
             grade = form.grade.data
-            print(course_id, student_id, grade)
             grade_updater = TeacherGradeUpdater(course_id, student_id, grade)
             return jsonify(grade_updater.data), 404 if grade_updater.data.get('error') else 200
         else:
@@ -59,7 +60,7 @@ def get_teacher_course_statistic():
     form = GetCourseInformationForm(request.args)
     if form.validate():
         course_id = form.course_id.data
-        course_students = TeacherCourseStudentReader(course_id)
+        course_students = CourseStatisticReader(course_id)
         return jsonify(course_students.data), 404 if course_students.data.get('error') else 200
     else:
         return jsonify(transform_errors(form.errors)), 404
