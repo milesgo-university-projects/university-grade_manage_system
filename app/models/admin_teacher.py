@@ -8,6 +8,11 @@ class TeacherListReader:
         self.data = read_teacher_list()
 
 
+class TeacherIdReader:
+    def __init__(self):
+        self.data = read_teacher_id()
+
+
 class TeacherUpdater:
     def __init__(self, teacher_id, teacher_name, sex, birth_year):
         self.data = update_teacher(teacher_id, teacher_name, sex, birth_year)
@@ -21,6 +26,23 @@ class TeacherInserter:
 class TeacherDeleter:
     def __init__(self, teacher_id):
         self.data = delete_teacher(teacher_id)
+
+
+def read_teacher_id():
+    connection = connect_to_sql()
+    data = {'teacher_ids': []}
+    try:
+        with connection.cursor() as cursor:
+            sql = 'select teacher_id from teacher'
+            cursor.execute(sql)
+            result = cursor.fetchall()
+            for row in result:
+                data['teacher_ids'].append(row[0])
+    except Exception as e:
+        data['error'] = str(e)
+    finally:
+        connection.close()
+    return data
 
 
 def delete_teacher(teacher_id):
