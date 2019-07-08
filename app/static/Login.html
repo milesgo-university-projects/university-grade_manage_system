@@ -1,0 +1,236 @@
+
+
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+	<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Minimal and Clean Sign up / Login and Forgot Form by FreeHTML5.co</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Free HTML5 Template by FreeHTML5.co" />
+	<meta name="keywords" content="free html5, free template, free bootstrap, html5, css3, mobile first, responsive" />
+	
+
+  
+
+  	<!-- Facebook and Twitter integration -->
+	<meta property="og:title" content=""/>
+	<meta property="og:image" content=""/>
+	<meta property="og:url" content=""/>
+	<meta property="og:site_name" content=""/>
+	<meta property="og:description" content=""/>
+	<meta name="twitter:title" content="" />
+	<meta name="twitter:image" content="" />
+	<meta name="twitter:url" content="" />
+	<meta name="twitter:card" content="" />
+
+	<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+	<link rel="shortcut icon" href="favicon.ico">
+
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700,300' rel='stylesheet' type='text/css'>
+	
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/animate.css">
+	<link rel="stylesheet" href="css/style.css">
+
+
+	<!-- Modernizr JS -->
+	<script src="js/modernizr-2.6.2.min.js"></script>
+	<!-- FOR IE9 below -->
+	<!--[if lt IE 9]>
+	<script src="js/respond.min.js"></script>
+	<![endif]-->
+
+	</head>
+	<body class="style-2">
+
+		<div class="container">
+			  
+			<!--<div class="row">
+				<div class="col-md-12 text-center">
+					<ul class="menu">
+						<li class="active"><a href="index.html">Style 1</a></li>
+						<li><a href="index2.html">Style 2</a></li>
+						<li><a href="index3.html">Style 3</a></li>
+					</ul>
+				</div>
+			</div>-->
+			
+            <div class="copyrights">Collect from <a href="http://www.cssmoban.com/"  title="网站模板">网站模板</a></div>
+			<div class="row">
+				<div class="col-md-4 col-md-offset-4">
+					
+
+					<!-- Start Sign In Form -->
+					<form action="地址" class="fh5co-form animate-box" data-animate-effect="fadeIn">
+						<h2>Sign In</h2>
+						<div class="form-group">
+							<label for="username" class="sr-only">Username</label>
+							<input type="text" class="form-control" id="username" placeholder="Username" autocomplete="off">
+						</div>
+						<div class="form-group">
+						
+							<label for="password" class="sr-only">Password</label>
+							<input type="password" class="form-control" id="password" placeholder="Password" autocomplete="off">
+						</div>
+						<div class="form-group">
+							<label for="remember"><input type="checkbox" id="remember"> Remember Me</label>
+			
+						</div>
+						<div class="form-group">
+							
+							<label for="remember"><input type="radio" id="remember" name = 'a'> Student</label>
+							<label for="remember"><input type="radio" id="remember" name = 'a'> Teacher</label>
+							<label for="remember"><input type="radio" id="remember" name = 'a'> Administrator</label>
+						</div>
+						
+						<!--  <div class="form-group">
+							<p>Not registered? <a href="sign-up.html">Sign Up</a> | <a href="forgot.html">Forgot Password?</a></p>
+						</div>-->
+						<div class="form-group">
+							<input type="button" value="Sign In" class="btn btn-primary" id ="login">			
+						</div>
+					</form>
+					<!-- END Sign In Form -->
+
+				</div>
+			</div>
+			<div class="row" style="padding-top: 60px; clear: both;">
+				<div class="col-md-12 text-center"><p><small>made by wanweng</small></p></div>
+			</div>
+		</div>
+	
+	<!-- jQuery -->
+	<script src="js/jquery.min.js"></script>
+	<!-- Bootstrap -->
+	<script src="js/bootstrap.min.js"></script>
+	<!-- Placeholder -->
+	<script src="js/jquery.placeholder.min.js"></script>
+	<!-- Waypoints -->
+	<script src="js/jquery.waypoints.min.js"></script>
+	<!-- Main JS -->
+	<script src="js/main.js"></script>
+	
+	
+<script type="text/javascript">
+    // 绑定点击事件
+    document.getElementById("login").onclick = function () {
+    	var name = document.getElementById("username").value;
+    	var password = document.getElementById("password").value;
+    	if(name == "")
+    	{
+    		alert("请输入用户名!");
+    		return;
+    	}
+    	if(password == "")
+		{
+			alert("请输入密码!");
+			return;
+		}
+    	
+    	var radios = document.getElementsByName("a");
+    	//选没选择类别的标志
+    	var flag = 0;
+    	//选择哪个类别的记号
+    	var i;
+    	//类型
+    	var type;
+    	//地址
+    	var url;
+    	  for ( var i = 0; i < radios.length; i++) {
+    	  if (radios[i].checked == true) {
+    	      flag = 1;
+    	   break;
+
+    	   }
+    	  }
+    	
+    	if(flag == 0)
+    		{
+    			alert("请选择登录类别");
+    			return;
+    		}
+    	switch(i) {
+        case 0:
+        	type = "student";
+        	url = "http://localhost:6060/student/login?student_id=2016211257&password=2016211257";
+           break;
+        case 1:
+        	type = "teacher";
+        	url = "https://4ffafd05-19b1-431e-9f31-8dc6e50b6ccf.mock.pstmn.io/teacher/login?teacher_id="+name+"&password="+password;
+           break;
+        case 2:
+        	type = "administrator";
+        	url = "https://4ffafd05-19b1-431e-9f31-8dc6e50b6ccf.mock.pstmn.io/admin/login?password="+password;
+        	break;
+        default:
+   } 
+    	
+    	alert(url);
+    	
+        // 发送ajax 请求 需要 五步
+
+        // （1）创建异步对象
+        var ajaxObj = new XMLHttpRequest();
+
+        // （2）设置请求的参数。包括：请求的方法、请求的url。
+        ajaxObj.open('get', url);
+
+        // （3）发送请求
+        ajaxObj.send();
+
+        //（4）注册事件。 onreadystatechange事件，状态改变时就会调用。
+        //如果要在数据完整请求回来的时候才调用，我们需要手动写一些判断的逻辑。
+        ajaxObj.onreadystatechange = function () {
+            // 为了保证 数据 完整返回，我们一般会判断 两个值
+            
+            alert(ajaxObj.readyState);
+            alert(ajaxObj.status);
+            if (ajaxObj.readyState == 4 && ajaxObj.status == 200) {
+                // 如果能够进到这个判断 说明 数据 完美的回来了,并且请求的页面是存在的
+                // 5.在注册的事件中 获取 返回的 内容 并修改页面的显示
+                console.log('数据返回成功');
+
+                // 数据是保存在 异步对象的 属性中
+                console.log(ajaxObj.responseText);
+
+                // 修改页面的显示
+                //document.querySelector('h1').innerHTML = ajaxObj.responseText;
+			   //var last=ajaxObj.responseText; //将JSON对象转化为JSON字符
+
+				switch(type)
+				{
+				case "student":
+					window.location.href = "StudentInfo.html?name="+name+"&password="+password;
+					break;
+				case "teacher":
+					window.location.href = "TeacherInfo.html?name="+name+"&password="+password;
+					break;
+				case "administrator":
+					window.location.href = "Stu_Info.html?password="+password;
+					break;
+				default:
+					
+				}
+				//window.location.href = "file:///D:/Eclipse/workspace/work/Work/WebContent/work/Student/StudentInfo.html?type="+type+"&name="+name;
+
+			 //alert(last);
+
+            }
+            
+            else
+            	{
+            	alert("用户名或密码错误，请重新输入!");
+            	}
+        }
+    }
+</script>
+
+
+
+	</body>
+</html>
+

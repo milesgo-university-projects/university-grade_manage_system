@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+      <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+	<!-- Bootstrap Styles-->
+    <link href="assets/css/bootstrap.css" rel="stylesheet" />
+     <!-- FontAwesome Styles-->
+    <link href="assets/css/font-awesome.css" rel="stylesheet" />
+     <!-- Morris Chart Styles-->
+   
+        <!-- Custom Styles-->
+    <link href="assets/css/custom-styles.css" rel="stylesheet" />
+     <!-- Google Fonts-->
+   <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+     <!-- TABLE STYLES-->
+    <link href="assets/js/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
+</head>
+<body>
+    <div id="wrapper">
+        <nav class="navbar navbar-default top-navbar" role="navigation">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="StudentInfo.html"><i class="fa fa-gear"></i> <strong>学生成绩管理系统</strong></a>
+            </div>
+
+            <ul class="nav navbar-top-links navbar-right">
+ 
+                <!-- /.dropdown -->
+
+                <!-- /.dropdown -->
+  
+                <!-- /.dropdown -->
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+                        <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
+                        </li>
+                        <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li><a href="#"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-user -->
+                </li>
+                <!-- /.dropdown -->
+            </ul>
+        </nav>
+        <!--/. NAV TOP  -->
+        <nav class="navbar-default navbar-side" role="navigation">
+            <div class="sidebar-collapse">
+                <ul class="nav" id="main-menu">
+
+                    <li>
+                        <a href="StudentInfo.html"><i class="fa fa-desktop"></i> 返回</a>
+                    </li>
+                  
+
+                </ul>
+
+            </div>
+
+        </nav>
+        <!-- /. NAV SIDE  -->
+        <div id="page-wrapper" >
+            <div id="page-inner">
+			 <div class="row">
+                    <div class="col-md-12">
+                        <h1 class="page-header">
+                            	课程管理 <small>课程管理</small>
+                        </h1>
+                    </div>
+                </div> 
+                 <!-- /. ROW  -->
+               
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- Advanced Tables -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                             Advanced Tables
+                        </div>
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                    <thead>
+                                        <tr>
+                                            <th>student_id</th>
+                                            <th>student_name</th>
+                                            <th>sex</th>
+                                            <th>major_name</th>
+                                            <th>grade</th>
+                                            <th>操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id = "tbody">
+                                    </tbody>
+                                    
+                                </table>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <!--End Advanced Tables -->
+                </div>
+            </div>
+                <!-- /. ROW  -->
+      
+                <!-- /. ROW  -->
+
+                <!-- /. ROW  -->
+
+                <!-- /. ROW  -->
+        </div>
+               <footer><p> made by wangwen </p></footer>
+    </div>
+             <!-- /. PAGE INNER  -->
+            </div>
+         <!-- /. PAGE WRAPPER  -->
+     <!-- /. WRAPPER  -->
+    <!-- JS Scripts-->
+    <!-- jQuery Js -->
+    <script src="assets/js/jquery-1.10.2.js"></script>
+      <!-- Bootstrap Js -->
+    <script src="assets/js/bootstrap.min.js"></script>
+    <!-- Metis Menu Js -->
+    <script src="assets/js/jquery.metisMenu.js"></script>
+     <!-- DATA TABLE SCRIPTS -->
+    <script src="assets/js/dataTables/jquery.dataTables.js"></script>
+    <script src="assets/js/dataTables/dataTables.bootstrap.js"></script>
+        <script>
+            $(document).ready(function () {
+                $('#dataTables-example').dataTable();
+            });
+    </script>
+         <!-- Custom Js -->
+    <script src="assets/js/custom-scripts.js"></script>
+    
+   
+    
+        <script type="text/javascript">
+        
+        
+        
+        var url=location.href; 
+	    var tmp1=url.split("?")[1]; 
+	    var tmp2=tmp1.split("&")[0]; 
+	    var tmp3=tmp2.split("=")[1]; 
+	    //这是课程界面传过来的工号
+	    var course_id=tmp3; 
+
+    
+        // （1）创建异步对象
+        var ajaxObj = new XMLHttpRequest();
+
+        // （2）设置请求的参数。包括：请求的方法、请求的url。
+        ajaxObj.open('get', 'https://4ffafd05-19b1-431e-9f31-8dc6e50b6ccf.mock.pstmn.io/student/courses_selected?course_id=123456');
+
+        // （3）发送请求
+        ajaxObj.send();
+
+        //（4）注册事件。 onreadystatechange事件，状态改变时就会调用。
+        //如果要在数据完整请求回来的时候才调用，我们需要手动写一些判断的逻辑。
+        ajaxObj.onreadystatechange = function () {
+            // 为了保证 数据 完整返回，我们一般会判断 两个值
+            if (ajaxObj.readyState == 4 && ajaxObj.status == 200) {
+                // 如果能够进到这个判断 说明 数据 完美的回来了,并且请求的页面是存在的
+                // 5.在注册的事件中 获取 返回的 内容 并修改页面的显示
+                console.log('数据返回成功');
+
+                // 数据是保存在 异步对象的 属性中
+                console.log(ajaxObj.responseText);
+
+			   var last=ajaxObj.responseText; //将JSON对象转化为JSON字符
+			 
+			   var obj = JSON.parse(last);
+			   var students = obj.students;
+			   var table = document.getElementById("dataTables-example");
+			   var tbody = document.getElementById('tbody');
+			   var idArray=new Array();
+				for (var i = 0; i < students.length; i++) {
+				        //result[i]表示获得第i个json对象即JSONObject
+				        //result[i]通过.字段名称即可获得指定字段的值
+				        
+				        var row = document.createElement('tr');
+			            
+			            // 创建td单元格
+			            var student_id = document.createElement('td');
+			            var student_name = document.createElement('td');
+			            var sex = document.createElement('td');
+			            var major_name = document.createElement('td');
+			            var grade = document.createElement('input');
+			            var detail = document.createElement('td');
+
+			            
+			            
+			            student_id.innerHTML = students[i].student_id;
+			            student_name.innerHTML = students[i].student_name;
+			            sex.innerHTML = students[i].sex;
+			            major_name.innerHTML = students[i].major_name;
+			            grade.value = students[i].grade;
+			            var info= "修改";
+			            detail.innerHTML = info;
+			            
+			            idArray[i] = students[i].student_id;
+			    
+
+			            row.appendChild(student_id);
+			            row.appendChild(student_name);
+			            row.appendChild(sex);
+			            row.appendChild(major_name);
+			            row.appendChild(grade);
+			            row.appendChild(detail);
+			            
+			            
+			            
+			            
+			            tbody.appendChild(row);
+			         //   table.appendChild(body);
+				        
+				  }
+				
+				const es = document.getElementsByTagName('tr');
+				 
+			    for (const key in es) {
+			        es[key].onclick = function() {
+			            let number = parseInt(key) - 1;
+			            alert('你点击的是第' + number + '行表格');
+			            alert(idArray[number-1]);
+			            //window.location.href = "CourseInfo.html?course_id="+idArray[number-1];
+			            alert(table.rows [number+1].cells[4].value);
+			           //modify_garde(course,,idArray[number-1],)
+			        }
+			    }  
+			
+            }
+        }
+        
+        
+        
+        function modify_garde(courseid,studentid,grade) {
+            return a * b;
+        }
+
+</script>
+    
+   
+</body>
+</html>
+	
