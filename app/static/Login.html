@@ -185,8 +185,8 @@
            // alert(ajaxObj.status);
           // alert(ajaxObj.responseText);
 
-            //if (ajaxObj.readyState == 4 && ajaxObj.status == 200)
-            if ( ajaxObj.status == 200){
+            if (ajaxObj.readyState == 4 && ajaxObj.status == 200){
+          		
                 // 如果能够进到这个判断 说明 数据 完美的回来了,并且请求的页面是存在的
                 // 5.在注册的事件中 获取 返回的 内容 并修改页面的显示
                 console.log('数据返回成功');
@@ -218,8 +218,9 @@
 
             }
             
-            else
+            else if(ajaxObj.readyState == 4 && ajaxObj.status == 404)
             	{
+            	alert(ajaxObj.responseText);
             	alert("用户名或密码错误，请重新输入!");
             	}
         }
