@@ -49,15 +49,16 @@
 
 		<div class="container">
 			  
-			<!--<div class="row">
+			<div class="row">
 				<div class="col-md-12 text-center">
-					<ul class="menu">
+					<!-- <ul class="menu">
 						<li class="active"><a href="index.html">Style 1</a></li>
 						<li><a href="index2.html">Style 2</a></li>
 						<li><a href="index3.html">Style 3</a></li>
-					</ul>
+					</ul>-->
+					<strong>学生成绩管理系统</strong>
 				</div>
-			</div>-->
+			</div>
 			
             <div class="copyrights">Collect from <a href="http://www.cssmoban.com/"  title="网站模板">网站模板</a></div>
 			<div class="row">
@@ -77,10 +78,6 @@
 							<input type="password" class="form-control" id="password" placeholder="Password" autocomplete="off">
 						</div>
 						<div class="form-group">
-							<label for="remember"><input type="checkbox" id="remember"> Remember Me</label>
-			
-						</div>
-						<div class="form-group">
 							
 							<label for="remember"><input type="radio" id="remember" name = 'a'> Student</label>
 							<label for="remember"><input type="radio" id="remember" name = 'a'> Teacher</label>
@@ -97,9 +94,6 @@
 					<!-- END Sign In Form -->
 
 				</div>
-			</div>
-			<div class="row" style="padding-top: 60px; clear: both;">
-				<div class="col-md-12 text-center"><p><small>made by wanweng</small></p></div>
 			</div>
 		</div>
 	
@@ -156,15 +150,15 @@
     	switch(i) {
         case 0:
         	type = "student";
-        	url = "http://localhost:6060/student/login?student_id=2016211257&password=2016211257";
+        	url = "http://localhost:6060/student/login?student_id="+name+"&password="+password;
            break;
         case 1:
         	type = "teacher";
-        	url = "https://4ffafd05-19b1-431e-9f31-8dc6e50b6ccf.mock.pstmn.io/teacher/login?teacher_id="+name+"&password="+password;
+        	url = "http://localhost:6060/teacher/login?teacher_id="+name+"&password="+password;
            break;
         case 2:
         	type = "administrator";
-        	url = "https://4ffafd05-19b1-431e-9f31-8dc6e50b6ccf.mock.pstmn.io/admin/login?password="+password;
+        	url = "http://localhost:6060/admin/login?password="+password;
         	break;
         default:
    } 
@@ -187,9 +181,12 @@
         ajaxObj.onreadystatechange = function () {
             // 为了保证 数据 完整返回，我们一般会判断 两个值
             
-            alert(ajaxObj.readyState);
-            alert(ajaxObj.status);
-            if (ajaxObj.readyState == 4 && ajaxObj.status == 200) {
+            //alert(ajaxObj.readyState);
+           // alert(ajaxObj.status);
+          // alert(ajaxObj.responseText);
+
+            //if (ajaxObj.readyState == 4 && ajaxObj.status == 200)
+            if ( ajaxObj.status == 200){
                 // 如果能够进到这个判断 说明 数据 完美的回来了,并且请求的页面是存在的
                 // 5.在注册的事件中 获取 返回的 内容 并修改页面的显示
                 console.log('数据返回成功');
@@ -204,13 +201,13 @@
 				switch(type)
 				{
 				case "student":
-					window.location.href = "StudentInfo.html?name="+name+"&password="+password;
+					window.location.href = "Student_Info.html?name="+name+"&password="+password;
 					break;
 				case "teacher":
-					window.location.href = "TeacherInfo.html?name="+name+"&password="+password;
+					window.location.href = "Teacher_Info.html?name="+name+"&password="+password;
 					break;
 				case "administrator":
-					window.location.href = "Stu_Info.html?password="+password;
+					window.location.href = "Admin_Stu_Info.html?password="+password;
 					break;
 				default:
 					
