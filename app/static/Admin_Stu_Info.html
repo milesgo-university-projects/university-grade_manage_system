@@ -55,49 +55,28 @@
         <nav class="navbar-default navbar-side" role="navigation">
             <div class="sidebar-collapse">
                 <ul class="nav" id="main-menu">
-
-                    <li>
-                        <a class="active-menu" id = "a" ><i class="fa fa-sitemap"></i> 学生信息<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
+     
                             <li>
-                                <a  id = "a1" onclick=studentInfo() style="cursor:pointer"  >查看所有学生信息</a>
+                                <a  id = "a1"  style="cursor:pointer" class="active-menu" >查看所有学生信息</a>
                             </li>
                             <li>
                                 <a id = "a2" onclick=addstudent() style="cursor:pointer" >添加学生</a>
                             </li>
-          
-    
-                        </ul>
-                    </li>
 
-                  
-                    <li>
-                        <a id = "b" style="cursor:pointer" onclick=teacher()><i class="fa fa-sitemap"></i> 教师信息<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
                             <li>
                                 <a id="b1" onclick=teacherInfo()>查看所有教师信息</a>
                             </li>
                             <li>
                                 <a id = "b2" onclick=addteacher()>添加教师</a>
                             </li>
-  
-                        </ul>
-                    </li>
-                    <li>
-                        <a id ="c" style="cursor:pointer" onclick=course()><i class="fa fa-sitemap"></i> 课程信息<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
+      
                             <li>
                                 <a id = "c1" onclick=courseInfo()>查看所有课程信息</a>
                             </li>
                             <li>
                                 <a id ="c2" onclick=addcourse()>添加课程</a>
                             </li>
-                        </ul>
-                    </li>
-
-                    <li>
-                        <a id ="d" style="cursor:pointer" onclick=major()><i class="fa fa-sitemap"></i> 专业信息<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
+             
                             <li>
                                 <a id = "d1" onclick=majorInfo()>查看所有专业信息</a>
                             </li>
@@ -105,14 +84,11 @@
                                 <a id ="d2" onclick=addmajor()>添加专业</a>
                             </li>
                             <li>
-                                <a id ="d3" onclick=addcourse()>查看专业选课信息</a>
+                                <a id ="d3" onclick=majorcourse()>查看专业选课信息</a>
                             </li>
                             <li>
-                                <a id ="d4" onclick=addcourse()>增加专业选课</a>
+                                <a id ="d4" onclick=addmajorcourse()>增加专业选课</a>
                             </li>
-                        </ul>
-                    </li>
-
                 </ul>
 
             </div>
@@ -180,18 +156,19 @@
     
     function teacher()
     {
-        window.location.href = "Admin_Tea_Info.html";
+        //window.location.href = "Admin_Tea_Info.html";
     }
     function course()
     {
-        window.location.href = "Admin_Cou_Info.html";
+        //window.location.href = "Admin_Cou_Info.html";
     }
     function major()
     {
-        window.location.href = "Admin_Major_Info.html";
+        //window.location.href = "Admin_Major_Info.html";
     }
-    function studentInfo()
-    {
+
+
+ 
     
         var ajaxObj = new XMLHttpRequest();
 
@@ -219,7 +196,11 @@
 			   var students = obj.students;
 			   //var table = document.getElementById("dataTables-example");
 
-                
+               var tablecontainer = document.getElementById("tablecontainer");
+               while(tablecontainer.hasChildNodes()) //当div下还存在子节点时 循环继续
+                {
+                    tablecontainer.removeChild(tablecontainer.firstChild);
+                }
 
                 var table=document.createElement("table");
               
@@ -328,7 +309,6 @@
                         tbody.appendChild(row);
 				  }
                   table.appendChild(tbody);
-                  var tablecontainer = document.getElementById("tablecontainer");
                   tablecontainer.appendChild(table);
                    
             }
@@ -336,7 +316,7 @@
 
 
 
-    }
+    
 
    
 
