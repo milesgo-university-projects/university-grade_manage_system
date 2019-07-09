@@ -1,4 +1,4 @@
-from flask import request, jsonify
+from flask import request, jsonify, redirect
 
 from app.validate.general import check_authority
 from app.web.general import transform_errors
@@ -7,6 +7,11 @@ from app.validate.session import StudentChangePasswordForm, TeacherChangePasswor
     TeacherLoginForm, AdminLoginForm
 from app.models.session import StudentPasswordChanger, TeacherPasswordChanger, LoginChecker
 from flask_login import login_user, login_required, logout_user
+
+
+# @web.route('/')
+# def bare():
+#    return redirect('/static/Login.html')
 
 
 @web.route('/student/login', methods=['GET'])
@@ -91,16 +96,18 @@ def admin_login():
 @login_required
 def student_logout():
     logout_user()
+    return '{}', 200
 
 
 @web.route('/teacher/logout', methods=['GET'])
 @login_required
 def teacher_logout():
     logout_user()
+    return '{}', 200
 
 
 @web.route('/admin/logout', methods=['GET'])
 @login_required
 def admin_logout():
     logout_user()
-
+    return '{}', 200

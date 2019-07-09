@@ -150,34 +150,26 @@
     </script>
          <!-- Custom Js -->
     <script src="assets/js/custom-scripts.js"></script>
-    
-   		
-    
-        <script type="text/javascript">
-        alert("hello");
-        // （1）创建异步对象
+
+    <script type="text/javascript">
+
+        document.getElementById("a").onclick = function () {
+        	window.location.href = "Teacher_Info.html";
+        }
+        document.getElementById("c").onclick = function () {
+        	window.location.href = "Teacher_ChangePassword.html";
+        }
+
+        var name = localStorage.getItem("name");
+
         var ajaxObj = new XMLHttpRequest();
-
-        // （2）设置请求的参数。包括：请求的方法、请求的url。
-        ajaxObj.open('get', 'https://4ffafd05-19b1-431e-9f31-8dc6e50b6ccf.mock.pstmn.io/student/courses_selected?student_id=2016211252');
-
-        // （3）发送请求
+        ajaxObj.open('get', 'http://localhost:6060/teacher/courses_taught?teacher_id='+name);
         ajaxObj.send();
-
-        //（4）注册事件。 onreadystatechange事件，状态改变时就会调用。
-        //如果要在数据完整请求回来的时候才调用，我们需要手动写一些判断的逻辑。
         ajaxObj.onreadystatechange = function () {
-            // 为了保证 数据 完整返回，我们一般会判断 两个值
             if (ajaxObj.readyState == 4 && ajaxObj.status == 200) {
-                // 如果能够进到这个判断 说明 数据 完美的回来了,并且请求的页面是存在的
-                // 5.在注册的事件中 获取 返回的 内容 并修改页面的显示
                 console.log('数据返回成功');
-
-                // 数据是保存在 异步对象的 属性中
                 console.log(ajaxObj.responseText);
-
 			   var last=ajaxObj.responseText; //将JSON对象转化为JSON字符
-			 
 			   var obj = JSON.parse(last);
 			   var courses = obj.courses;
 			   var table = document.getElementById("dataTables-example");
@@ -195,27 +187,17 @@
 			            var semester = document.createElement('td');
 			            var credit = document.createElement('td');
 			            var detail = document.createElement('td');
-			            var detail = document.createElement('td');
-			            
 
-			            
-			            
 			            course_id.innerHTML = courses[i].course_id;
 			            course_name.innerHTML = courses[i].course_name;
 			            year.innerHTML = courses[i].year;
 			            semester.innerHTML = courses[i].semester;
 			            credit.innerHTML = courses[i].credit;
-			            var info= "查看选课情况";
+			            var info= "查看学生选课情况";
 			            detail.innerHTML = info;
 			            detail.setAttribute('id',i);
 			            
 			            idArray[i] = courses[i].course_id;
-			            
-			           // detail.onclick = function () {
-			           // 	alert(detail.id);
-			           /// 	alert(idArray[detail.id]);
-			           // 	window.location.href = "file:///D:/Eclipse/workspace/work/Work/WebContent/work/Teacher/CourseInfo.html";
-			           // }
 
 			            row.appendChild(course_id);
 			            row.appendChild(course_name);
@@ -223,9 +205,6 @@
 			            row.appendChild(semester);
 			            row.appendChild(credit);
 			            row.appendChild(detail);
-			            
-			            
-			            
 			            
 			            body.appendChild(row);
 			            table.appendChild(body);
@@ -236,25 +215,19 @@
 			    for (const key in es) {
 			        es[key].onclick = function() {
 			            let number = parseInt(key) - 1;
-			            alert('你点击的是第' + number + '行表格');
-			            alert(idArray[number-1]);
-			            window.location.href = "CourseInfo.html?course_id="+idArray[number-1];
+                        localStorage.setItem("course_id", idArray[number-1]);
+			            window.location.href = "Teacher_CourseInfo.html";
 			        }
 			    }   
-			
+            }
+            else if(ajaxObj.readyState == 4 && ajaxObj.status == 404) {
+				var last=ajaxObj.responseText; //将JSON对象转化为JSON字符
+				var obj = JSON.parse(last);
+				alert(obj.error);
             }
         }
-        
-        document.getElementById("a").onclick = function () {
-        	window.location.href = "TeacherInfo.html?name="+name+"&password="+password;
-        	}
-        document.getElementById("c").onclick = function () {
-        	window.location.href = "Tea_ChangePassword.html?name="+name+"&password="+password;
-        	}
+    </script>
 
-</script>
-    
-   
 </body>
 </html>
 	

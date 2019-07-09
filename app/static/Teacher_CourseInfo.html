@@ -61,7 +61,7 @@
                 <ul class="nav" id="main-menu">
 
                     <li>
-                        <a href="StudentInfo.html"><i class="fa fa-desktop"></i> 返回</a>
+                        <a style="cursor:pointer" id = "a"><i class="fa fa-desktop"></i> 返回</a>
                     </li>
                   
 
@@ -148,36 +148,20 @@
    
     
         <script type="text/javascript">
-        
-        
-        
-        var url=location.href; 
-	    var tmp1=url.split("?")[1]; 
-	    var tmp2=tmp1.split("&")[0]; 
-	    var tmp3=tmp2.split("=")[1]; 
-	    //这是课程界面传过来的工号
-	    var course_id=tmp3; 
 
+        document.getElementById("a").onclick = function () {
+            window.location.href = "Teacher_Courses.html";
+        }
+
+        var course_id = localStorage.getItem("course_id");
+        url = "http://localhost:6060/teacher/course_information?course_id="+course_id;
     
-        // （1）创建异步对象
         var ajaxObj = new XMLHttpRequest();
-
-        // （2）设置请求的参数。包括：请求的方法、请求的url。
-        ajaxObj.open('get', 'https://4ffafd05-19b1-431e-9f31-8dc6e50b6ccf.mock.pstmn.io/student/courses_selected?course_id=123456');
-
-        // （3）发送请求
+        ajaxObj.open('get', url);
         ajaxObj.send();
-
-        //（4）注册事件。 onreadystatechange事件，状态改变时就会调用。
-        //如果要在数据完整请求回来的时候才调用，我们需要手动写一些判断的逻辑。
         ajaxObj.onreadystatechange = function () {
-            // 为了保证 数据 完整返回，我们一般会判断 两个值
             if (ajaxObj.readyState == 4 && ajaxObj.status == 200) {
-                // 如果能够进到这个判断 说明 数据 完美的回来了,并且请求的页面是存在的
-                // 5.在注册的事件中 获取 返回的 内容 并修改页面的显示
                 console.log('数据返回成功');
-
-                // 数据是保存在 异步对象的 属性中
                 console.log(ajaxObj.responseText);
 
 			   var last=ajaxObj.responseText; //将JSON对象转化为JSON字符
@@ -186,7 +170,6 @@
 			   var students = obj.students;
 			   var table = document.getElementById("dataTables-example");
 			   var tbody = document.getElementById('tbody');
-			   var idArray=new Array();
 				for (var i = 0; i < students.length; i++) {
 				        //result[i]表示获得第i个json对象即JSONObject
 				        //result[i]通过.字段名称即可获得指定字段的值
@@ -198,20 +181,26 @@
 			            var student_name = document.createElement('td');
 			            var sex = document.createElement('td');
 			            var major_name = document.createElement('td');
-			            var grade = document.createElement('input');
-			            var detail = document.createElement('td');
-
-			            
-			            
+                        var grade = document.createElement('input');
+                        var detail = document.createElement('td');
+                        detail.setAttribute("row", i.toString());
+                        detail.setAttribute("student_id", students[i].student_id);
+                        
+                        detail.onclick = function() {
+                            let r = parseInt(this.getAttribute("row"));
+                            let cid = localStorage.getItem("course_id");
+                            let sid = this.getAttribute("student_id");
+                            let grade = table.rows[r+2].getElementsByTagName("input")[0];
+                            modify_grade(cid, sid, grade.value);
+                        }
+                        
 			            student_id.innerHTML = students[i].student_id;
 			            student_name.innerHTML = students[i].student_name;
 			            sex.innerHTML = students[i].sex;
 			            major_name.innerHTML = students[i].major_name;
-			            grade.value = students[i].grade;
-			            var info= "修改";
+                        grade.value = students[i].grade;
+			            var info= "提交";
 			            detail.innerHTML = info;
-			            
-			            idArray[i] = students[i].student_id;
 			    
 
 			            row.appendChild(student_id);
@@ -221,34 +210,36 @@
 			            row.appendChild(grade);
 			            row.appendChild(detail);
 			            
-			            
-			            
-			            
 			            tbody.appendChild(row);
 			         //   table.appendChild(body);
 				        
 				  }
-				
-				const es = document.getElementsByTagName('tr');
-				 
-			    for (const key in es) {
-			        es[key].onclick = function() {
-			            let number = parseInt(key) - 1;
-			            alert('你点击的是第' + number + '行表格');
-			            alert(idArray[number-1]);
-			            //window.location.href = "CourseInfo.html?course_id="+idArray[number-1];
-			            alert(table.rows [number+1].cells[4].value);
-			           //modify_garde(course,,idArray[number-1],)
-			        }
-			    }  
-			
+            }
+            else if(ajaxObj.readyState == 4 && ajaxObj.status == 404) {
+				var last=ajaxObj.responseText; //将JSON对象转化为JSON字符
+				var obj = JSON.parse(last);
+				alert(obj.error);
             }
         }
         
-        
-        
-        function modify_garde(courseid,studentid,grade) {
-            return a * b;
+        function modify_grade(courseid,studentid,grade) {
+            url = "http://localhost:6060/teacher/course_information?course_id="+courseid+"&student_id="+studentid+"&grade="+grade;
+    
+            var ajaxObj = new XMLHttpRequest();
+            ajaxObj.open('post', url);
+            ajaxObj.send();
+            ajaxObj.onreadystatechange = function () {
+                if (ajaxObj.readyState == 4 && ajaxObj.status == 200) {
+                    console.log('数据返回成功');
+                    console.log(ajaxObj.responseText);
+                    alert("成绩修改成功");
+                }
+                else if(ajaxObj.readyState == 4 && ajaxObj.status == 404) {
+                    var last=ajaxObj.responseText; //将JSON对象转化为JSON字符
+                    var obj = JSON.parse(last);
+                    alert(obj.error);
+                }
+            }
         }
 
 </script>

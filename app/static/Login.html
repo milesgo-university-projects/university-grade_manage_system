@@ -79,7 +79,7 @@
 						</div>
 						<div class="form-group">
 							
-							<label for="remember"><input type="radio" id="remember" name = 'a'> Student</label>
+							<label for="remember"><input type="radio" id="remember" name = 'a' checked="checked"> Student</label>
 							<label for="remember"><input type="radio" id="remember" name = 'a'> Teacher</label>
 							<label for="remember"><input type="radio" id="remember" name = 'a'> Administrator</label>
 						</div>
@@ -114,13 +114,11 @@
     document.getElementById("login").onclick = function () {
     	var name = document.getElementById("username").value;
     	var password = document.getElementById("password").value;
-    	if(name == "")
-    	{
+    	if(name == "") {
     		alert("请输入用户名!");
     		return;
     	}
-    	if(password == "")
-		{
+    	if(password == "") {
 			alert("请输入密码!");
 			return;
 		}
@@ -134,19 +132,17 @@
     	var type;
     	//地址
     	var url;
-    	  for ( var i = 0; i < radios.length; i++) {
-    	  if (radios[i].checked == true) {
-    	      flag = 1;
-    	   break;
-
-    	   }
-    	  }
+		for ( var i = 0; i < radios.length; i++) {
+			if (radios[i].checked == true) {
+				flag = 1;
+				break;
+			}
+		}
     	
-    	if(flag == 0)
-    		{
-    			alert("请选择登录类别");
-    			return;
-    		}
+    	if(flag == 0) {
+			alert("请选择登录类别");
+			return;
+    	}
     	switch(i) {
         case 0:
         	type = "student";
@@ -161,11 +157,7 @@
         	url = "http://localhost:6060/admin/login?password="+password;
         	break;
         default:
-   } 
-    	
-    	alert(url);
-    	
-        // 发送ajax 请求 需要 五步
+   		} 
 
         // （1）创建异步对象
         var ajaxObj = new XMLHttpRequest();
@@ -180,12 +172,7 @@
         //如果要在数据完整请求回来的时候才调用，我们需要手动写一些判断的逻辑。
         ajaxObj.onreadystatechange = function () {
             // 为了保证 数据 完整返回，我们一般会判断 两个值
-            
-            //alert(ajaxObj.readyState);
-           // alert(ajaxObj.status);
-          // alert(ajaxObj.responseText);
-
-            if (ajaxObj.readyState == 4 && ajaxObj.status == 200){
+            if (ajaxObj.readyState == 4 && ajaxObj.status == 200) {
           		
                 // 如果能够进到这个判断 说明 数据 完美的回来了,并且请求的页面是存在的
                 // 5.在注册的事件中 获取 返回的 内容 并修改页面的显示
@@ -194,35 +181,27 @@
                 // 数据是保存在 异步对象的 属性中
                 console.log(ajaxObj.responseText);
 
-                // 修改页面的显示
-                //document.querySelector('h1').innerHTML = ajaxObj.responseText;
-			   //var last=ajaxObj.responseText; //将JSON对象转化为JSON字符
-
-				switch(type)
-				{
+				switch(type) {
 				case "student":
-					window.location.href = "Student_Info.html?name="+name+"&password="+password;
+					localStorage.setItem("name", name);
+					window.location.href = "Student_Info.html";
 					break;
 				case "teacher":
-					window.location.href = "Teacher_Info.html?name="+name+"&password="+password;
+					localStorage.setItem("name", name);
+					window.location.href = "Teacher_Info.html?";
 					break;
 				case "administrator":
-					window.location.href = "Admin_Stu_Info.html?password="+password;
+					localStorage.setItem("name", name);
+					window.location.href = "Admin_Stu_Info.html";
 					break;
-				default:
-					
+				default:	
 				}
-				//window.location.href = "file:///D:/Eclipse/workspace/work/Work/WebContent/work/Student/StudentInfo.html?type="+type+"&name="+name;
-
-			 //alert(last);
-
             }
-            
-            else if(ajaxObj.readyState == 4 && ajaxObj.status == 404)
-            	{
-            	alert(ajaxObj.responseText);
-            	alert("用户名或密码错误，请重新输入!");
-            	}
+            else if(ajaxObj.readyState == 4 && ajaxObj.status == 404) {
+				var last=ajaxObj.responseText; //将JSON对象转化为JSON字符
+				var obj = JSON.parse(last);
+				alert(obj.error);
+            }
         }
     }
 </script>

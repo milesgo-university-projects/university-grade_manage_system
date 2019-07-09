@@ -53,11 +53,9 @@
             <div class="sidebar-collapse">
                 <ul class="nav" id="main-menu">
 
-
                     <li>
                         <a><i class="fa fa-desktop"></i> 个人信息</a>
                     </li>
-
                     
                     <li>
                         <a  style="cursor:pointer" id = "b"><i class="fa fa-table" ></i> 成绩</a>
@@ -109,9 +107,11 @@
 								<div class="alert alert-danger" id = "province">
 									籍贯： 
 								</div>
-								<div class="alert alert-success" id = "class_id">
+                                <!--
+                                <div class="alert alert-success" id = "class_id">
 									班级： 
-								</div>
+                                </div>
+                                -->
 								<div class="alert alert-info" id = "major_name">
 									专业： 
 								</div>
@@ -155,32 +155,22 @@
       <!-- Custom Js -->
     <script src="assets/js/custom-scripts.js"></script>
     
-    
     <script type="text/javascript">
+
+        document.getElementById("b").onclick = function () {
+            window.location.href = "Student_Scores.html";
+        }
+        document.getElementById("c").onclick = function () {
+            window.location.href = "Student_ChangePassword.html";
+        }
         
-    var url=location.href; 
-    var tmp1=url.split("?")[1]; 
-    var tmp2=tmp1.split("&")[0]; 
-    var tmp3=tmp2.split("=")[1]; 
-    //这是登陆界面传过来的学号
-    var name=tmp3; 
-    
-    var url2=location.href;   
-    var tmp4=url2.split("?")[1];   
-    var tmp5=tmp4.split("&")[1];   
-    var tmp6=tmp5.split("=")[1];   
-    //这是登陆界面传过来的密码
-    var password=tmp6;   
-    //alert(decodeURI(param2));   
+        var name = localStorage.getItem("name");
 
-    
-
-    
         // （1）创建异步对象
         var ajaxObj = new XMLHttpRequest();
 
         // （2）设置请求的参数。包括：请求的方法、请求的url。
-        ajaxObj.open('get', "https://4ffafd05-19b1-431e-9f31-8dc6e50b6ccf.mock.pstmn.io/student/information?student_id="+name);
+        ajaxObj.open('get', "http://localhost:6060/student/information?student_id="+name);
 
         // （3）发送请求
         ajaxObj.send();
@@ -197,35 +187,27 @@
                 // 数据是保存在 异步对象的 属性中
                 console.log(ajaxObj.responseText);
 
+                var last=ajaxObj.responseText; //将JSON对象转化为JSON字符
+                
+                var obj = JSON.parse(last);
 
-			   var last=ajaxObj.responseText; //将JSON对象转化为JSON字符
-			 
-			   var obj = JSON.parse(last);
-
-			   document.getElementById("id").innerHTML = "学号： "+obj.student_id;
-			   document.getElementById("name").innerHTML = "姓名： "+obj.student_name;
-			   document.getElementById("sex").innerHTML = "性别： "+obj.sex;
-			   document.getElementById("birth_year").innerHTML = "出生年月： "+obj.birth_year;
-			   document.getElementById("province").innerHTML = "籍贯： "+obj.province;
-			   document.getElementById("class_id").innerHTML = "班级： "+obj.class_id;
-			   document.getElementById("major_name").innerHTML = "专业： "+obj.major_name;
-			   document.getElementById("credits").innerHTML = "已修学分： "+obj.credits;
-			   document.getElementById("number_of_courses").innerHTML = "已选课程数量： "+obj.number_of_courses;
-			   document.getElementById("average_grade").innerHTML = "加权平均学分： "+obj.average_grade;
+                document.getElementById("id").innerHTML = "学号： "+obj.student_id;
+                document.getElementById("name").innerHTML = "姓名： "+obj.student_name;
+                document.getElementById("sex").innerHTML = "性别： "+obj.sex;
+                document.getElementById("birth_year").innerHTML = "出生年月： "+obj.birth_year;
+                document.getElementById("province").innerHTML = "籍贯： "+obj.province;
+                document.getElementById("major_name").innerHTML = "专业： "+obj.major_name;
+                document.getElementById("credits").innerHTML = "已修学分： "+obj.credits;
+                document.getElementById("number_of_courses").innerHTML = "已选课程数量： "+obj.number_of_courses;
+                document.getElementById("average_grade").innerHTML = "加权平均学分： "+obj.average_grade;
+            }
+            else if(ajaxObj.readyState == 4 && ajaxObj.status == 404) {
+				var last=ajaxObj.responseText; //将JSON对象转化为JSON字符
+				var obj = JSON.parse(last);
+				alert(obj.error);
             }
         }
         
-        
-        document.getElementById("b").onclick = function () {
-        	window.location.href = "Scores.html?name="+name+"&password="+password;
-        	}
-        document.getElementById("c").onclick = function () {
-        	window.location.href = "Stu_ChangePassword.html?name="+name+"&password="+password;
-        	}
-        
-        
-
-
 	</script>
  
 </body>
