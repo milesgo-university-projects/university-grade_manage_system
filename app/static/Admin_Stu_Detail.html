@@ -69,7 +69,7 @@
 			 <div class="row">
                     <div class="col-md-12">
                         <h1 class="page-header">
-                            	个人信息 <small>这是您的个人信息</small>
+                            	学生信息 
                         </h1>
                     </div>
                 </div> 
@@ -247,7 +247,6 @@
             //var text = obj.options[index].text; // 选中文本
 
             var url = "http://localhost:6060/admin/student/update?student_id="+id+"&student_name="+name+"&sex="+sex+"&birth_year="+birth_year+"&province="+province+"&enter_year="+enter_year+"&major_id="+major_id;
-
             var ajaxObj = new XMLHttpRequest();
             ajaxObj.open('post', url);
             ajaxObj.send();
@@ -263,8 +262,9 @@
                 
                 else if(ajaxObj.readyState == 4 && ajaxObj.status == 404)
                     {
-                        alert("修改失败");
-                        alert(ajaxObj.responseText);
+                        var last=ajaxObj.responseText; //将JSON对象转化为JSON字符
+                        var obj = JSON.parse(last);
+                        alert(obj.error);
                     
                     }
             }
@@ -273,13 +273,32 @@
 
         function deletestudent()
         {
+            var id = document.getElementById("id").value;
+            var url = "http://localhost:6060/admin/student/delete?student_id="+id;
+            var ajaxObj = new XMLHttpRequest();
+            ajaxObj.open('post', url);
+            ajaxObj.send();
+            ajaxObj.onreadystatechange = function () {
+                if (ajaxObj.readyState == 4 && ajaxObj.status == 200){
+                    console.log('数据返回成功');
+                    console.log(ajaxObj.responseText);
+                    alert("删除成功");
+                }
+                
+                else if(ajaxObj.readyState == 4 && ajaxObj.status == 404)
+                    {
+                        var last=ajaxObj.responseText; //将JSON对象转化为JSON字符
+                        var obj = JSON.parse(last);
+                        alert(obj.error);
+                    
+                    }
+            }
 
         }
 
 
         function back()
         {
-            alert("hsdhk");
             window.history.back();
         }
         
