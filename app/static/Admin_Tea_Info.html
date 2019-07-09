@@ -57,14 +57,60 @@
                 <ul class="nav" id="main-menu">
 
                     <li>
-                        <a href="Stu_Info.html" ><i class="fa fa-table"></i> 学生信息</a>
+                        <a  id = "a" style="cursor:pointer" onclick=student() ><i class="fa fa-sitemap"></i> 学生信息<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a  id = "a1" onclick=studentInfo() style="cursor:pointer"  >查看所有学生信息</a>
+                            </li>
+                            <li>
+                                <a id = "a2" onclick=addstudent() style="cursor:pointer" >添加学生</a>
+                            </li>
+          
+    
+                        </ul>
                     </li>
+
                   
                     <li>
-                        <a href="Tea_Info.html" class="active-menu" ><i class="fa fa-table"></i> 教师信息</a>
+                        <a id = "b"  class="active-menu" ><i class="fa fa-sitemap"></i> 教师信息<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a id="b1" onclick=teacherInfo()>查看所有教师信息</a>
+                            </li>
+                            <li>
+                                <a id = "b2" onclick=addteacher()>添加教师</a>
+                            </li>
+  
+                        </ul>
                     </li>
                     <li>
-                        <a href="Cou_Info.html" ><i class="fa fa-table"></i> 课程信息</a>
+                        <a id ="c" style="cursor:pointer" onclick=course()><i class="fa fa-sitemap"></i> 课程信息<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a id = "c1" onclick=courseInfo()>查看所有课程信息</a>
+                            </li>
+                            <li>
+                                <a id ="c2" onclick=addcourse()>添加课程</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a id ="d"  style="cursor:pointer" onclick=major() ><i class="fa fa-sitemap"></i> 专业信息<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a id = "d1" onclick=majorInfo()>查看所有专业信息</a>
+                            </li>
+                            <li>
+                                <a id ="d2" onclick=addmajor()>添加专业</a>
+                            </li>
+                            <li>
+                                <a id ="d3" onclick=major_courseInfo()>查看专业选课信息</a>
+                            </li>
+                            <li>
+                                <a id ="d4" onclick=addmajor_course()>增加专业选课</a>
+                            </li>
+                        </ul>
                     </li>
 
                 </ul>
@@ -93,36 +139,7 @@
                         </div>
                         <div class="panel-body">
                             <div class="table-responsive">
-                                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
-                                    <thead>
-                                        <tr>
-                                            <th>teacher_id</th>
-                                            <th>teacher_name</th>
-                                            <th>sex</th>
-                                            <th>birth_year</th>
-                                            <th>number_of_courses</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr class="odd gradeX">
-                                            <td>Trident</td>
-                                            <td>Internet Explorer 4.0</td>
-                                            <td>Win 95+</td>
-                                            <td class="center">4</td>
-                                            <td class="center">4</td>
-                            
-                                        </tr>
-                                        <tr class="even gradeC">
-                                            <td>Trident</td>
-                                            <td>Internet Explorer 5.0</td>
-                                            <td>Win 95+</td>
-                                            <td class="center">5</td>
-                                            <td class="center">5</td>
-                                  
-                                        </tr>
- 
-                                    </tbody>
-                                </table>
+                               
                             </div>
                             
                         </div>
@@ -155,6 +172,21 @@
     </script>
          <!-- Custom Js -->
     <script src="assets/js/custom-scripts.js"></script>
+
+    <script type="text/javascript">
+    function student()
+    {
+        window.location.href = "Admin_Stu_Info.html";
+    }
+    function course()
+    {
+        window.location.href = "Admin_Cou_Info.html";
+    }
+    function major()
+    {
+        window.location.href = "Admin_Major_Info.html";
+    }
+    </script>
     
    
 </body>

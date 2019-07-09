@@ -57,7 +57,7 @@
                 <ul class="nav" id="main-menu">
 
                     <li>
-                        <a class="active-menu" id = "a" ><i class="fa fa-sitemap"></i> 学生信息<span class="fa arrow"></span></a>
+                        <a  id = "a" style="cursor:pointer" onclick=student() ><i class="fa fa-sitemap"></i> 学生信息<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
                                 <a  id = "a1" onclick=studentInfo() style="cursor:pointer"  >查看所有学生信息</a>
@@ -96,7 +96,7 @@
                     </li>
 
                     <li>
-                        <a id ="d" style="cursor:pointer" onclick=major()><i class="fa fa-sitemap"></i> 专业信息<span class="fa arrow"></span></a>
+                        <a id ="d" class="active-menu" ><i class="fa fa-sitemap"></i> 专业信息<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
                                 <a id = "d1" onclick=majorInfo()>查看所有专业信息</a>
@@ -105,10 +105,10 @@
                                 <a id ="d2" onclick=addmajor()>添加专业</a>
                             </li>
                             <li>
-                                <a id ="d3" onclick=addcourse()>查看专业选课信息</a>
+                                <a id ="d3" onclick=major_courseInfo()>查看专业选课信息</a>
                             </li>
                             <li>
-                                <a id ="d4" onclick=addcourse()>增加专业选课</a>
+                                <a id ="d4" onclick=addmajor_course()>增加专业选课</a>
                             </li>
                         </ul>
                     </li>
@@ -175,9 +175,11 @@
 
     <script type="text/javascript">
 
+    function student()
+    {
+        window.location.href = "Admin_Stu_Info.html";
+    }
 
-
-    
     function teacher()
     {
         window.location.href = "Admin_Tea_Info.html";
@@ -185,10 +187,6 @@
     function course()
     {
         window.location.href = "Admin_Cou_Info.html";
-    }
-    function major()
-    {
-        window.location.href = "Admin_Major_Info.html";
     }
     function studentInfo()
     {
@@ -212,6 +210,7 @@
 
                 // 数据是保存在 异步对象的 属性中
                 console.log(ajaxObj.responseText);
+                alert("hcvaasd");
 
 			   var last=ajaxObj.responseText; //将JSON对象转化为JSON字符
 			 
@@ -304,16 +303,15 @@
                         detail.style = "cursor:pointer";
                         
 
-			            detail.setAttribute('row',i.toString);
-                        detail.setAttribute("student_id",students[i].student_id);
+			            //detail.setAttribute('id',i);
 			            
 			    
 			            
-                        detail.onclick = function() {
-                            let sid = this.getAttribute("student_id");
-                            localStorage.setItem("student_choosed_id",id);
-                            window.location.href = "Admin_Stu_Detail.html";
-                        }
+			           // detail.onclick = function () {
+			           // 	alert(detail.id);
+			           /// 	alert(idArray[detail.id]);
+			           // 	window.location.href = "file:///D:/Eclipse/workspace/work/Work/WebContent/work/Teacher/CourseInfo.html";
+			           // }
 
                         row.appendChild(student_id);
                         row.appendChild(student_name);
@@ -330,7 +328,33 @@
                   table.appendChild(tbody);
                   var tablecontainer = document.getElementById("tablecontainer");
                   tablecontainer.appendChild(table);
-                   
+                  
+
+   
+                
+
+                  const es = document.getElementsByTagName('tr');
+				 
+                 for (const key in es) {
+                     es[key].onclick = function() {
+                         let number = parseInt(key) ;
+                         //alert('你点击的是第' + number + '行表格');
+                         //alert(idArray[number-1]);
+                         //window.location.href = "CourseInfo.html?course_id="+idArray[number-1];
+                         //alert(table.rows [number].cells[0].innerHTML);
+                         var id = table.rows [number].cells[0].innerHTML;
+                         localStorage.setItem("student_choosed_id",id);
+                         window.location.href = "Admin_Stu_Detail.html";
+                        //  var flag=confirm("确定删除学号为"+id+"的学生？");
+                        // if(flag == true)
+                        // {
+                        //     deletestudent(id);
+                        // }
+
+                     }
+                 }   
+			
+			
             }
         }
 
