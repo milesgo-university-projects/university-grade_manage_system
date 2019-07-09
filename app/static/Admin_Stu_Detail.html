@@ -176,14 +176,12 @@
 
                 // 数据是保存在 异步对象的 属性中
                 console.log(ajaxObj.responseText);
-                alert(ajaxObj.responseText);
 
 
 			   var last=ajaxObj.responseText; //将JSON对象转化为JSON字符
 			 
 			   var obj = JSON.parse(last);
 
-                alert(obj.student_name);
 			   document.getElementById("id").value = obj.student_id;
 			   document.getElementById("name").value = obj.student_name;
 			  // document.getElementById("sex").innerHTML = obj.sex;
@@ -264,6 +262,7 @@
                     {
                         var last=ajaxObj.responseText; //将JSON对象转化为JSON字符
                         var obj = JSON.parse(last);
+                        alert("修改失败");
                         alert(obj.error);
                     
                     }
@@ -283,12 +282,14 @@
                     console.log('数据返回成功');
                     console.log(ajaxObj.responseText);
                     alert("删除成功");
+                    window.location.href = "Admin_Stu_Info.html";
                 }
                 
                 else if(ajaxObj.readyState == 4 && ajaxObj.status == 404)
                     {
                         var last=ajaxObj.responseText; //将JSON对象转化为JSON字符
                         var obj = JSON.parse(last);
+                        alert("删除失败");
                         alert(obj.error);
                     
                     }
