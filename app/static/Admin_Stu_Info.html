@@ -57,14 +57,42 @@
                 <ul class="nav" id="main-menu">
 
                     <li>
-                        <a href="Stu_Info.html" class="active-menu"><i class="fa fa-table"></i> 学生信息</a>
+                        <a class="active-menu" id = "a" ><i class="fa fa-sitemap"></i> 学生信息<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a  id = "a1" onclick=studentInfo() style="cursor:pointer"  >查看所有学生信息</a>
+                            </li>
+                            <li>
+                                <a id = "a2" onclick=addstudent() style="cursor:pointer" >添加学生</a>
+                            </li>
+          
+    
+                        </ul>
                     </li>
+
                   
                     <li>
-                        <a href="Tea_Info.html" ><i class="fa fa-table"></i> 教师信息</a>
+                        <a id = "b" style="cursor:pointer" onclick=teacher()><i class="fa fa-sitemap"></i> 教师信息<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a id="b1" onclick=teacherInfo()>查看所有教师信息</a>
+                            </li>
+                            <li>
+                                <a id = "b2" onclick=addteacher()>添加教师</a>
+                            </li>
+  
+                        </ul>
                     </li>
                     <li>
-                        <a href="Cou_Info.html" ><i class="fa fa-table"></i> 课程信息</a>
+                        <a id ="c" style="cursor:pointer" onclick=course()><i class="fa fa-sitemap"></i> 课程信息<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a id = "c1" onclick=courseInfo()>查看所有课程信息</a>
+                            </li>
+                            <li>
+                                <a id ="c2" onclick=addcourse()>添加课程</a>
+                            </li>
+                        </ul>
                     </li>
 
                 </ul>
@@ -78,7 +106,7 @@
 			 <div class="row">
                     <div class="col-md-12">
                         <h1 class="page-header">
-                            	学生信息 <small>学生信息</small>
+                            	 <strong id = "info">欢迎来到管理员界面</strong>
                         </h1>
                     </div>
                 </div> 
@@ -88,12 +116,12 @@
                 <div class="col-md-12">
                     <!-- Advanced Tables -->
                     <div class="panel panel-default">
-                        <div class="panel-heading">
+                      <!--  <div class="panel-heading">
                              Advanced Tables
-                        </div>
+                        </div>-->
                         <div class="panel-body">
-                            <div class="table-responsive">
-                                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                            <div class="table-responsive" id = "tablecontainer">
+                               <!-- <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                         <tr>
                                             <th>student_id</th>
@@ -135,7 +163,7 @@
                                         </tr>
  
                                     </tbody>
-                                </table>
+                                </table>-->
                             </div>
                             
                         </div>
@@ -168,6 +196,238 @@
     </script>
          <!-- Custom Js -->
     <script src="assets/js/custom-scripts.js"></script>
+
+    <script type="text/javascript">
+
+
+
+    
+    function teacher()
+    {
+        //window.location.href = "Admin_Tea_Info.html";
+        alert("helrefsa");
+    }
+    function course()
+    {
+        //window.location.href = "Admin_Cou_Info.html";
+        alert("helloasdfasdf");
+    }
+    function studentInfo()
+    {
+    
+        var ajaxObj = new XMLHttpRequest();
+
+        // （2）设置请求的参数。包括：请求的方法、请求的url。
+        ajaxObj.open('get', 'http://localhost:6060/admin/student/select');
+
+        // （3）发送请求
+        ajaxObj.send();
+
+        //（4）注册事件。 onreadystatechange事件，状态改变时就会调用。
+        //如果要在数据完整请求回来的时候才调用，我们需要手动写一些判断的逻辑。
+        ajaxObj.onreadystatechange = function () {
+            // 为了保证 数据 完整返回，我们一般会判断 两个值
+            if (ajaxObj.readyState == 4 && ajaxObj.status == 200) {
+                // 如果能够进到这个判断 说明 数据 完美的回来了,并且请求的页面是存在的
+                // 5.在注册的事件中 获取 返回的 内容 并修改页面的显示
+                console.log('数据返回成功');
+
+                // 数据是保存在 异步对象的 属性中
+                console.log(ajaxObj.responseText);
+                alert("hcvaasd");
+
+			   var last=ajaxObj.responseText; //将JSON对象转化为JSON字符
+			 
+			   var obj = JSON.parse(last);
+			   var students = obj.students;
+			   //var table = document.getElementById("dataTables-example");
+
+                
+
+                var table=document.createElement("table");
+              
+                table.style.width = "1000px";
+                table.style.borderCollapse = "collapse";
+                table.border = 1;
+                var thead=document.createElement("thead");
+
+                var row = document.createElement('tr');
+                var student_id = document.createElement('td');
+			    var student_name = document.createElement('td');
+			    var sex = document.createElement('td');
+			    var birth_year = document.createElement('td');
+			    var province = document.createElement('td');
+			    var major_name = document.createElement('td');
+			    var credits = document.createElement('td');
+                var number_of_courses = document.createElement('td');
+                var average_grade = document.createElement('td');
+                var detail = document.createElement("td");
+
+                student_id.innerHTML = "student_id";
+			    student_name.innerHTML = "student_name";
+			    sex.innerHTML = "sex";
+			    birth_year.innerHTML = "birth_year";
+			    province.innerHTML = "province";
+                major_name.innerHTML = "major_name";
+			    credits.innerHTML = "credits";
+			    number_of_courses.innerHTML = "number_of_courses";
+			    average_grade.innerHTML = "average_grade";
+                detail.innerHTML = "查看详情";
+
+                row.appendChild(student_id);
+                row.appendChild(student_name);
+                row.appendChild(sex);
+                row.appendChild(birth_year);
+                row.appendChild(province);
+                row.appendChild(major_name);
+                row.appendChild(credits);
+                row.appendChild(number_of_courses);
+                row.appendChild(average_grade);
+                row.appendChild(detail);
+    
+                thead.appendChild(row);
+                table.appendChild(thead);
+
+
+
+
+               var tbody = document.createElement('tbody');
+
+
+				for (var i = 0; i < students.length; i++) {
+				        //result[i]表示获得第i个json对象即JSONObject
+				        //result[i]通过.字段名称即可获得指定字段的值
+				        
+				        var row = document.createElement('tr');
+			            
+			            // 创建td单元格
+			            var student_id = document.createElement('td');
+			            var student_name = document.createElement('td');
+			            var sex = document.createElement('td');
+			            var birth_year = document.createElement('td');
+			            var province = document.createElement('td');
+			            var major_name = document.createElement('td');
+			            var credits = document.createElement('td');
+                        var number_of_courses = document.createElement('td');
+                        var average_grade = document.createElement('td');
+                        var detail = document.createElement('td');
+        
+                   
+    
+			            student_id.innerHTML = students[i].student_id;
+			            student_name.innerHTML = students[i].student_name;
+			            sex.innerHTML = students[i].sex;
+			            birth_year.innerHTML = students[i].birth_year;
+			            province.innerHTML = students[i].province;
+                        major_name.innerHTML = students[i].major_name;
+			            credits.innerHTML = students[i].credits;
+			            number_of_courses.innerHTML = students[i].number_of_courses;
+			            average_grade.innerHTML = students[i].average_grade;
+                        detail.innerHTML = "查看详情";
+                        detail.style = "cursor:pointer";
+                        
+
+			            //detail.setAttribute('id',i);
+			            
+			    
+			            
+			           // detail.onclick = function () {
+			           // 	alert(detail.id);
+			           /// 	alert(idArray[detail.id]);
+			           // 	window.location.href = "file:///D:/Eclipse/workspace/work/Work/WebContent/work/Teacher/CourseInfo.html";
+			           // }
+
+                        row.appendChild(student_id);
+                        row.appendChild(student_name);
+                        row.appendChild(sex);
+                        row.appendChild(birth_year);
+                        row.appendChild(province);
+                        row.appendChild(major_name);
+                        row.appendChild(credits);
+                        row.appendChild(number_of_courses);
+                        row.appendChild(average_grade);
+                        row.appendChild(detail);
+                        tbody.appendChild(row);
+				  }
+                  table.appendChild(tbody);
+                  var tablecontainer = document.getElementById("tablecontainer");
+                  tablecontainer.appendChild(table);
+                  
+
+   
+                
+
+                  const es = document.getElementsByTagName('tr');
+				 
+                 for (const key in es) {
+                     es[key].onclick = function() {
+                         let number = parseInt(key) ;
+                         //alert('你点击的是第' + number + '行表格');
+                         //alert(idArray[number-1]);
+                         //window.location.href = "CourseInfo.html?course_id="+idArray[number-1];
+                         //alert(table.rows [number].cells[0].innerHTML);
+                         var id = table.rows [number].cells[0].innerHTML;
+                         localStorage.setItem("student_choosed_id",id);
+                         window.location.href = "Admin_Stu_Detail.html";
+                        //  var flag=confirm("确定删除学号为"+id+"的学生？");
+                        // if(flag == true)
+                        // {
+                        //     deletestudent(id);
+                        // }
+
+                     }
+                 }   
+			
+			
+            }
+        }
+
+
+
+    }
+
+   
+
+    function deletestudent(id)
+    {
+        // var ajaxObj = new XMLHttpRequest();
+
+        // // （2）设置请求的参数。包括：请求的方法、请求的url。
+        // ajaxObj.open('post', 'http://localhost:6060/admin/student/delete?student_id='+id);
+
+        //     // 异步对象
+        // var xhr = new XMLHttpRequest();
+
+        var url = 'http://localhost:6060/admin/student/delete';
+
+        // 设置属性
+        xhr.open('post', url);
+
+        // 如果想要使用post提交数据,必须添加此行
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+        // 将数据通过send方法传递
+        xhr.send('student_id='+id);
+
+        // 发送并接受返回值
+        xhr.onreadystatechange = function () {
+            // 这步为判断服务器是否正确响应
+            if (xhr.readyState == 4 && xhr.status == 200) {
+               // alert(xhr.responseText);
+                alert("删除成功");
+            }
+            else if (xhr.readyState == 4 && xhr.status == 404) {
+                
+                alert("删除失败");
+                alert(xhr.responseText);
+            }
+        };
+
+    }
+
+    
+
+    </script>
     
    
 </body>
