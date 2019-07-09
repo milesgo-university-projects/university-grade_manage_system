@@ -17,7 +17,8 @@ def load_user(user_id):
 
 
 def create_app():
-    app = Flask(__name__, static_folder='static')
+    # app = Flask(__name__, static_folder='static')
+    app = Flask(__name__)
     app.config.from_object('app.normal_config')  # 载入配置文件
     app.config.from_object('app.secure_config')
     register_blueprint(app)

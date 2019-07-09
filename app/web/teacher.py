@@ -44,7 +44,6 @@ def get_teacher_courses_taught():
 
 
 @web.route('/teacher/course_information', methods=['GET', 'POST'])
-@login_required
 def get_teacher_course_information():
     if request.method == 'GET':
         # 查看某课程选课学生信息
