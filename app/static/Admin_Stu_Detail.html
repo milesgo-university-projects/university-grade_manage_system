@@ -154,7 +154,21 @@
     
     <script type="text/javascript">
         
-        studentid = localStorage.getItem("student_choosed_id");
+        var current_type = localStorage.getItem("current_detail_type");
+        switch (current_type)
+        {
+            case "Admin_Stu_Info":
+            var studentid = localStorage.getItem("student_id");
+            getstudentinfo();
+            break;
+            case 1:
+
+            break;
+
+            case 2:
+            break;
+
+        }
 
         // （1）创建异步对象
         var ajaxObj = new XMLHttpRequest();
