@@ -159,8 +159,7 @@
                 console.log('数据返回成功');
                 console.log(ajaxObj.responseText);
 
-			   var last=ajaxObj.responseText; //将JSON对象转化为JSON字符
-			 
+			   var last=ajaxObj.responseText; //将JSON对象转化为JSON字符			 
 			   var obj = JSON.parse(last);
 
 			   document.getElementById("id").innerHTML = "工号： "+obj.teacher_id;
