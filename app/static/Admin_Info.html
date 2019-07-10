@@ -218,7 +218,7 @@
                         detail.onclick = function() {
                             localStorage.setItem("student_id", this.getAttribute("student_id"));
                             localStorage.setItem("current_type", "change_student");
-                            window.location.href = "Admin_Stu_Detail.html";
+                            window.location.href = "Admin_Detail.html";
                         }
 
                         row.appendChild(student_id);
@@ -317,7 +317,7 @@
                         detail.onclick = function() {
                             localStorage.setItem("teacher_id", this.getAttribute("teacher_id"));
                             localStorage.setItem("current_type", "change_teacher");
-                            window.location.href = "Admin_Tea_Detail.html";
+                            window.location.href = "Admin_Detail.html";
                         }
 
                         row.appendChild(teacher_id);
@@ -427,7 +427,7 @@
                         detail.onclick = function() {
                             localStorage.setItem("course_id", this.getAttribute("course_id"));
                             localStorage.setItem("current_type", "change_course");
-                            window.location.href = "Admin_Cou_Detail.html";
+                            window.location.href = "Admin_Detail.html";
                         }
                         
                         row.appendChild(course_id);
@@ -516,7 +516,7 @@
                         detail.onclick = function() {
                             localStorage.setItem("major_id", this.getAttribute("major_id"));
                             localStorage.setItem("current_type", "change_major");
-                            window.location.href = "Admin_Major_Detail.html";
+                            window.location.href = "Admin_Detail.html";
                         }
 
                         row.appendChild(major_id);
@@ -607,7 +607,7 @@
                             localStorage.setItem("major_id", this.getAttribute("major_id"));
                             localStorage.setItem("course_id", this.getAttribute("course_id"));
                             localStorage.setItem("current_type", "change_major_course");
-                            window.location.href = "Admin_Major_Course_Detail.html";
+                            window.location.href = "Admin_Detail.html";
                         }
 
                         row.appendChild(major_id);
@@ -715,7 +715,7 @@
             ele.class = "active-menu";
             process_major_course_info();
         } else {
-            alert("current_type illegal");
+            alert("current_type illegal: " + current_type);
         }
     </script>
 </body>

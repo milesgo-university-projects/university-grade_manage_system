@@ -140,161 +140,67 @@
     
     
     <script type="text/javascript">
-
-
         var current_detail_type = localStorage.getItem("current_type");
-        switch(current_detail_type)
-        {
-            case "change_student":
+        switch(current_detail_type) {
+        case "change_student":
             var student_id =  localStorage.getItem("student_id");
             getstudentinfo(student_id);
             break;
-            case "change_teacher":
+        case "change_teacher":
             var teacher_id = localStorage.getItem("teacher_id");
             getteacherinfo(teacher_id);
             break;
-            case "change_course":
+        case "change_course":
             var cousre_id = localStorage.getItem("course_id");
             getcourseinfo(teacher_id);
             break;
-            case "change_major":
+        case "change_major":
             var major_id = localStorage.getItem("major_id");
             getmajorinfo(major_id);
             break;
-            case "add_student":
+        case "add_student":
             alert("jdhvjks");
             addstudent();
             break;
-            case "add_teacher":
+        case "add_teacher":
             addteacher();
             break;
-            case "add_cousre":
+        case "add_cousre":
             addteacher();
             break;
-            case "add_major":
+        case "add_major":
             addmajor();
             break;
-            case "add_major_course":
+        case "add_major_course":
             addmajorcourse();
             break;
-        
-            default:
+        default:
             break;
-
         }
 
         //获取学生信息，加载界面
-        function getstudentinfo(student_id)
-        {
-            
+        function getstudentinfo(student_id) {
             var title = document.getElementById("title");
             title.innerHTML = "学生信息";
             var ajaxObj = new XMLHttpRequest();
             ajaxObj.open('get', "http://localhost:6060/admin/student/update?student_id="+student_id);
             ajaxObj.send();
             ajaxObj.onreadystatechange = function () {
-                // 为了保证 数据 完整返回，我们一般会判断 两个值
                 if (ajaxObj.readyState == 4 && ajaxObj.status == 200) {
                     console.log('数据返回成功');
                     console.log(ajaxObj.responseText);
-
-                var last=ajaxObj.responseText; //将JSON对象转化为JSON字符
-                
-                var obj = JSON.parse(last);
-
-
-                var container = document.getElementById("container");
-                container.appendChild(createDivWithInput("学号", "id", "true", obj.student_id));
-                container.appendChild(createDivWithInput("姓名", "name", "false", obj.student_name));
-                container.appendChild(createDivWithSelection("性别", "sexes", obj.sex, new Array("男","女")));
-                container.appendChild(createDivWithInput("出生年份", "birth_year", "false", obj.birth_year));
-                container.appendChild(createDivWithInput("籍贯", "province", "false", obj.province));
-                container.appendChild(createDivWithInput("入学年份", "enter_year", "false", obj.enter_year));
-                container.appendChild(createDivWithSelection("专业编号", "major_ids", obj.major_id, obj.major_ids));
-                
-                container.appendChild(createButtion("修改","50px",modifystudent));
-                container.appendChild(createButtion("删除","0px",deletestudent));
-                
-                // var div;
-                // //添加学号
-                
-                // div = createDivWithInput("学号","id","true",obj.student_id);
-                // container.appendChild(div);
-
-                // //添加姓名
-                // div = createDivWithInput("姓名","name","false",obj.student_name);
-                // container.appendChild(div);
-
-
-
-                // //添加性别
-                // var div3 = document.createElement("div");
-                // div3.className = "alert alert-success";
-                // var label3 = document.createElement("label");
-                // label3.innerHTML = "性别";
-                // div3.appendChild(label3);
-                // var sex = document.createElement("select");
-                // sex.id = "sexes";
-                // sex.className = "form-control";
-                // var default_sex = obj.sex;
-                // var op1 = document.createElement("option");
-                // op1.innerHTML = "男";
-                // if(op1.innerHTML == default_sex)
-                // {
-                //     op1.selected="selected";
-                // }
-                // sex.add(op1,null); 
-                // var op2 = document.createElement("option");
-                // op2.innerHTML = "女";
-                // if(op2.innerHTML == default_sex)
-                // {
-                //     op2.selected="selected";
-                // }
-                // sex.add(op2,null); 
-                // div3.appendChild(sex);
-                // container.appendChild(div3);
-
-                // //添加出生年份
-                // div = createDivWithInput("出生年份","birth_year","false",obj.birth_year);
-                // container.appendChild(div);
-  
-                // //添加籍贯
-
-                // div = createDivWithInput("籍贯","province","false",obj.province);
-                // container.appendChild(div);
-
-                // //添加入学年份
-                // div = createDivWithInput("入学年份","enter_year","false",obj.enter_year);
-                // container.appendChild(div);
-
-                // //添加专业编号
-                // var div7 = document.createElement("div");
-                // div7.className = "alert alert-success";
-                // var label7 = document.createElement("label");
-                // label7.innerHTML = "专业编号";
-                // div7.appendChild(label7);
-       
-                // var major = document.createElement("select");
-                // major.id = "major_ids";
-                // major.className = "form-control";
-                
-                // var default_major = obj.major_id;
-                // var major_ids = obj.major_ids;
-                // for (var i = 0; i < major_ids.length; i++) {
-                //         var op = document.createElement("option");
-                //         op.innerHTML = major_ids[i];
-                //         if(op.innerHTML == default_major)
-                //         {
-                //             op.selected="selected";
-                //         }
-                //         major.add(op,null);
-                // }            
-                // div7.appendChild(major);
-                // container.appendChild(div7);
- 
-
-   
-
+                    var last=ajaxObj.responseText; //将JSON对象转化为JSON字符
+                    var obj = JSON.parse(last);
+                    var container = document.getElementById("container");
+                    container.appendChild(createDivWithInput("学号", "id", "true", obj.student_id));
+                    container.appendChild(createDivWithInput("姓名", "name", "false", obj.student_name));
+                    container.appendChild(createDivWithSelection("性别", "sexes", obj.sex, new Array("男","女")));
+                    container.appendChild(createDivWithInput("出生年份", "birth_year", "false", obj.birth_year));
+                    container.appendChild(createDivWithInput("籍贯", "province", "false", obj.province));
+                    container.appendChild(createDivWithInput("入学年份", "enter_year", "false", obj.enter_year));
+                    container.appendChild(createDivWithSelection("专业编号", "major_ids", obj.major_id, obj.major_ids));
+                    container.appendChild(createButtion("修改","50px",modifystudent));
+                    container.appendChild(createButtion("删除","0px",deletestudent));
                 }
             }
         }
@@ -870,9 +776,6 @@
                     console.log('数据返回成功');
                     console.log(ajaxObj.responseText);
                     alert("添加成功");
-
-
-
                 }
                 
                 else if(ajaxObj.readyState == 4 && ajaxObj.status == 404)
@@ -937,18 +840,22 @@
             return div;
         }
 
-
-
-
-        function back()
-        {
-           // window.history.back();
-           window.location.href = "Admin_Stu_Info.html";
+        function back() {
+            var current_type = localStorage.getItem("current_type");
+            if (current_type.match("major_course")) {
+                localStorage.setItem("current_type", "major_course_info");
+            } else if (current_type.match("major")) {
+                localStorage.setItem("current_type", "major_info");
+            } else if (current_type.match("course")) {
+                localStorage.setItem("current_type", "course");
+            } else if (current_type.match("teacher")) {
+                localStorage.setItem("current_type", "teacher");
+            } else {  // student
+                localStorage.setItem("current_type", "student");
+                alert("hello");
+            }
+            window.location.href = "Admin_Info.html";
         }
-        
-        
-        
-
 
 	</script>
  
