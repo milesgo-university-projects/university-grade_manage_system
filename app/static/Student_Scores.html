@@ -83,7 +83,7 @@
 			 <div class="row">
                     <div class="col-md-12">
                         <h1 class="page-header">
-                            	成绩 <small>成绩</small>
+                            	成绩
                         </h1>
                     </div>
                 </div> 
@@ -93,25 +93,9 @@
                 <div class="col-md-12">
                     <!-- Advanced Tables -->
                     <div class="panel panel-default">
-                        <div class="panel-heading">
-                             选课成绩表
-                        </div>
+
                         <div class="panel-body">
-                            <div class="table-responsive">
-                                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
-                                    <thead>
-                                        <tr>
-                                            <th>course_id</th>
-                                            <th>course_name</th>
-                                            <th>year</th>
-                                            <th>semester</th>
-                                            <th>teacher_name</th>
-                                            <th>credit</th>
-                                            <th>grade</th>
-                                        </tr>
-                                    </thead>
-                                    
-                                </table>
+                            <div class="table-responsive" id = "container">
                             </div>
                             
                         </div>
@@ -126,9 +110,6 @@
                 <!-- /. ROW  -->
 
                 <!-- /. ROW  -->
-        </div>
-               <footer><p> made by wangwen </p></footer>
-    </div>
              <!-- /. PAGE INNER  -->
             </div>
          <!-- /. PAGE WRAPPER  -->
@@ -172,18 +153,56 @@
 
         ajaxObj.onreadystatechange = function () {
             if (ajaxObj.readyState == 4 && ajaxObj.status == 200) {
-               console.log('数据返回成功');
-               console.log(ajaxObj.responseText);
+                console.log('数据返回成功');
+                console.log(ajaxObj.responseText);
 
-			   var last=ajaxObj.responseText; //将JSON对象转化为JSON字符
-			 
-			   var obj = JSON.parse(last);
-			   var courses = obj.courses;
-			   var table = document.getElementById("dataTables-example");
+                var last=ajaxObj.responseText; //将JSON对象转化为JSON字符
+                
+                var obj = JSON.parse(last);
+                var courses = obj.courses;
+                var container = document.getElementById("container");
+                var table=document.createElement("table");
+                table.className = "table table-striped table-bordered table-hover";
+
+                var thead = document.createElement('thead');
+                var row = document.createElement('tr');
+                
+                // 创建td单元格
+                var course_id = document.createElement('td');
+                var course_name = document.createElement('td');
+                var year = document.createElement('td');
+                var semester = document.createElement('td');
+                var teacher_name = document.createElement('td');
+                var credit = document.createElement('td');
+                var grade = document.createElement('td');
+             //   var deletecourse = document.createElement('td');
+
+                course_id.innerHTML = "课程编号";
+                course_name.innerHTML = "课程名称";
+                year.innerHTML = "开课学年";
+                semester.innerHTML = "开课学期";
+                teacher_name.innerHTML = "任课老师";  
+                credit.innerHTML = "学分";
+                grade.innerHTML = "成绩";
+               
+
+                
+                
+                row.appendChild(course_id);
+                row.appendChild(course_name);
+                row.appendChild(year);
+                row.appendChild(semester);
+                row.appendChild(teacher_name);
+                row.appendChild(credit);
+                row.appendChild(grade);
+                
+                thead.appendChild(row);
+                table.appendChild(thead);
+                var tbody = document.createElement('tbody');
                 for (var i = 0; i < courses.length; i++) {
                     //result[i]表示获得第i个json对象即JSONObject
                     //result[i]通过.字段名称即可获得指定字段的值
-                    var body = document.createElement('tbody');
+                    
                     var row = document.createElement('tr');
                     
                     // 创建td单元格
@@ -211,10 +230,12 @@
                     row.appendChild(credit);
                     row.appendChild(grade);
                     
-                    body.appendChild(row);
-                    table.appendChild(body);
+                    tbody.appendChild(row);
+                    
                         
                 }
+                table.appendChild(tbody);
+                container.appendChild(table);
             }
             else if(ajaxObj.readyState == 4 && ajaxObj.status == 404) {
 				var last=ajaxObj.responseText; //将JSON对象转化为JSON字符
