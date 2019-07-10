@@ -679,37 +679,34 @@
                 div5.appendChild(label5);
                 var input5 = document.createElement("input");
                 input5.className="form-control";
-                input5.id = "year";
-                input5.value = obj.year;
+                input5.id = "credit";
+                input5.value = obj.credit;
                 div5.appendChild(input5);
                 container.appendChild(div5);
-
-
-
 
                 //添加授课老师id
                 var div7 = document.createElement("div");
                 div7.className = "alert alert-success";
                 var label7 = document.createElement("lable");
-                label7.innerHTML = "专业编号";
+                label7.innerHTML = "授课老师id";
                 div7.appendChild(label7);
        
-                var major = document.createElement("select");
-                major.id = "major_ids";
-                major.className = "form-control";
+                var teacher = document.createElement("select");
+                teacher.id = "major_ids";
+                teacher.className = "form-control";
                 
-                var default_major = obj.major_id;
-                var major_ids = obj.major_ids;
-                for (var i = 0; i < major_ids.length; i++) {
+                var default_teacher = obj.teacher_id;
+                var teacher_ids = obj.teachers_ids;
+                for (var i = 0; i < teacher_ids.length; i++) {
                         var op = document.createElement("option");
                         op.innerHTML = major_ids[i];
-                        if(op.innerHTML == default_major)
+                        if(op.innerHTML == default_teacher)
                         {
                             op.selected="selected";
                         }
-                        major.add(op,null);
+                        teacher.add(op,null);
                 }            
-                div7.appendChild(major);
+                div7.appendChild(teacher);
                 container.appendChild(div7);
  
                 //添加按钮
@@ -720,7 +717,7 @@
                 modify_btn.style.marginRight = "50px";
                 modify_btn.onclick = function()
                 {
-                    modifyteacher();
+                    modifycourse();
                 }
                 div8.appendChild(modify_btn);
                 var delete_btn = document.createElement("button");
@@ -728,7 +725,7 @@
                 delete_btn.innerHTML = "删除";
                 delete_btn.onclick = function()
                 {
-                    deleteteacher();
+                    deletecourse();
                 }
                 div8.appendChild(delete_btn);
                 container.appendChild(div8);
@@ -737,10 +734,9 @@
             }
         }
 
-        //修改教师信息
-        function modifyteacher()
+        //修改课程信息
+        function modifycourse()
         {
-
             var id = document.getElementById("id").value;
             var name = document.getElementById("name").value;
             var obj1 = document.getElementById("sexes"); //定位id
@@ -771,8 +767,8 @@
 
         }
 
-        //删除教师信息
-        function deleteteacher()
+        //删除课程
+        function deletecourse()
         {
             var id = document.getElementById("id").value;
             var url = "http://localhost:6060/admin/teacher/delete?teacher_id="+id;
