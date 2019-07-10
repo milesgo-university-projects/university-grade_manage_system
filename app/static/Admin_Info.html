@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+      <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+	<!-- Bootstrap Styles-->
+    <link href="assets/css/bootstrap.css" rel="stylesheet" />
+     <!-- FontAwesome Styles-->
+    <link href="assets/css/font-awesome.css" rel="stylesheet" />
+     <!-- Morris Chart Styles-->
+   
+        <!-- Custom Styles-->
+    <link href="assets/css/custom-styles.css" rel="stylesheet" />
+     <!-- Google Fonts-->
+   <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+     <!-- TABLE STYLES-->
+    <link href="assets/js/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
+</head>
+<body>
+    <div id="wrapper">
+        <nav class="navbar navbar-default top-navbar" role="navigation">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="Stu_Info.html"><i class="fa fa-gear"></i> <strong>学生成绩管理系统</strong></a>
+            </div>
+
+            <ul class="nav navbar-top-links navbar-right">
+ 
+
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+                        <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
+                        </li>
+                        <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li><a href="#"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-user -->
+                </li>
+                <!-- /.dropdown -->
+            </ul>
+        </nav>
+        <!--/. NAV TOP  -->
+        <nav class="navbar-default navbar-side" role="navigation">
+            <div class="sidebar-collapse">
+                <ul class="nav" id="main-menu">
+                    <li><a id = "student_info" onclick=student_info() style="cursor:pointer">查看所有学生信息</a></li>
+                    <li><a id = "add_student" onclick=add_student() style="cursor:pointer" >添加学生</a></li>
+                    <li><a id= "teacher_info" onclick=teacher_info() style="cursor:pointer">查看所有教师信息</a></li>
+                    <li><a id = "add_teacher" onclick=add_teacher() style="cursor:pointer">添加教师</a></li>
+                    <li><a id = "course_info" onclick=course_info() style="cursor:pointer">查看所有课程信息</a></li>
+                    <li><a id ="add_course" onclick=add_course() style="cursor:pointer">添加课程</a></li>
+                    <li><a id = "major_info" onclick=major_info() style="cursor:pointer">查看所有专业信息</a></li>
+                    <li><a id ="add_major" onclick=add_major() style="cursor:pointer">添加专业</a></li>
+                    <li><a id ="major_course_info" onclick=major_course_info() style="cursor:pointer">查看专业选课信息</a></li>
+                    <li><a id ="add_major_course" onclick=add_major_course() style="cursor:pointer">增加专业选课</a></li>
+                </ul>
+            </div>
+        </nav>
+        <!-- /. NAV SIDE  -->
+        <div id="page-wrapper" >
+            <div id="page-inner">
+			 <div class="row">
+                    <div class="col-md-12">
+                        <h1 class="page-header">
+                            	 <strong id = "welcome">欢迎来到管理员界面</strong>
+                        </h1>
+                    </div>
+                </div> 
+                 <!-- /. ROW  -->
+               
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- Advanced Tables -->
+                    <div class="panel panel-default">
+                      <!--  <div class="panel-heading">
+                             Advanced Tables
+                        </div>-->
+                        <div class="panel-body">
+                            <div class="table-responsive" id = "tablecontainer">
+         
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <!--End Advanced Tables -->
+                </div>
+            </div>
+
+        </div>
+               <footer><p> made by wangwen </p></footer>
+    </div>
+             <!-- /. PAGE INNER  -->
+            </div>
+         <!-- /. PAGE WRAPPER  -->
+     <!-- /. WRAPPER  -->
+    <!-- JS Scripts-->
+    <!-- jQuery Js -->
+    <script src="assets/js/jquery-1.10.2.js"></script>
+      <!-- Bootstrap Js -->
+    <script src="assets/js/bootstrap.min.js"></script>
+    <!-- Metis Menu Js -->
+    <script src="assets/js/jquery.metisMenu.js"></script>
+     <!-- DATA TABLE SCRIPTS -->
+    <script src="assets/js/dataTables/jquery.dataTables.js"></script>
+    <script src="assets/js/dataTables/dataTables.bootstrap.js"></script>
+        <script>
+            $(document).ready(function () {
+                $('#dataTables-example').dataTable();
+            });
+    </script>
+         <!-- Custom Js -->
+    <script src="assets/js/custom-scripts.js"></script>
+    <script type="text/javascript">
+        function process_student_info() {
+            var ajaxObj = new XMLHttpRequest();
+            ajaxObj.open('get', 'http://localhost:6060/admin/student/select');
+            ajaxObj.send();
+            ajaxObj.onreadystatechange = function () {
+                if (ajaxObj.readyState == 4 && ajaxObj.status == 200) {
+                    console.log('数据返回成功');
+                    console.log(ajaxObj.responseText);
+                    var last=ajaxObj.responseText; //将JSON对象转化为JSON字符
+                    var obj = JSON.parse(last);
+                    var students = obj.students;
+
+                    var tablecontainer = document.getElementById("tablecontainer");
+                    while(tablecontainer.hasChildNodes()) {
+                        tablecontainer.removeChild(tablecontainer.firstChild);
+                    }
+
+                    var table=document.createElement("table");
+                
+                    table.style.width = "1000px";
+                    table.style.borderCollapse = "collapse";
+                    table.border = 1;
+                    var thead=document.createElement("thead");
+
+                    var row = document.createElement('tr');
+                    var student_id = document.createElement('td');
+                    var student_name = document.createElement('td');
+                    var sex = document.createElement('td');
+                    var birth_year = document.createElement('td');
+                    var province = document.createElement('td');
+                    var major_name = document.createElement('td');
+                    var credits = document.createElement('td');
+                    var number_of_courses = document.createElement('td');
+                    var average_grade = document.createElement('td');
+                    var detail = document.createElement("td");
+
+                    student_id.innerHTML = "student_id";
+                    student_name.innerHTML = "student_name";
+                    sex.innerHTML = "sex";
+                    birth_year.innerHTML = "birth_year";
+                    province.innerHTML = "province";
+                    major_name.innerHTML = "major_name";
+                    credits.innerHTML = "credits";
+                    number_of_courses.innerHTML = "number_of_courses";
+                    average_grade.innerHTML = "average_grade";
+                    detail.innerHTML = "查看详情";
+
+                    row.appendChild(student_id);
+                    row.appendChild(student_name);
+                    row.appendChild(sex);
+                    row.appendChild(birth_year);
+                    row.appendChild(province);
+                    row.appendChild(major_name);
+                    row.appendChild(credits);
+                    row.appendChild(number_of_courses);
+                    row.appendChild(average_grade);
+                    row.appendChild(detail);
+        
+                    thead.appendChild(row);
+                    table.appendChild(thead);
+
+                    var tbody = document.createElement('tbody');
+
+                    for (var i = 0; i < students.length; i++) {
+                        var row = document.createElement('tr');
+                        
+                        var student_id = document.createElement('td');
+                        var student_name = document.createElement('td');
+                        var sex = document.createElement('td');
+                        var birth_year = document.createElement('td');
+                        var province = document.createElement('td');
+                        var major_name = document.createElement('td');
+                        var credits = document.createElement('td');
+                        var number_of_courses = document.createElement('td');
+                        var average_grade = document.createElement('td');
+                        var detail = document.createElement('td');
+        
+                        student_id.innerHTML = students[i].student_id;
+                        student_name.innerHTML = students[i].student_name;
+                        sex.innerHTML = students[i].sex;
+                        birth_year.innerHTML = students[i].birth_year;
+                        province.innerHTML = students[i].province;
+                        major_name.innerHTML = students[i].major_name;
+                        credits.innerHTML = students[i].credits;
+                        number_of_courses.innerHTML = students[i].number_of_courses;
+                        average_grade.innerHTML = students[i].average_grade;
+                        detail.innerHTML = "查看详情";
+                        detail.style = "cursor:pointer";
+                        
+                        detail.setAttribute('row',i.toString);
+                        detail.setAttribute("student_id",students[i].student_id);
+                        
+                        detail.onclick = function() {
+                            localStorage.setItem("student_id", this.getAttribute("student_id"));
+                            localStorage.setItem("current_type", "change_student");
+                            window.location.href = "Admin_Stu_Detail.html";
+                        }
+
+                        row.appendChild(student_id);
+                        row.appendChild(student_name);
+                        row.appendChild(sex);
+                        row.appendChild(birth_year);
+                        row.appendChild(province);
+                        row.appendChild(major_name);
+                        row.appendChild(credits);
+                        row.appendChild(number_of_courses);
+                        row.appendChild(average_grade);
+                        row.appendChild(detail);
+                        tbody.appendChild(row);
+                    }
+                    table.appendChild(tbody);
+                    tablecontainer.appendChild(table); 
+                }
+            }
+        }
+        function process_teacher_info() {
+            var ajaxObj = new XMLHttpRequest();
+            ajaxObj.open('get', 'http://localhost:6060/admin/teacher/select');
+            ajaxObj.send();
+            ajaxObj.onreadystatechange = function () {
+                if (ajaxObj.readyState == 4 && ajaxObj.status == 200) {
+                    console.log('数据返回成功');
+                    console.log(ajaxObj.responseText);
+                    var last=ajaxObj.responseText; //将JSON对象转化为JSON字符
+                    var obj = JSON.parse(last);
+                    var teachers = obj.teachers;
+
+                    var tablecontainer = document.getElementById("tablecontainer");
+                    while(tablecontainer.hasChildNodes()) {
+                        tablecontainer.removeChild(tablecontainer.firstChild);
+                    }
+
+                    var table=document.createElement("table");
+                
+                    table.style.width = "1000px";
+                    table.style.borderCollapse = "collapse";
+                    table.border = 1;
+                    var thead=document.createElement("thead");
+
+                    var row = document.createElement('tr');
+                    var teacher_id = document.createElement('td');
+                    var teacher_name = document.createElement('td');
+                    var sex = document.createElement('td');
+                    var birth_year = document.createElement('td');
+                    var number_of_courses = document.createElement('td');
+                    var detail = document.createElement("td");
+
+                    teacher_id.innerHTML = "教师编号";
+                    teacher_name.innerHTML = "姓名";
+                    sex.innerHTML = "性别";
+                    birth_year.innerHTML = "出生年份";
+                    number_of_courses.innerHTML = "课程数量";
+                    detail.innerHTML = "查看详情";
+
+                    row.appendChild(teacher_id);
+                    row.appendChild(teacher_name);
+                    row.appendChild(sex);
+                    row.appendChild(birth_year);
+                    row.appendChild(number_of_courses);
+                    row.appendChild(detail);
+        
+                    thead.appendChild(row);
+                    table.appendChild(thead);
+
+                    var tbody = document.createElement('tbody');
+
+                    for (var i = 0; i < teachers.length; i++) {
+                        var row = document.createElement('tr');
+                        var teacher_id = document.createElement('td');
+                        var teacher_name = document.createElement('td');
+                        var sex = document.createElement('td');
+                        var birth_year = document.createElement('td');
+                        var number_of_courses = document.createElement('td');
+                        var detail = document.createElement("td");
+
+                        teacher_id.innerHTML = teachers[i].teacher_id;
+                        teacher_name.innerHTML = teachers[i].teacher_name;
+                        sex.innerHTML = teachers[i].sex;
+                        birth_year.innerHTML = teachers[i].birth_year;
+                        number_of_courses.innerHTML = teachers[i].number_of_courses;
+                        detail.innerHTML = "查看详情";
+                        detail.style = "cursor:pointer";
+                        
+                        detail.setAttribute('row',i.toString);
+                        detail.setAttribute("teacher_id",teachers[i].teacher_id);
+                        
+                        detail.onclick = function() {
+                            localStorage.setItem("teacher_id", this.getAttribute("teacher_id"));
+                            localStorage.setItem("current_type", "change_teacher");
+                            window.location.href = "Admin_Tea_Detail.html";
+                        }
+
+                        row.appendChild(teacher_id);
+                        row.appendChild(teacher_name);
+                        row.appendChild(sex);
+                        row.appendChild(birth_year);
+                        row.appendChild(number_of_courses);
+                        row.appendChild(detail);
+                        tbody.appendChild(row);
+                    }
+                    table.appendChild(tbody);
+                    tablecontainer.appendChild(table); 
+                }
+            }
+        }
+        function process_course_info() {
+            var ajaxObj = new XMLHttpRequest();
+            ajaxObj.open('get', 'http://localhost:6060/admin/course/select');
+            ajaxObj.send();
+            ajaxObj.onreadystatechange = function () {
+                if (ajaxObj.readyState == 4 && ajaxObj.status == 200) {
+                    console.log('数据返回成功');
+                    console.log(ajaxObj.responseText);
+                    var last=ajaxObj.responseText; //将JSON对象转化为JSON字符
+                    var obj = JSON.parse(last);
+                    var courses = obj.courses;
+
+                    var tablecontainer = document.getElementById("tablecontainer");
+                    while(tablecontainer.hasChildNodes()) {
+                        tablecontainer.removeChild(tablecontainer.firstChild);
+                    }
+
+                    var table=document.createElement("table");
+                
+                    table.style.width = "1000px";
+                    table.style.borderCollapse = "collapse";
+                    table.border = 1;
+                    var thead=document.createElement("thead");
+
+                    var row = document.createElement('tr');
+                    var course_id = document.createElement('td');
+                    var course_name = document.createElement('td');
+                    var year = document.createElement('td');
+                    var semester = document.createElement('td');
+                    var teacher_id = document.createElement('td');
+                    var credit = document.createElement('td');
+                    var number_of_students = document.createElement('td');
+                    var average_grade = document.createElement('td');
+                    var detail = document.createElement("td");
+
+                    course_id.innerHTML = "课程编号";
+                    course_name.innerHTML = "名称";
+                    year.innerHTML = "年份";
+                    semester.innerHTML = "学期";
+                    teacher_id.innerHTML = "教师编号";
+                    credit.innerHTML = "学分";
+                    number_of_students.innerHTML = "学生数量";
+                    average_grade.innerHTML = "平均成绩";
+                    detail.innerHTML = "查看详情";
+
+                    row.appendChild(course_id);
+                    row.appendChild(course_name);
+                    row.appendChild(year);
+                    row.appendChild(semester);
+                    row.appendChild(teacher_id);
+                    row.appendChild(credit);
+                    row.appendChild(number_of_students);
+                    row.appendChild(average_grade);
+                    row.appendChild(detail);
+        
+                    thead.appendChild(row);
+                    table.appendChild(thead);
+
+                    var tbody = document.createElement('tbody');
+
+                    for (var i = 0; i < courses.length; i++) {
+                        var row = document.createElement('tr');
+                        var course_id = document.createElement('td');
+                        var course_name = document.createElement('td');
+                        var year = document.createElement('td');
+                        var semester = document.createElement('td');
+                        var teacher_id = document.createElement('td');
+                        var credit = document.createElement('td');
+                        var number_of_students = document.createElement('td');
+                        var average_grade = document.createElement('td');
+                        var detail = document.createElement("td");
+
+                        course_id.innerHTML = courses[i].course_id;
+                        course_name.innerHTML = courses[i].course_name;
+                        year.innerHTML = courses[i].year;
+                        semester.innerHTML = courses[i].semester;
+                        teacher_id.innerHTML = courses[i].teacher_id;
+                        credit.innerHTML = courses[i].credit;
+                        number_of_students.innerHTML = courses[i].number_of_students;
+                        average_grade.innerHTML = courses[i].average_grade;
+                        detail.innerHTML = "查看详情";
+                        detail.style = "cursor:pointer";
+                        
+                        detail.setAttribute('row',i.toString);
+                        detail.setAttribute("course_id",courses[i].course_id);
+                        
+                        detail.onclick = function() {
+                            localStorage.setItem("course_id", this.getAttribute("course_id"));
+                            localStorage.setItem("current_type", "change_course");
+                            window.location.href = "Admin_Cou_Detail.html";
+                        }
+                        
+                        row.appendChild(course_id);
+                        row.appendChild(course_name);
+                        row.appendChild(year);
+                        row.appendChild(semester);
+                        row.appendChild(teacher_id);
+                        row.appendChild(credit);
+                        row.appendChild(number_of_students);
+                        row.appendChild(average_grade);
+                        row.appendChild(detail);
+                        tbody.appendChild(row);
+                    }
+                    table.appendChild(tbody);
+                    tablecontainer.appendChild(table); 
+                }
+            }
+        }
+        function process_major_info() {
+            var ajaxObj = new XMLHttpRequest();
+            ajaxObj.open('get', 'http://localhost:6060/admin/major/select');
+            ajaxObj.send();
+            ajaxObj.onreadystatechange = function () {
+                if (ajaxObj.readyState == 4 && ajaxObj.status == 200) {
+                    console.log('数据返回成功');
+                    console.log(ajaxObj.responseText);
+                    var last=ajaxObj.responseText; //将JSON对象转化为JSON字符
+                    var obj = JSON.parse(last);
+                    var majors = obj.majors;
+
+                    var tablecontainer = document.getElementById("tablecontainer");
+                    while(tablecontainer.hasChildNodes()) {
+                        tablecontainer.removeChild(tablecontainer.firstChild);
+                    }
+
+                    var table=document.createElement("table");
+                
+                    table.style.width = "1000px";
+                    table.style.borderCollapse = "collapse";
+                    table.border = 1;
+                    var thead=document.createElement("thead");
+
+                    var row = document.createElement('tr');
+                    var major_id = document.createElement('td');
+                    var major_name = document.createElement('td');
+                    var number_of_students = document.createElement('td');
+                    var detail = document.createElement("td");
+
+                    major_id.innerHTML = "专业编号";
+                    major_name.innerHTML = "专业名称";
+                    number_of_students.innerHTML = "学生数量";
+                    detail.innerHTML = "查看详情";
+
+                    row.appendChild(major_id);
+                    row.appendChild(major_name);
+                    row.appendChild(number_of_students);
+                    row.appendChild(detail);
+        
+                    thead.appendChild(row);
+                    table.appendChild(thead);
+
+                    var tbody = document.createElement('tbody');
+
+                    for (var i = 0; i < majors.length; i++) {
+                        var row = document.createElement('tr');
+                        
+                        var major_id = document.createElement('td');
+                        var major_name = document.createElement('td');
+                        var number_of_students = document.createElement('td');
+                        var detail = document.createElement('td');
+        
+                        major_id.innerHTML = majors[i].major_id;
+                        major_name.innerHTML = majors[i].major_name;
+                        number_of_students.innerHTML = majors[i].number_of_students;
+                        detail.innerHTML = "查看详情";
+                        detail.style = "cursor:pointer";
+                        
+                        detail.setAttribute('row',i.toString);
+                        detail.setAttribute("major_id",majors[i].major_id);
+                        
+                        detail.onclick = function() {
+                            localStorage.setItem("major_id", this.getAttribute("major_id"));
+                            localStorage.setItem("current_type", "change_major");
+                            window.location.href = "Admin_Major_Detail.html";
+                        }
+
+                        row.appendChild(major_id);
+                        row.appendChild(major_name);
+                        row.appendChild(number_of_students);
+                        row.appendChild(detail);
+                        tbody.appendChild(row);
+                    }
+                    table.appendChild(tbody);
+                    tablecontainer.appendChild(table); 
+                }
+            }
+        }
+        function process_major_course_info() {
+            var ajaxObj = new XMLHttpRequest();
+            ajaxObj.open('get', 'http://localhost:6060/admin/major_course/select');
+            ajaxObj.send();
+            ajaxObj.onreadystatechange = function () {
+                if (ajaxObj.readyState == 4 && ajaxObj.status == 200) {
+                    console.log('数据返回成功');
+                    console.log(ajaxObj.responseText);
+                    var last=ajaxObj.responseText; //将JSON对象转化为JSON字符
+                    var obj = JSON.parse(last);
+                    var major_courses = obj.major_courses;
+
+                    var tablecontainer = document.getElementById("tablecontainer");
+                    while(tablecontainer.hasChildNodes()) {
+                        tablecontainer.removeChild(tablecontainer.firstChild);
+                    }
+
+                    var table=document.createElement("table");
+                
+                    table.style.width = "1000px";
+                    table.style.borderCollapse = "collapse";
+                    table.border = 1;
+                    var thead=document.createElement("thead");
+
+                    var row = document.createElement('tr');
+                    var major_id = document.createElement('td');
+                    var major_name = document.createElement('td');
+                    var course_id = document.createElement('td');
+                    var course_name = document.createElement('td');
+                    var detail = document.createElement("td");
+
+                    major_id.innerHTML = "专业编号";
+                    major_name.innerHTML = "专业名称";
+                    course_id.innerHTML = "课程编号";
+                    course_name.innerHTML = "课程名称"
+                    detail.innerHTML = "查看详情";
+
+                    row.appendChild(major_id);
+                    row.appendChild(major_name);
+                    row.appendChild(course_id);
+                    row.appendChild(course_name);
+                    row.appendChild(detail);
+        
+                    thead.appendChild(row);
+                    table.appendChild(thead);
+
+                    var tbody = document.createElement('tbody');
+
+                    for (var i = 0; i < major_courses.length; i++) {
+                        var row = document.createElement('tr');
+                        
+                        var major_id = document.createElement('td');
+                        var major_name = document.createElement('td');
+                        var course_id = document.createElement('td');
+                        var course_name = document.createElement('td');
+                        var detail = document.createElement("td");
+        
+                        major_id.innerHTML = major_courses[i].major_id;
+                        major_name.innerHTML = major_courses[i].major_name;
+                        course_id.innerHTML = major_courses[i].course_id;
+                        course_name.innerHTML = major_courses[i].course_name;
+                        detail.innerHTML = "查看详情";
+                        detail.style = "cursor:pointer";
+                        
+                        detail.setAttribute('row',i.toString);
+                        detail.setAttribute("major_id", major_courses[i].major_id);
+                        detail.setAttribute("course_id", major_courses[i].course_id);
+                        
+                        detail.onclick = function() {
+                            localStorage.setItem("major_id", this.getAttribute("major_id"));
+                            localStorage.setItem("course_id", this.getAttribute("course_id"));
+                            localStorage.setItem("current_type", "change_major_course");
+                            window.location.href = "Admin_Major_Course_Detail.html";
+                        }
+
+                        row.appendChild(major_id);
+                        row.appendChild(major_name);
+                        row.appendChild(course_id);
+                        row.appendChild(course_name);
+                        row.appendChild(detail);
+                        tbody.appendChild(row);
+                    }
+                    table.appendChild(tbody);
+                    tablecontainer.appendChild(table); 
+                }
+            }
+        }
+    </script>
+
+    <script type="text/javascript">
+        function student_info() {
+            localStorage.setItem("current_type", "student_info");
+            window.location.href="Admin_Info.html";
+        }
+        function teacher_info() {
+            localStorage.setItem("current_type", "teacher_info");
+            window.location.href="Admin_Info.html";
+        }
+        function course_info() {
+            localStorage.setItem("current_type", "course_info");
+            window.location.href="Admin_Info.html";
+        }
+        function major_info() {
+            localStorage.setItem("current_type", "major_info");
+            window.location.href="Admin_Info.html";
+        }
+        function major_course_info() {
+            localStorage.setItem("current_type", "major_course_info");
+            window.location.href="Admin_Info.html";
+        }
+        
+        function add_student() {
+            localStorage.setItem("current_type", "add_student");
+            window.location.href="Admin_Stu_Detail.html";
+        }
+        function add_teacher() {
+            localStorage.setItem("current_type", "add_teacher");
+            window.location.href="Admin_Tea_Detail.html";
+        }
+        function add_course() {
+            localStorage.setItem("current_type", "add_course");
+            window.location.href="Admin_Cou_Detail.html";
+        }
+        function add_major() {
+            localStorage.setItem("current_type", "add_major");
+            window.location.href="Admin_Major_Detail.html";
+        }
+        function add_major_course() {
+            localStorage.setItem("current_type", "add_major_course");
+            window.location.href="Admin_Major_Course_Detail.html";
+        }
+    </script>
+    <script type="text/javascript">
+        var current_type = localStorage.getItem("current_type");
+        if (current_type == "student_info") {
+            var info = document.getElementById("welcome");
+            info.innerHTML = "学生信息列表";
+            var ele = document.getElementById("student_info");
+            ele.style = "";
+            ele.onclick = null;
+            ele.class = "active-menu";
+            process_student_info();
+        } else if (current_type == "teacher_info") {
+            var info = document.getElementById("welcome");
+            info.innerHTML = "教师信息列表";
+            var ele = document.getElementById("teacher_info");
+            ele.style = "";
+            ele.onclick = null;
+            ele.class = "active-menu";
+            process_teacher_info();
+        } else if (current_type == "course_info") {
+            var info = document.getElementById("welcome");
+            info.innerHTML = "课程信息列表";
+            var ele = document.getElementById("course_info");
+            ele.style = "";
+            ele.onclick = null;
+            ele.class = "active-menu";
+            process_course_info();
+        } else if (current_type == "major_info") {
+            var info = document.getElementById("welcome");
+            info.innerHTML = "专业信息列表";
+            var ele = document.getElementById("major_info");
+            ele.style = "";
+            ele.onclick = null;
+            ele.class = "active-menu";
+            process_major_info();
+        } else if (current_type == "major_course_info") {
+            var info = document.getElementById("welcome");
+            info.innerHTML = "专业选课信息列表";
+            var ele = document.getElementById("major_course_info");
+            ele.style = "";
+            ele.onclick = null;
+            ele.class = "active-menu";
+            process_major_course_info();
+        } else {
+            alert("current_type illegal");
+        }
+    </script>
+</body>
+</html>
+
+
