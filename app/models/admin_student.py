@@ -92,7 +92,7 @@ def read_student_id_list():
     data = {}
     try:
         with connection.cursor() as cursor:
-            sql = 'select student_id from student'
+            sql = 'select student_id from student order by student_id;'
             cursor.execute(sql)
             data['student_id'] = cursor.fetchall()
     except Exception as e:
