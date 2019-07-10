@@ -202,7 +202,6 @@
                 
                 var obj = JSON.parse(last);
 
-                var container = document.getElementById("container");
 
                 var container = document.getElementById("container");
                 container.appendChild(createDivWithInput("学号", "id", "true", obj.student_id));
@@ -214,6 +213,7 @@
                 container.appendChild(createDivWithSelection("专业编号", "major_ids", obj.major_id, obj.major_ids));
                 
                 container.appendChild(createButtion("修改","50px",modifystudent));
+                container.appendChild(createButtion("删除","0px",deletestudent));
                 
                 // var div;
                 // //添加学号
@@ -292,26 +292,8 @@
                 // div7.appendChild(major);
                 // container.appendChild(div7);
  
-                //添加按钮
-                var div8 = document.createElement("div");
-                var modify_btn = document.createElement("button");
-                modify_btn.className = "btn btn-success btn-lg";
-                modify_btn.innerHTML = "修改";
-                modify_btn.style.marginRight = "50px";
-                modify_btn.onclick = function()
-                {
-                    modifystudent();
-                }
-                div8.appendChild(modify_btn);
-                var delete_btn = document.createElement("button");
-                delete_btn.className = "btn btn-danger btn-lg";
-                delete_btn.innerHTML = "删除";
-                delete_btn.onclick = function()
-                {
-                    deletestudent();
-                }
-                div8.appendChild(delete_btn);
-                container.appendChild(div8);
+
+   
 
                 }
             }
