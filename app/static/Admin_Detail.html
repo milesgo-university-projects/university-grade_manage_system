@@ -68,8 +68,7 @@
             <div id="page-inner">
 			 <div class="row">
                     <div class="col-md-12">
-                        <h1 class="page-header">
-                            	学生信息 
+                        <h1 class="page-header" id = "title"> 
                         </h1>
                     </div>
                 </div> 
@@ -79,13 +78,13 @@
 			<div class="row">
 
 			  <div class="col-md-12">
-			<div class="panel panel-default">
-				<div class="panel-heading">
+			<div class="panel panel-default" >
+				<!--<div class="panel-heading">
 				 学生信息
-				</div>        
+				</div> -->       
 							  
-							<div class="panel-body"> 
-								<div class="alert alert-danger" >
+							<div class="panel-body" id = "container"> 
+								<!--<div class="alert alert-danger" >
                                     <label>学号</label>
                                     <input class="form-control"  id = "id" readonly="readonly" >
 								</div>
@@ -118,24 +117,12 @@
                                     <a class="btn btn-danger btn-lg" onclick=deletestudent()>删除</a>
                                     <a class="btn btn-success btn-lg" onclick=modify()>修改</a>
 
-                                </div>
+                                </div>-->
 					
 							</div>
 				</div>
 			</div>						
-				</div>								
-									
-                 <!-- /. ROW  -->
-			
-               
-                <!-- /. ROW  -->
 
-                 <!-- /. ROW  -->
-                
-
-                <!-- /. ROW  -->
-				<footer><p>made by wangwen</p></footer>
-				</div>
              <!-- /. PAGE INNER  -->
             </div>
          <!-- /. PAGE WRAPPER  -->
@@ -153,80 +140,217 @@
     
     
     <script type="text/javascript">
+
+
+        var current_detail_type = localStorage.getItem("current_type");
+        switch(current_detail_type)
+        {
+            case "change_student":
+            var student_id =  localStorage.getItem("student_id");
+            getstudentinfo(student_id);
+            break;
+            case "change_teacher":
+            var teacher_id = localStorage.getItem("teacher_id");
+            getteacherinfo(teacher_id);
+            break;
+            case "change_course":
+            var cousre_id = localStorage.getItem("course_id");
+            getcourseinfo(teacher_id);
+            break;
+            case "change_major":
+            var major_id = localStorage.getItem("major_id");
+            getmajorinfo(major_id);
+            break;
+            case "add_student":
+            addstudent();
+            break;
+            case "add_teacher":
+            addteacher();
+            break;
+            case "add_cousre":
+            addteacher();
+            break;
+            case "add_major":
+            addmajor();
+            break;
+            case "add_major_course":
+            addmajorcourse();
+            break;
         
-        studentid = localStorage.getItem("student_choosed_id");
+            default:
+            break;
 
-        // （1）创建异步对象
-        var ajaxObj = new XMLHttpRequest();
+        }
 
-        // （2）设置请求的参数。包括：请求的方法、请求的url。
-        ajaxObj.open('get', "http://localhost:6060/admin/student/update?student_id="+studentid);
+        //获取学生信息，加载界面
+        function getstudentinfo(student_id)
+        {
+            
+            var title = document.getElementById("title");
+            title.innerHTML = "学生信息";
+            var ajaxObj = new XMLHttpRequest();
+            ajaxObj.open('get', "http://localhost:6060/admin/student/update?student_id="+student_id);
+            ajaxObj.send();
+            ajaxObj.onreadystatechange = function () {
+                // 为了保证 数据 完整返回，我们一般会判断 两个值
+                if (ajaxObj.readyState == 4 && ajaxObj.status == 200) {
+                    console.log('数据返回成功');
+                    console.log(ajaxObj.responseText);
 
-        // （3）发送请求
-        ajaxObj.send();
+                var last=ajaxObj.responseText; //将JSON对象转化为JSON字符
+                
+                var obj = JSON.parse(last);
 
-        //（4）注册事件。 onreadystatechange事件，状态改变时就会调用。
-        //如果要在数据完整请求回来的时候才调用，我们需要手动写一些判断的逻辑。
-        ajaxObj.onreadystatechange = function () {
-            // 为了保证 数据 完整返回，我们一般会判断 两个值
-            if (ajaxObj.readyState == 4 && ajaxObj.status == 200) {
-                // 如果能够进到这个判断 说明 数据 完美的回来了,并且请求的页面是存在的
-                // 5.在注册的事件中 获取 返回的 内容 并修改页面的显示
-                console.log('数据返回成功');
+                var container = document.getElementById("container");
+                
+                //添加学号
+                var div = document.createElement("div");
+                div.className = "alert alert-success";
+                var label = document.createElement("label");
+                label.innerHTML = "学号";
+                div.appendChild(label);
+                var input = document.createElement("input");
+                input.className="form-control";
+                input.id = "id";
+                input.setAttribute("readOnly",'true');
+                input.value = obj.student_id;
+                div.appendChild(input);
+                container.appendChild(div);
 
-                // 数据是保存在 异步对象的 属性中
-                console.log(ajaxObj.responseText);
-
-
-			   var last=ajaxObj.responseText; //将JSON对象转化为JSON字符
-			 
-			   var obj = JSON.parse(last);
-
-			   document.getElementById("id").value = obj.student_id;
-			   document.getElementById("name").value = obj.student_name;
-			  // document.getElementById("sex").innerHTML = obj.sex;
-			   document.getElementById("birth_year").value = obj.birth_year;
-			   document.getElementById("province").value = obj.province;
-			   document.getElementById("enter_year").value = obj.enter_year;
-
-               var major_id = obj.major_id;
-
-               var major_ids = obj.major_ids;
-
-               var major = document.createElement("select");
-               major.id = "major_ids";
-               major.className = "form-control";
-               major.innerHTML = major_id;
-
-		
-               for (var i = 0; i < major_ids.length; i++) {
-                    var op = document.createElement("option");
-                    op.innerHTML = major_ids[i];
-                    major.add(op,null);
-               }
-               
-               var selectcontainer = document.getElementById("selectcontainer");
-               selectcontainer.appendChild(major);
+                //添加姓名
+                var div2 = document.createElement("div");
+                div2.className = "alert alert-success";
+                var label2 = document.createElement("lable");
+                label2.innerHTML = "姓名";
+                div2.appendChild(label2);
+                var input2 = document.createElement("input");
+                input2.className="form-control";
+                input2.id = "name";
+                input2.value = obj.student_name;
+                div2.appendChild(input2);
+                container.appendChild(div2);
 
 
-              
-               var sex = document.createElement("select");
-               sex.id = "sexes";
-               sex.className = "form-control";
-               sex.innerHTML = obj.sex;
-               var op1 = document.createElement("option");
+                //添加性别
+                var div3 = document.createElement("div");
+                div3.className = "alert alert-success";
+                var label3 = document.createElement("lable");
+                label3.innerHTML = "性别";
+                div3.appendChild(label3);
+                var sex = document.createElement("select");
+                sex.id = "sexes";
+                sex.className = "form-control";
+                var default_sex = obj.sex;
+                var op1 = document.createElement("option");
                 op1.innerHTML = "男";
+                if(op1.innerHTML == default_sex)
+                {
+                    op1.selected="selected";
+                }
                 sex.add(op1,null); 
                 var op2 = document.createElement("option");
                 op2.innerHTML = "女";
+                if(op2.innerHTML == default_sex)
+                {
+                    op2.selected="selected";
+                }
                 sex.add(op2,null); 
-                var sexcontainer = document.getElementById("sexcontainer");
-               sexcontainer.appendChild(sex);
-   
+                div3.appendChild(sex);
+                container.appendChild(div3);
+
+                //添加出生年份
+                var div4 = document.createElement("div");
+                div4.className = "alert alert-success";
+                var label4 = document.createElement("lable");
+                label4.innerHTML = "出生年份";
+                div4.appendChild(label4);
+                var input4 = document.createElement("input");
+                input4.className="form-control";
+                input4.id = "birth_year";
+                input4.value = obj.birth_year;
+                div4.appendChild(input4);
+                container.appendChild(div4);
+
+                //添加籍贯
+                var div5 = document.createElement("div");
+                div5.className = "alert alert-success";
+                var label5 = document.createElement("lable");
+                label5.innerHTML = "籍贯";
+                div5.appendChild(label5);
+                var input5 = document.createElement("input");
+                input5.className="form-control";
+                input5.id = "province";
+                input5.value = obj.province;
+                div5.appendChild(input5);
+                container.appendChild(div5);
+
+       
+
+                //添加入学年份
+                var div6 = document.createElement("div");
+                div6.className = "alert alert-success";
+                var label6 = document.createElement("lable");
+                label6.innerHTML= "入学年份";
+                div6.appendChild(label6);
+                var input6 = document.createElement("input");
+                input6.className="form-control";
+                input6.id = "enter_year";
+                input6.value = obj.enter_year;
+                div6.appendChild(input6);
+                container.appendChild(div6);
+
+                //添加专业编号
+                var div7 = document.createElement("div");
+                div7.className = "alert alert-success";
+                var label7 = document.createElement("lable");
+                label7.innerHTML = "专业编号";
+                div7.appendChild(label7);
+       
+                var major = document.createElement("select");
+                major.id = "major_ids";
+                major.className = "form-control";
+                
+                var default_major = obj.major_id;
+                var major_ids = obj.major_ids;
+                for (var i = 0; i < major_ids.length; i++) {
+                        var op = document.createElement("option");
+                        op.innerHTML = major_ids[i];
+                        if(op.innerHTML == default_major)
+                        {
+                            op.selected="selected";
+                        }
+                        major.add(op,null);
+                }            
+                div7.appendChild(major);
+                container.appendChild(div7);
+ 
+                //添加按钮
+                var div8 = document.createElement("div");
+                var modify_btn = document.createElement("button");
+                modify_btn.className = "btn btn-success btn-lg";
+                modify_btn.innerHTML = "修改";
+                modify_btn.style.marginRight = "50px";
+                modify_btn.onclick = function()
+                {
+                    modifystudent();
+                }
+                div8.appendChild(modify_btn);
+                var delete_btn = document.createElement("button");
+                delete_btn.className = "btn btn-danger btn-lg";
+                delete_btn.innerHTML = "删除";
+                delete_btn.onclick = function()
+                {
+                    deletestudent();
+                }
+                div8.appendChild(delete_btn);
+                container.appendChild(div8);
+
+                }
             }
         }
 
-        function modify()
+        //修改学生信息
+        function modifystudent()
         {
 
             var id = document.getElementById("id").value;
@@ -270,6 +394,7 @@
 
         }
 
+        //删除学生
         function deletestudent()
         {
             var id = document.getElementById("id").value;
@@ -297,10 +422,387 @@
 
         }
 
+        //获取老师信息，加载页面
+        function getteacherinfo(teacher_id)
+        {
+            var title = document.getElementById("title");
+            title.innerHTML = "教师信息";
+            var ajaxObj = new XMLHttpRequest();
+            ajaxObj.open('get', "http://localhost:6060/admin/teacher/update?teacher_id="+teacher_id);
+            ajaxObj.send();
+            ajaxObj.onreadystatechange = function () {
+                if (ajaxObj.readyState == 4 && ajaxObj.status == 200) {
+                    console.log('数据返回成功');
+                    console.log(ajaxObj.responseText);
+                var last=ajaxObj.responseText; //将JSON对象转化为JSON字符     
+                var obj = JSON.parse(last);
+                var container = document.getElementById("container");
+                //删除container下的所有节点，重新加载
+                while(container.hasChildNodes()) //当div下还存在子节点时 循环继续
+                {
+                    container.removeChild(container.firstChild);
+                }
+                
+                //添加工号
+                var div = document.createElement("div");
+                div.className = "alert alert-success";
+                var label = document.createElement("label");
+                label.innerHTML = "工号";
+                div.appendChild(label);
+                var input = document.createElement("input");
+                input.className="form-control";
+                input.id = "id";
+                input.setAttribute("readOnly",'true');
+                input.value = obj.teacher_id;
+                div.appendChild(input);
+                container.appendChild(div);
+
+                //添加姓名
+                var div2 = document.createElement("div");
+                div2.className = "alert alert-success";
+                var label2 = document.createElement("lable");
+                label2.innerHTML = "姓名";
+                div2.appendChild(label2);
+                var input2 = document.createElement("input");
+                input2.className="form-control";
+                input2.id = "name";
+                input2.value = obj.teacher_name;
+                div2.appendChild(input2);
+                container.appendChild(div2);
+
+
+                //添加性别
+                var div3 = document.createElement("div");
+                div3.className = "alert alert-success";
+                var label3 = document.createElement("lable");
+                label3.innerHTML = "性别";
+                div3.appendChild(label3);
+                var sex = document.createElement("select");
+                sex.id = "sexes";
+                sex.className = "form-control";
+                var default_sex = obj.sex;
+                var op1 = document.createElement("option");
+                op1.innerHTML = "男";
+                if(op1.innerHTML == default_sex)
+                {
+                    op1.selected="selected";
+                }
+                sex.add(op1,null); 
+                var op2 = document.createElement("option");
+                op2.innerHTML = "女";
+                if(op2.innerHTML == default_sex)
+                {
+                    op2.selected="selected";
+                }
+                sex.add(op2,null); 
+                div3.appendChild(sex);
+                container.appendChild(div3);
+
+                //添加出生年份
+                var div4 = document.createElement("div");
+                div4.className = "alert alert-success";
+                var label4 = document.createElement("lable");
+                label4.innerHTML = "出生年份";
+                div4.appendChild(label4);
+                var input4 = document.createElement("input");
+                input4.className="form-control";
+                input4.id = "birth_year";
+                input4.value = obj.birth_year;
+                div4.appendChild(input4);
+                container.appendChild(div4);
+ 
+                //添加按钮
+                var div8 = document.createElement("div");
+                var modify_btn = document.createElement("button");
+                modify_btn.className = "btn btn-success btn-lg";
+                modify_btn.innerHTML = "修改";
+                modify_btn.style.marginRight = "50px";
+                modify_btn.onclick = function()
+                {
+                    modifyteacher();
+                }
+                div8.appendChild(modify_btn);
+                var delete_btn = document.createElement("button");
+                delete_btn.className = "btn btn-danger btn-lg";
+                delete_btn.innerHTML = "删除";
+                delete_btn.onclick = function()
+                {
+                    deleteteacher();
+                }
+                div8.appendChild(delete_btn);
+                container.appendChild(div8);
+             
+                }
+            }
+        }
+
+        //修改教师信息
+        function modifyteacher()
+        {
+
+            var id = document.getElementById("id").value;
+            var name = document.getElementById("name").value;
+            var obj1 = document.getElementById("sexes"); //定位id
+            var index1 = obj1.selectedIndex; // 选中索引
+            var sex = obj1.options[index1].value; // 选中值
+           // var text = obj.options[index].text; // 选中文本
+            var birth_year =  document.getElementById("birth_year").value;
+
+            var url = "http://localhost:6060/admin/teacher/update?teacher_id="+id+"&student_name="+name+"&sex="+sex+"&birth_year="+birth_year;
+            var ajaxObj = new XMLHttpRequest();
+            ajaxObj.open('post', url);
+            ajaxObj.send();
+            ajaxObj.onreadystatechange = function () {
+                if (ajaxObj.readyState == 4 && ajaxObj.status == 200){
+                    console.log('数据返回成功');
+                    console.log(ajaxObj.responseText);
+                    alert("修改成功");
+                }
+                
+                else if(ajaxObj.readyState == 4 && ajaxObj.status == 404)
+                    {
+                        var last=ajaxObj.responseText; //将JSON对象转化为JSON字符
+                        var obj = JSON.parse(last);
+                        alert("修改失败");
+                        alert(obj.error);
+                    }
+            }
+
+        }
+
+        //删除教师信息
+        function deleteteacher()
+        {
+            var id = document.getElementById("id").value;
+            var url = "http://localhost:6060/admin/teacher/delete?teacher_id="+id;
+            var ajaxObj = new XMLHttpRequest();
+            ajaxObj.open('post', url);
+            ajaxObj.send();
+            ajaxObj.onreadystatechange = function () {
+                if (ajaxObj.readyState == 4 && ajaxObj.status == 200){
+                    console.log('数据返回成功');
+                    console.log(ajaxObj.responseText);
+                    alert("删除成功");
+                    window.location.href = "Admin_Stu_Info.html";
+                }
+                
+                else if(ajaxObj.readyState == 4 && ajaxObj.status == 404)
+                    {
+                        var last=ajaxObj.responseText; //将JSON对象转化为JSON字符
+                        var obj = JSON.parse(last);
+                        alert(obj.error);
+                        alert("删除失败");  
+                    }
+            }
+
+        }
+
+        //获取课程信息，加载页面
+        function getcourseinfo(course_id)
+        {
+            var title = document.getElementById("title");
+            title.innerHTML = "教师信息";
+            var ajaxObj = new XMLHttpRequest();
+            ajaxObj.open('get', "http://localhost:6060/admin/course/update?course_id="+course_id);
+            ajaxObj.send();
+            ajaxObj.onreadystatechange = function () {
+                if (ajaxObj.readyState == 4 && ajaxObj.status == 200) {
+                    console.log('数据返回成功');
+                    console.log(ajaxObj.responseText);
+                var last=ajaxObj.responseText; //将JSON对象转化为JSON字符     
+                var obj = JSON.parse(last);
+                var container = document.getElementById("container");
+                //删除container下的所有节点，重新加载
+                while(container.hasChildNodes()) //当div下还存在子节点时 循环继续
+                {
+                    container.removeChild(container.firstChild);
+                }
+                
+                //添加课程ID
+                var div = document.createElement("div");
+                div.className = "alert alert-success";
+                var label = document.createElement("label");
+                label.innerHTML = "课程编号";
+                div.appendChild(label);
+                var input = document.createElement("input");
+                input.className="form-control";
+                input.id = "id";
+                input.setAttribute("readOnly",'true');
+                input.value = obj.course_id;
+                div.appendChild(input);
+                container.appendChild(div);
+
+                //添加课程名
+                var div2 = document.createElement("div");
+                div2.className = "alert alert-success";
+                var label2 = document.createElement("lable");
+                label2.innerHTML = "课程名称";
+                div2.appendChild(label2);
+                var input2 = document.createElement("input");
+                input2.className="form-control";
+                input2.id = "name";
+                input2.value = obj.course_name;
+                div2.appendChild(input2);
+                container.appendChild(div2);
+
+                //添加开课学年
+                var div3 = document.createElement("div");
+                div3.className = "alert alert-success";
+                var label3 = document.createElement("lable");
+                label3.innerHTML = "开课学年";
+                div3.appendChild(label3);
+                var input3 = document.createElement("input");
+                input3.className="form-control";
+                input3.id = "year";
+                input3.value = obj.year;
+                div3.appendChild(input3);
+                container.appendChild(div3);
+
+                //添加开课学期
+                var div4 = document.createElement("div");
+                div4.className = "alert alert-success";
+                var label4 = document.createElement("lable");
+                label4.innerHTML = "开课学期";
+                div4.appendChild(label4);
+                var input4 = document.createElement("input");
+                input4.className="form-control";
+                input4.id = "semester";
+                input4.value = obj.semester;
+                div4.appendChild(input4);
+                container.appendChild(div4);
+
+                //添加学分
+                var div5 = document.createElement("div");
+                div5.className = "alert alert-success";
+                var label5 = document.createElement("lable");
+                label5.innerHTML = "开课学年";
+                div5.appendChild(label5);
+                var input5 = document.createElement("input");
+                input5.className="form-control";
+                input5.id = "year";
+                input5.value = obj.year;
+                div5.appendChild(input5);
+                container.appendChild(div5);
+
+
+
+
+                //添加授课老师id
+                var div7 = document.createElement("div");
+                div7.className = "alert alert-success";
+                var label7 = document.createElement("lable");
+                label7.innerHTML = "专业编号";
+                div7.appendChild(label7);
+       
+                var major = document.createElement("select");
+                major.id = "major_ids";
+                major.className = "form-control";
+                
+                var default_major = obj.major_id;
+                var major_ids = obj.major_ids;
+                for (var i = 0; i < major_ids.length; i++) {
+                        var op = document.createElement("option");
+                        op.innerHTML = major_ids[i];
+                        if(op.innerHTML == default_major)
+                        {
+                            op.selected="selected";
+                        }
+                        major.add(op,null);
+                }            
+                div7.appendChild(major);
+                container.appendChild(div7);
+ 
+                //添加按钮
+                var div8 = document.createElement("div");
+                var modify_btn = document.createElement("button");
+                modify_btn.className = "btn btn-success btn-lg";
+                modify_btn.innerHTML = "修改";
+                modify_btn.style.marginRight = "50px";
+                modify_btn.onclick = function()
+                {
+                    modifyteacher();
+                }
+                div8.appendChild(modify_btn);
+                var delete_btn = document.createElement("button");
+                delete_btn.className = "btn btn-danger btn-lg";
+                delete_btn.innerHTML = "删除";
+                delete_btn.onclick = function()
+                {
+                    deleteteacher();
+                }
+                div8.appendChild(delete_btn);
+                container.appendChild(div8);
+             
+                }
+            }
+        }
+
+        //修改教师信息
+        function modifyteacher()
+        {
+
+            var id = document.getElementById("id").value;
+            var name = document.getElementById("name").value;
+            var obj1 = document.getElementById("sexes"); //定位id
+            var index1 = obj1.selectedIndex; // 选中索引
+            var sex = obj1.options[index1].value; // 选中值
+           // var text = obj.options[index].text; // 选中文本
+            var birth_year =  document.getElementById("birth_year").value;
+
+            var url = "http://localhost:6060/admin/teacher/update?teacher_id="+id+"&student_name="+name+"&sex="+sex+"&birth_year="+birth_year;
+            var ajaxObj = new XMLHttpRequest();
+            ajaxObj.open('post', url);
+            ajaxObj.send();
+            ajaxObj.onreadystatechange = function () {
+                if (ajaxObj.readyState == 4 && ajaxObj.status == 200){
+                    console.log('数据返回成功');
+                    console.log(ajaxObj.responseText);
+                    alert("修改成功");
+                }
+                
+                else if(ajaxObj.readyState == 4 && ajaxObj.status == 404)
+                    {
+                        var last=ajaxObj.responseText; //将JSON对象转化为JSON字符
+                        var obj = JSON.parse(last);
+                        alert("修改失败");
+                        alert(obj.error);
+                    }
+            }
+
+        }
+
+        //删除教师信息
+        function deleteteacher()
+        {
+            var id = document.getElementById("id").value;
+            var url = "http://localhost:6060/admin/teacher/delete?teacher_id="+id;
+            var ajaxObj = new XMLHttpRequest();
+            ajaxObj.open('post', url);
+            ajaxObj.send();
+            ajaxObj.onreadystatechange = function () {
+                if (ajaxObj.readyState == 4 && ajaxObj.status == 200){
+                    console.log('数据返回成功');
+                    console.log(ajaxObj.responseText);
+                    alert("删除成功");
+                    window.location.href = "Admin_Stu_Info.html";
+                }
+                
+                else if(ajaxObj.readyState == 4 && ajaxObj.status == 404)
+                    {
+                        var last=ajaxObj.responseText; //将JSON对象转化为JSON字符
+                        var obj = JSON.parse(last);
+                        alert(obj.error);
+                        alert("删除失败");  
+                    }
+            }
+
+        }
+
 
         function back()
         {
-            window.history.back();
+           // window.history.back();
+           window.location.href = "Admin_Stu_Info.html";
         }
         
         
