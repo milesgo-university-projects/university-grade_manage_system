@@ -292,8 +292,9 @@
 			            
                         detail.onclick = function() {
                             let sid = this.getAttribute("student_id");
-                            localStorage.setItem("student_choosed_id",sid);
-                            window.location.href = "Admin_Stu_Detail.html";
+                            localStorage.setItem("student_id",sid);
+                            localStorage.setItem("current_type", "change_student");
+                            window.location.href = "Admin_Detail.html";
                         }
 
                         row.appendChild(student_id);
