@@ -236,6 +236,11 @@
                     table.appendChild(tbody);
                     tablecontainer.appendChild(table); 
                 }
+                else if(ajaxObj.readyState == 4 && ajaxObj.status == 404) {
+                    var last=ajaxObj.responseText; //将JSON对象转化为JSON字符
+                    var obj = JSON.parse(last);
+                    alert(obj.error);
+                }
             }
         }
         function process_teacher_info() {
@@ -325,6 +330,11 @@
                     }
                     table.appendChild(tbody);
                     tablecontainer.appendChild(table); 
+                }
+                else if(ajaxObj.readyState == 4 && ajaxObj.status == 404) {
+                    var last=ajaxObj.responseText; //将JSON对象转化为JSON字符
+                    var obj = JSON.parse(last);
+                    alert(obj.error);
                 }
             }
         }
@@ -434,6 +444,11 @@
                     table.appendChild(tbody);
                     tablecontainer.appendChild(table); 
                 }
+                else if(ajaxObj.readyState == 4 && ajaxObj.status == 404) {
+                    var last=ajaxObj.responseText; //将JSON对象转化为JSON字符
+                    var obj = JSON.parse(last);
+                    alert(obj.error);
+                }
             }
         }
         function process_major_info() {
@@ -512,6 +527,11 @@
                     }
                     table.appendChild(tbody);
                     tablecontainer.appendChild(table); 
+                }
+                else if(ajaxObj.readyState == 4 && ajaxObj.status == 404) {
+                    var last=ajaxObj.responseText; //将JSON对象转化为JSON字符
+                    var obj = JSON.parse(last);
+                    alert(obj.error);
                 }
             }
         }
@@ -599,6 +619,11 @@
                     }
                     table.appendChild(tbody);
                     tablecontainer.appendChild(table); 
+                }
+                else if(ajaxObj.readyState == 4 && ajaxObj.status == 404) {
+                    var last=ajaxObj.responseText; //将JSON对象转化为JSON字符
+                    var obj = JSON.parse(last);
+                    alert(obj.error);
                 }
             }
         }
