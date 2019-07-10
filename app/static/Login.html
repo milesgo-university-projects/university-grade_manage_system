@@ -192,7 +192,8 @@
 					break;
 				case "administrator":
 					localStorage.setItem("name", name);
-					window.location.href = "Admin_Stu_Info.html";
+					localStorage.setItem("current_type", "student_info");
+					window.location.href = "Admin_Info.html";
 					break;
 				default:	
 				}
