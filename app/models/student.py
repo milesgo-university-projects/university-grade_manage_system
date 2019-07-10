@@ -106,7 +106,7 @@ def read_average_grade(student_id):
                 for row in result:
                     total_credit += row[0]
                     total_grade += row[0] * row[1]
-                data['average_grade'] = float(1.0*total_grade/total_credit)
+                data['average_grade'] = round(float(1.0*total_grade/total_credit), 2)
             else:
                 data['average_grade'] = 0
     except Exception as e:

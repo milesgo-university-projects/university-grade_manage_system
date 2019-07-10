@@ -76,7 +76,8 @@ def read_major_course():
         with connection.cursor() as cursor:
             sql = 'select m.major_id, major_name, c.course_id, course_name ' \
                   'from major_course as mc, major as m, course as c ' \
-                  'where mc.major_id = m.major_id and mc.course_id = c.course_id;'
+                  'where mc.major_id = m.major_id and mc.course_id = c.course_id ' \
+                  'order by m.major_id, c.course_id;'
             cursor.execute(sql)
             result = cursor.fetchall()
             data['major_courses'] = []

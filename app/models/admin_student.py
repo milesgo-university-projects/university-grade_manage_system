@@ -107,9 +107,18 @@ def get_new_student_id(enter_year, major_id):
     data = {}
     try:
         with connection.cursor() as cursor:
-            sql = 'select max(convert(right(student_id, 3), unsigned integer))+1 from student order by student_id'
+            sql = 'select max(convert(right(student_id, 3), unsigned integer))+1 from student ' \
+                  'where enter_year = \'%s\' and major_id = \'%s\' order by student_id;' % (enter_year, major_id)
             cursor.execute(sql)
-            data['student_id'] = enter_year + major_id + str(cursor.fetchone()[0])
+            tmp = cursor.fetchone()[0]
+            if tmp is None:
+                data['student_id'] = enter_year + major_id + '001'
+            else:
+                part_id = str(tmp)
+                while len(part_id) < 3:
+                    part_id = '0' + part_id
+                data['student_id'] = enter_year + major_id + part_id
+                print(data['student_id'])
     except Exception as e:
         data['error'] = str(e)
     finally:

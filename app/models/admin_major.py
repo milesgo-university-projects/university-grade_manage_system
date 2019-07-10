@@ -54,9 +54,13 @@ def get_new_major_id():
         with connection.cursor() as cursor:
             sql = 'select max(convert(major_id, unsigned integer))+1 from major order by major_id'
             cursor.execute(sql)
-            data['major_id'] = str(cursor.fetchone()[0])
-            while len(data['major_id']) < 3:
-                data['major_id'] = '0' + data['major_id']
+            tmp = cursor.fetchone()[0]
+            if tmp is None:
+                data['major_id'] = '001'
+            else:
+                data['major_id'] = str(tmp)
+                while len(data['major_id']) < 3:
+                    data['major_id'] = '0' + data['major_id']
     except Exception as e:
         data['error'] = str(e)
     finally:
@@ -142,7 +146,8 @@ def read_major():
             sql = 'select m.major_id, major_name, count(student_id) as number_of_students ' \
                   'from major as m left outer join student as s ' \
                   'on m.major_id = s.major_id ' \
-                  'group by m.major_id;'
+                  'group by m.major_id ' \
+                  'order by m.major_id;'
             cursor.execute(sql)
             result = cursor.fetchall()
             data['majors'] = []
