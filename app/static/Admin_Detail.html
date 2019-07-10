@@ -111,15 +111,18 @@
             getteacherinfo(teacher_id);
             break;
         case "change_course":
-            var cousre_id = localStorage.getItem("course_id");
-            getcourseinfo(teacher_id);
+            var course_id = localStorage.getItem("course_id");
+            getcourseinfo(course_id);
             break;
         case "change_major":
             var major_id = localStorage.getItem("major_id");
             getmajorinfo(major_id);
             break;
+        case "change_major_course":
+            var major_id = localStorage.getItem("major_id");
+            var course_id = localStorage.getItem("course_id");
+            getmajorcourseinfo(major_id, course_id);
         case "add_student":
-            alert("jdhvjks");
             addstudent();
             break;
         case "add_teacher":
@@ -245,6 +248,7 @@
                     while(container.hasChildNodes()) {
                         container.removeChild(container.firstChild);
                     }
+
                     container.appendChild(createDivWithInput("姓名", "name", "false", ""));
                     container.appendChild(createDivWithSelection("性别", "sexes", "", new Array("男","女")));
                     container.appendChild(createDivWithInput("出生年份", "birth_year", "false", ""));
@@ -289,8 +293,7 @@
                 else if(ajaxObj.readyState == 4 && ajaxObj.status == 404) {
                     var last=ajaxObj.responseText; //将JSON对象转化为JSON字符
                     var obj = JSON.parse(last);
-                    alert(obj.error);
-                    alert("添加失败");
+                    alert("添加失败: " + obj.error);
                 }
             }
         }
@@ -316,9 +319,10 @@
                     container.appendChild(createDivWithInput("姓名","name","false",obj.teacher_name));
                     container.appendChild(createDivWithSelection("性别", "sexes", obj.sex, new Array("男","女")));
                     container.appendChild(createDivWithInput("出生年份", "birth_year", "false", obj.birth_year));
-                    container.appendChild(createDivWithInput("授课数量", "number_of_courses", "false", obj.number_of_courses));
-                    container.appendChild(createButton("修改","50px",modifyteacher));
-                    container.appendChild(createButton("删除","0px",deleteteacher));
+                    // container.appendChild(createDivWithInput("授课数量", "number_of_courses", "false", obj.number_of_courses));
+                    
+                    container.appendChild(createButton("修改", "25px", modifyteacher));
+                    container.lastChild.appendChild(createButtonWithoutDiv("删除", "0px", deleteteacher));
                 }
             }
         }
@@ -376,36 +380,17 @@
         //添加教师前的准备工作
         function addteacher() {
             var title = document.getElementById("title");
-            title.innerHTML = "添加学生";
-            var ajaxObj = new XMLHttpRequest();
-            ajaxObj.open('get', "http://localhost:6060/admin/student/insert");
-            ajaxObj.send();
-            ajaxObj.onreadystatechange = function () {
-                if (ajaxObj.readyState == 4 && ajaxObj.status == 200) {
-                    console.log('数据返回成功');
-                    console.log(ajaxObj.responseText);
+            title.innerHTML = "添加教师";
 
-                    var last=ajaxObj.responseText; //将JSON对象转化为JSON字符
-                    var obj = JSON.parse(last);
-                    var container = document.getElementById("container");
-
-                    while(container.hasChildNodes()) {
-                        container.removeChild(container.firstChild);
-                    }
-                    container.appendChild(createDivWithInput("姓名", "name", "false", ""));
-                    container.appendChild(createDivWithSelection("性别", "sexes", "", new Array("男","女")));
-                    container.appendChild(createDivWithInput("出生年份", "birth_year", "false", ""));
-                    container.appendChild(createDivWithInput("籍贯", "province", "false", ""));
-                    container.appendChild(createDivWithInput("入学年份", "enter_year", "false", ""));
-                    container.appendChild(createDivWithSelection("专业编号", "major_ids", "", obj.major_ids));
-                    container.appendChild(createButton("添加", "0px", insertstudent));
-                }
-                else if(ajaxObj.readyState == 4 && ajaxObj.status == 404) {
-                    var last=ajaxObj.responseText; //将JSON对象转化为JSON字符
-                    var obj = JSON.parse(last);
-                    alert("添加失败: " + obj.error);
-                }
+            var container = document.getElementById("container");
+            while(container.hasChildNodes()) {
+                container.removeChild(container.firstChild);
             }
+
+            container.appendChild(createDivWithInput("姓名", "name", "false", ""));
+            container.appendChild(createDivWithSelection("性别", "sexes", "", new Array("男","女")));
+            container.appendChild(createDivWithInput("出生年份", "birth_year", "false", ""));
+            container.appendChild(createButton("添加", "0px", insertteacher));
         }
         //添加教师后提交到服务器
         function insertteacher() {
@@ -416,14 +401,8 @@
             var sex = obj1.options[index1].value;
 
             var birth_year =  parseInt(document.getElementById("birth_year").value);
-            var province =  document.getElementById("province").value;
-            var enter_year = document.getElementById("enter_year").value;
-
-            var obj2 = document.getElementById("major_ids");
-            var index2 = obj2.selectedIndex;
-            var major_id = obj2.options[index2].value;
             
-            var url = "http://localhost:6060/admin/student/insert?student_name="+name+"&sex="+sex+"&birth_year="+birth_year+"&province="+province+"&enter_year="+enter_year+"&major_id="+major_id;
+            var url = "http://localhost:6060/admin/teacher/insert?teacher_name="+name+"&sex="+sex+"&birth_year="+birth_year;
             var ajaxObj = new XMLHttpRequest();
             ajaxObj.open('post', url);
             ajaxObj.send();
@@ -436,8 +415,7 @@
                 else if(ajaxObj.readyState == 4 && ajaxObj.status == 404) {
                     var last=ajaxObj.responseText; //将JSON对象转化为JSON字符
                     var obj = JSON.parse(last);
-                    alert(obj.error);
-                    alert("添加失败");
+                    alert("添加失败:" + obj.error);
                 }
             }
         }
@@ -446,7 +424,7 @@
         //获取课程信息，加载页面
         function getcourseinfo(course_id) {
             var title = document.getElementById("title");
-            title.innerHTML = "教师信息";
+            title.innerHTML = "课程信息";
             var ajaxObj = new XMLHttpRequest();
             ajaxObj.open('get', "http://localhost:6060/admin/course/update?course_id="+course_id);
             ajaxObj.send();
@@ -460,14 +438,16 @@
                     while(container.hasChildNodes()) {
                         container.removeChild(container.firstChild);
                     }
+
                     container.appendChild(createDivWithInput("课程编号", "id", "true", obj.course_id));
                     container.appendChild(createDivWithInput("课程名称", "name", "false", obj.course_name));
                     container.appendChild(createDivWithInput("开课学年", "year", "false", obj.year));
                     container.appendChild(createDivWithSelection("开课学期", "semester", obj.semester, new Array("春","秋")));
                     container.appendChild(createDivWithInput("学分", "credit", "false", obj.credit));
                     container.appendChild(createDivWithSelection("授课教师id", "teacher_ids", obj.teacher_id, obj.teacher_ids));
-                    container.appendChild(createButton("修改","50px",modifycourse));
-                    container.appendChild(createButton("删除","0px",deletecourse));
+                    
+                    container.appendChild(createButton("修改", "25px", modifycourse));
+                    container.lastChild.appendChild(createButtonWithoutDiv("删除", "0px", deletecourse));
                 }
             }
         }
@@ -529,9 +509,9 @@
         //添加课程前的准备工作
         function addcourse() {
             var title = document.getElementById("title");
-            title.innerHTML = "添加学生";
+            title.innerHTML = "添加课程";
             var ajaxObj = new XMLHttpRequest();
-            ajaxObj.open('get', "http://localhost:6060/admin/student/insert");
+            ajaxObj.open('get', "http://localhost:6060/admin/course/insert");
             ajaxObj.send();
             ajaxObj.onreadystatechange = function () {
                 if (ajaxObj.readyState == 4 && ajaxObj.status == 200) {
@@ -541,16 +521,15 @@
                     var last=ajaxObj.responseText; //将JSON对象转化为JSON字符
                     var obj = JSON.parse(last);
                     var container = document.getElementById("container");
-
                     while(container.hasChildNodes()) {
                         container.removeChild(container.firstChild);
                     }
-                    container.appendChild(createDivWithInput("姓名", "name", "false", ""));
-                    container.appendChild(createDivWithSelection("性别", "sexes", "", new Array("男","女")));
-                    container.appendChild(createDivWithInput("出生年份", "birth_year", "false", ""));
-                    container.appendChild(createDivWithInput("籍贯", "province", "false", ""));
-                    container.appendChild(createDivWithInput("入学年份", "enter_year", "false", ""));
-                    container.appendChild(createDivWithSelection("专业编号", "major_ids", "", obj.major_ids));
+                    
+                    container.appendChild(createDivWithInput("课程名称", "name", "false", ""));
+                    container.appendChild(createDivWithInput("开课学年", "year", "false", ""));
+                    container.appendChild(createDivWithSelection("开课学期", "semester", "", new Array("春","秋")));
+                    container.appendChild(createDivWithInput("学分", "credit", "false", ""));
+                    container.appendChild(createDivWithSelection("授课教师id", "teacher_ids", "", obj.teacher_ids));
                     container.appendChild(createButton("添加", "0px", insertstudent));
                 }
                 else if(ajaxObj.readyState == 4 && ajaxObj.status == 404) {
@@ -563,20 +542,19 @@
         //添加课程后提交到服务器
         function insertcourse() {
             var name = document.getElementById("name").value;
+            var year = document.getElementById("year").value;
 
-            var obj1 = document.getElementById("sexes"); 
+            var obj1 = document.getElementById("semester"); 
             var index1 = obj1.selectedIndex;
-            var sex = obj1.options[index1].value;
+            var semester = obj1.options[index1].value;
 
-            var birth_year =  parseInt(document.getElementById("birth_year").value);
-            var province =  document.getElementById("province").value;
-            var enter_year = document.getElementById("enter_year").value;
+            var credit = document.getElementById("credit").value;
 
-            var obj2 = document.getElementById("major_ids");
+            var obj2 = document.getElementById("teacher_ids");
             var index2 = obj2.selectedIndex;
-            var major_id = obj2.options[index2].value;
+            var teacher_id = obj2.options[index2].value;
             
-            var url = "http://localhost:6060/admin/student/insert?student_name="+name+"&sex="+sex+"&birth_year="+birth_year+"&province="+province+"&enter_year="+enter_year+"&major_id="+major_id;
+            var url = "http://localhost:6060/admin/course/insert?course_name="+name+"&year="+year+"&semester="+semester+"&credit="+credit+"&teacher_id="+teacher_id;
             var ajaxObj = new XMLHttpRequest();
             ajaxObj.open('post', url);
             ajaxObj.send();
@@ -589,12 +567,81 @@
                 else if(ajaxObj.readyState == 4 && ajaxObj.status == 404) {
                     var last=ajaxObj.responseText; //将JSON对象转化为JSON字符
                     var obj = JSON.parse(last);
-                    alert(obj.error);
-                    alert("添加失败");
+                    alert("添加失败: " + obj.error);
                 }
             }
         }
         
+        //获取专业信息，加载界面
+        function getmajorinfo() {
+            var title = document.getElementById("title");
+            title.innerHTML = "专业信息";
+            var ajaxObj = new XMLHttpRequest();
+            ajaxObj.open('get', "http://localhost:6060/admin/major/update?major_id="+major_id);
+            ajaxObj.send();
+            ajaxObj.onreadystatechange = function () {
+                if (ajaxObj.readyState == 4 && ajaxObj.status == 200) {
+                    console.log('数据返回成功');
+                    console.log(ajaxObj.responseText);
+                    var last=ajaxObj.responseText; //将JSON对象转化为JSON字符     
+                    var obj = JSON.parse(last);
+                    var container = document.getElementById("container");
+                    while(container.hasChildNodes()) {
+                        container.removeChild(container.firstChild);
+                    }
+
+                    container.appendChild(createDivWithInput("专业编号", "id", "true", obj.major_id));
+                    container.appendChild(createDivWithInput("专业名称", "name", "false", obj.major_name));
+                    
+                    container.appendChild(createButton("修改", "25px", modifymajor));
+                    container.lastChild.appendChild(createButtonWithoutDiv("删除", "0px", deletemajor));
+                }
+            }
+        }
+        //修改专业信息
+        function modifymajor() {
+            var id = document.getElementById("id").value;
+            var name = document.getElementById("name").value;
+            
+            var url = "http://localhost:6060/admin/major/update?major_id="+id+"&major_name="+name;
+            var ajaxObj = new XMLHttpRequest();
+            ajaxObj.open('post', url);
+            ajaxObj.send();
+            ajaxObj.onreadystatechange = function () {
+                if (ajaxObj.readyState == 4 && ajaxObj.status == 200){
+                    console.log('数据返回成功');
+                    console.log(ajaxObj.responseText);
+                    alert("修改成功");
+                }
+                else if(ajaxObj.readyState == 4 && ajaxObj.status == 404) {
+                    var last=ajaxObj.responseText; //将JSON对象转化为JSON字符
+                    var obj = JSON.parse(last);
+                    alert("修改失败: " + obj.error);
+                }
+            }
+        }
+        //删除专业
+        function deletemajor() {
+            var id = document.getElementById("id").value;
+            var url = "http://localhost:6060/admin/major/delete?major_id="+id;
+            var ajaxObj = new XMLHttpRequest();
+            ajaxObj.open('post', url);
+            ajaxObj.send();
+            ajaxObj.onreadystatechange = function () {
+                if (ajaxObj.readyState == 4 && ajaxObj.status == 200){
+                    console.log('数据返回成功');
+                    console.log(ajaxObj.responseText);
+                    alert("删除成功");
+                    localStorage("current_type", "major_info");
+                    window.location.href = "Admin_Info.html";
+                }
+                else if(ajaxObj.readyState == 4 && ajaxObj.status == 404) {
+                    var last=ajaxObj.responseText; //将JSON对象转化为JSON字符
+                    var obj = JSON.parse(last);
+                    alert("删除失败: " + obj.error);
+                }
+            }
+        }
         //添加专业前的准备工作
         function addmajor() {
             var title = document.getElementById("title");
@@ -662,6 +709,15 @@
                     alert("添加失败");
                 }
             }
+        }
+        
+        //获取专业选课信息，加载界面
+        function getmajorcourseinfo(major_id, course_id) {
+
+        }
+        //删除专业选课
+        function deletemajorcourse() {
+
         }
         //添加专业选课前的准备工作
         function addstudent() {

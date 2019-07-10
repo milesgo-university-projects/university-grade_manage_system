@@ -68,9 +68,13 @@ def get_new_teacher_id():
         with connection.cursor() as cursor:
             sql = 'select max(convert(teacher_id, unsigned integer))+1 from teacher order by teacher_id'
             cursor.execute(sql)
-            data['teacher_id'] = str(cursor.fetchone()[0])
-            while len(data['teacher_id']) < 5:
-                data['teacher_id'] = '0' + data['teacher_id']
+            tmp = cursor.fetchone()[0]
+            if tmp is None:
+                data['teacher_id'] = '00001'
+            else:
+                data['teacher_id'] = str(tmp)
+                while len(data['teacher_id']) < 5:
+                    data['teacher_id'] = '0' + data['teacher_id']
     except Exception as e:
         data['error'] = str(e)
     finally:
@@ -126,7 +130,8 @@ def read_teacher_list():
             sql = 'select t.teacher_id, teacher_name, sex, birth_year, count(course_id) as number_of_courses ' \
                   'from teacher as t left outer join course as c ' \
                   'on c.teacher_id = t.teacher_id ' \
-                  'group by t.teacher_id;'
+                  'group by t.teacher_id ' \
+                  'order by t.teacher_id;'
             cursor.execute(sql)
             result = cursor.fetchall()
             data['teachers'] = []

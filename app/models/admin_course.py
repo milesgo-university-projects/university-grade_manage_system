@@ -118,9 +118,13 @@ def get_new_course_id():
         with connection.cursor() as cursor:
             sql = 'select max(convert(course_id, unsigned integer))+1 from course order by course_id'
             cursor.execute(sql)
-            data['course_id'] = str(cursor.fetchone()[0])
-            while len(data['course_id']) < 5:
-                data['course_id'] = '0' + data['course_id']
+            tmp = cursor.fetchone()[0]
+            if tmp is None:
+                data['course_id'] = '00001'
+            else:
+                data['course_id'] = str(tmp)
+                while len(data['course_id']) < 5:
+                    data['course_id'] = '0' + data['course_id']
     except Exception as e:
         data['error'] = str(e)
     finally:
@@ -152,13 +156,15 @@ def read_course():
                   'count(student_id) as number_of_students, avg(grade) as average_grade ' \
                   'from course as c left outer join student_course as sc ' \
                   'on c.course_id = sc.course_id ' \
-                  'group by c.course_id;'
+                  'group by c.course_id ' \
+                  'order by c.course_id;'
             cursor.execute(sql)
             result = cursor.fetchall()
             data['courses'] = []
             for row in result:
                 tmp = {'course_id': row[0], 'course_name': row[1], 'year': row[2], 'semester': row[3],
-                       'teacher_id': row[4], 'credit': row[5], 'number_of_students': row[6], 'average_grade': float(row[7])}
+                       'teacher_id': row[4], 'credit': row[5], 'number_of_students': row[6],
+                       'average_grade': round(float(row[7]), 2)}
                 data['courses'].append(tmp)
     except Exception as e:
         data['error'] = str(e)
