@@ -24,6 +24,11 @@ function insertstudent() {
             console.log('数据返回成功');
             console.log(ajaxObj.responseText);
             alert("添加成功");
+            var container = document.getElementById("container");
+            var input_list = container.getElementsByTagName("input");
+            for (var i = 0; i < input_list.length; i ++) {
+                input_list[i].value = "";
+            }
         }
         else if(ajaxObj.readyState == 4 && ajaxObj.status == 404) {
             var last=ajaxObj.responseText; //将JSON对象转化为JSON字符
@@ -51,6 +56,11 @@ function insertteacher() {
             console.log('数据返回成功');
             console.log(ajaxObj.responseText);
             alert("添加成功");
+            var container = document.getElementById("container");
+            var input_list = container.getElementsByTagName("input");
+            for (var i = 0; i < input_list.length; i ++) {
+                input_list[i].value = "";
+            }
         }
         else if(ajaxObj.readyState == 4 && ajaxObj.status == 404) {
             var last=ajaxObj.responseText; //将JSON对象转化为JSON字符
@@ -85,6 +95,11 @@ function insertcourse() {
             console.log('数据返回成功');
             console.log(ajaxObj.responseText);
             alert("添加成功");
+            var container = document.getElementById("container");
+            var input_list = container.getElementsByTagName("input");
+            for (var i = 0; i < input_list.length; i ++) {
+                input_list[i].value = "";
+            }
         }
         else if(ajaxObj.readyState == 4 && ajaxObj.status == 404) {
             var last=ajaxObj.responseText; //将JSON对象转化为JSON字符
@@ -107,6 +122,11 @@ function insertmajor() {
             console.log('数据返回成功');
             console.log(ajaxObj.responseText);
             alert("添加成功");
+            var container = document.getElementById("container");
+            var input_list = container.getElementsByTagName("input");
+            for (var i = 0; i < input_list.length; i ++) {
+                input_list[i].value = "";
+            }
         }
         else if(ajaxObj.readyState == 4 && ajaxObj.status == 404) {
             var last=ajaxObj.responseText; //将JSON对象转化为JSON字符
@@ -137,6 +157,11 @@ function insertmajorcourse() {
             console.log('数据返回成功');
             console.log(ajaxObj.responseText);
             alert("添加成功");
+            var container = document.getElementById("container");
+            var input_list = container.getElementsByTagName("input");
+            for (var i = 0; i < input_list.length; i ++) {
+                input_list[i].value = "";
+            }
         }
         else if(ajaxObj.readyState == 4 && ajaxObj.status == 404) {
             var last=ajaxObj.responseText; //将JSON对象转化为JSON字符
