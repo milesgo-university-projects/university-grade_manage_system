@@ -27,7 +27,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="Stu_Info.html"><i class="fa fa-gear"></i> <strong>学生成绩管理系统</strong></a>
+                <a class="navbar-brand" ><i class="fa fa-gear"></i> <strong>学生成绩管理系统</strong></a>
             </div>
 
             <ul class="nav navbar-top-links navbar-right">
@@ -50,16 +50,16 @@
         <nav class="navbar-default navbar-side" role="navigation">
             <div class="sidebar-collapse">
                 <ul class="nav" id="main-menu">
-                    <li><a id = "student_info" onclick=student_info() style="cursor:pointer">查看所有学生信息</a></li>
-                    <li><a id = "add_student" onclick=add_student() style="cursor:pointer" >添加学生</a></li>
-                    <li><a id= "teacher_info" onclick=teacher_info() style="cursor:pointer">查看所有教师信息</a></li>
-                    <li><a id = "add_teacher" onclick=add_teacher() style="cursor:pointer">添加教师</a></li>
-                    <li><a id = "course_info" onclick=course_info() style="cursor:pointer">查看所有课程信息</a></li>
-                    <li><a id ="add_course" onclick=add_course() style="cursor:pointer">添加课程</a></li>
-                    <li><a id = "major_info" onclick=major_info() style="cursor:pointer">查看所有专业信息</a></li>
-                    <li><a id ="add_major" onclick=add_major() style="cursor:pointer">添加专业</a></li>
-                    <li><a id ="major_course_info" onclick=major_course_info() style="cursor:pointer">查看专业选课信息</a></li>
-                    <li><a id ="add_major_course" onclick=add_major_course() style="cursor:pointer">添加专业选课</a></li>
+                    <li><a id = "student_info" onclick=student_info() style="cursor:pointer" ><i class="fa fa-table"></i>查看所有学生信息</a></li>
+                    <li><a id = "add_student" onclick=add_student() style="cursor:pointer" ><i class="fa fa-edit"></i>添加学生</a></li>
+                    <li><a id= "teacher_info" onclick=teacher_info() style="cursor:pointer"><i class="fa fa-table"></i>查看所有教师信息</a></li>
+                    <li><a id = "add_teacher" onclick=add_teacher() style="cursor:pointer"><i class="fa fa-edit"></i>添加教师</a></li>
+                    <li><a id = "course_info" onclick=course_info() style="cursor:pointer"><i class="fa fa-table"></i>查看所有课程信息</a></li>
+                    <li><a id ="add_course" onclick=add_course() style="cursor:pointer"><i class="fa fa-edit"></i>添加课程</a></li>
+                    <li><a id = "major_info" onclick=major_info() style="cursor:pointer"><i class="fa fa-table"></i>查看所有专业信息</a></li>
+                    <li><a id ="add_major" onclick=add_major() style="cursor:pointer"><i class="fa fa-edit"></i>添加专业</a></li>
+                    <li><a id ="major_course_info" onclick=major_course_info() style="cursor:pointer"><i class="fa fa-table"></i>查看专业选课信息</a></li>
+                    <li><a id ="add_major_course" onclick=add_major_course() style="cursor:pointer"><i class="fa fa-edit"></i>添加专业选课</a></li>
                 </ul>
             </div>
         </nav>
@@ -94,7 +94,6 @@
             </div>
 
         </div>
-               <footer><p> made by wangwen </p></footer>
     </div>
              <!-- /. PAGE INNER  -->
             </div>
@@ -178,7 +177,7 @@
             var ele = document.getElementById("student_info");
             ele.style = "";
             ele.onclick = null;
-            ele.class = "active-menu";
+            ele.className = "active-menu";
             process_student_info();
         } else if (current_type == "teacher_info") {
             var info = document.getElementById("welcome");
@@ -186,7 +185,7 @@
             var ele = document.getElementById("teacher_info");
             ele.style = "";
             ele.onclick = null;
-            ele.class = "active-menu";
+            ele.className = "active-menu";
             process_teacher_info();
         } else if (current_type == "course_info") {
             var info = document.getElementById("welcome");
@@ -194,7 +193,7 @@
             var ele = document.getElementById("course_info");
             ele.style = "";
             ele.onclick = null;
-            ele.class = "active-menu";
+            ele.className = "active-menu";
             process_course_info();
         } else if (current_type == "major_info") {
             var info = document.getElementById("welcome");
@@ -202,7 +201,7 @@
             var ele = document.getElementById("major_info");
             ele.style = "";
             ele.onclick = null;
-            ele.class = "active-menu";
+            ele.className = "active-menu";
             process_major_info();
         } else if (current_type == "major_course_info") {
             var info = document.getElementById("welcome");
@@ -210,7 +209,7 @@
             var ele = document.getElementById("major_course_info");
             ele.style = "";
             ele.onclick = null;
-            ele.class = "active-menu";
+            ele.className = "active-menu";
             process_major_course_info();
         } else {
             alert("current_type illegal: " + current_type);
