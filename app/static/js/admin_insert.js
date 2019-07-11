@@ -10,9 +10,10 @@ function insertstudent() {
     var province =  document.getElementById("province").value;
     var enter_year = document.getElementById("enter_year").value;
 
-    var obj2 = document.getElementById("major_ids");
+    var obj2 = document.getElementById("majors");
     var index2 = obj2.selectedIndex;
     var major_id = obj2.options[index2].value;
+    major_id = major_id.split('/')[0];
     
     var url = "http://localhost:6060/admin/student/insert?student_name="+name+"&sex="+sex+"&birth_year="+birth_year+"&province="+province+"&enter_year="+enter_year+"&major_id="+major_id;
     var ajaxObj = new XMLHttpRequest();
@@ -70,9 +71,10 @@ function insertcourse() {
 
     var credit = document.getElementById("credit").value;
 
-    var obj2 = document.getElementById("teacher_ids");
+    var obj2 = document.getElementById("teachers");
     var index2 = obj2.selectedIndex;
     var teacher_id = obj2.options[index2].value;
+    teacher_id = teacher_id.split('/')[0];
     
     var url = "http://localhost:6060/admin/course/insert?course_name="+name+"&year="+year+"&semester="+semester+"&credit="+credit+"&teacher_id="+teacher_id;
     var ajaxObj = new XMLHttpRequest();

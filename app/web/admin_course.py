@@ -5,7 +5,7 @@ from app.web.general import transform_errors
 from . import web
 from app.validate.admin_course import AdminSelectSingleCourseForm, AdminInsertCourseForm, AdminUpdateCourseForm
 from app.models.admin_course import CourseDeleter, CourseInserter, SingleCourseReader, CourseUpdater, CourseReader
-from app.models.admin_teacher import TeacherIdReader
+from app.models.admin_teacher import TeacherIdReader, TeacherListReader
 
 
 @web.route('/admin/course/select', methods=['GET'])
@@ -31,7 +31,7 @@ def admin_update_course():
             result = SingleCourseReader(course_id).data
             if result.get('error'):
                 return jsonify(result), 404
-            result = dict(result, **TeacherIdReader().data)
+            result = dict(result, **TeacherListReader().data)
             return jsonify(result), 404 if result.get('error') else 200
         else:
             return jsonify(transform_errors(form.errors)), 404
@@ -57,8 +57,8 @@ def admin_insert_course():
     if authority.get('error'):
         return jsonify(authority), 404
     if request.method == 'GET':
-        teacher_id = TeacherIdReader()  # 获取可供选择的id列表
-        return jsonify(teacher_id.data), 404 if teacher_id.data.get('error') else 200
+        teachers = TeacherListReader()  # 获取可供选择的id列表
+        return jsonify(teachers.data), 404 if teachers.data.get('error') else 200
     else:
         form = AdminInsertCourseForm(request.args)
         if form.validate():

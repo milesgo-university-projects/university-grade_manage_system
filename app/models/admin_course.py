@@ -152,19 +152,26 @@ def read_course():
     data = {}
     try:
         with connection.cursor() as cursor:
-            sql = 'select c.course_id, course_name, year, semester, teacher_id, credit, ' \
-                  'count(student_id) as number_of_students, avg(grade) as average_grade ' \
+            sql = 'select tmp.course_id, tmp.course_name, tmp.year, tmp.semester, tmp.teacher_id, ' \
+                  'tmp.credit, tmp.number_of_students, tmp.average_grade, t.teacher_name from ( ' \
+                  'select c.course_id, course_name, year, semester, teacher_id, credit, count(student_id), avg(grade) ' \
                   'from course as c left outer join student_course as sc ' \
                   'on c.course_id = sc.course_id ' \
                   'group by c.course_id ' \
-                  'order by c.course_id;'
+                  ') as tmp(course_id, course_name, year, semester, teacher_id, ' \
+                  'credit, number_of_students, average_grade), teacher as t ' \
+                  'where tmp.teacher_id = t.teacher_id ' \
+                  'order by tmp.course_id; '
             cursor.execute(sql)
             result = cursor.fetchall()
             data['courses'] = []
             for row in result:
+                average_grade = row[7]
+                if average_grade is None:
+                    average_grade = 0
                 tmp = {'course_id': row[0], 'course_name': row[1], 'year': row[2], 'semester': row[3],
                        'teacher_id': row[4], 'credit': row[5], 'number_of_students': row[6],
-                       'average_grade': round(float(row[7]), 2)}
+                       'average_grade': round(float(average_grade), 2), 'teacher_name': row[8]}
                 data['courses'].append(tmp)
     except Exception as e:
         data['error'] = str(e)
