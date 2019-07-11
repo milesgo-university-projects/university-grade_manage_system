@@ -38,12 +38,7 @@
                         <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
-                        </li>
-                        <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li><a href="#"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        <li><a onclick=logout()><i class="fa fa-sign-out fa-fw"></i> 退出登录</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->
@@ -126,6 +121,12 @@
 
     <script type="text/javascript">
         // 跳转页面
+
+        function logout(){
+            if (confirm("您确定退出吗？")) {  
+                window.location.href = "Login.html";
+            }             
+        }
         function student_info() {
             localStorage.setItem("current_type", "student_info");
             window.location.href="Admin_Info.html";
