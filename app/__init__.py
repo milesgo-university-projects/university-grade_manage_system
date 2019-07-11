@@ -1,6 +1,8 @@
 from flask import Flask
 from flask_login import LoginManager
 from app.models.session import LoginChecker
+from werkzeug.utils import redirect
+from flask_login import login_required
 
 login_manager = LoginManager()
 
@@ -16,16 +18,73 @@ def load_user(user_id):
     return None
 
 
-def create_app():
-    # app = Flask(__name__, static_folder='static')
-    app = Flask(__name__)
-    # app.config.from_object('app.normal_config')  # 载入配置文件
-    # app.config.from_object('app.secure_config')
-    register_blueprint(app)
-    login_manager.init_app(app)
-    return app
+app = Flask(__name__)
+login_manager.init_app(app)
+from app.web.student import web
+app.register_blueprint(web)
 
 
-def register_blueprint(app):
-    from app.web.student import web
-    app.register_blueprint(web)
+@app.route('/')
+def bare():
+    return redirect('/static/Login.html')
+
+
+@app.route('/static/Login.html')
+def html_login():
+    return app.send_static_file('Login.html')
+
+
+@app.route('/static/Student_Info.html')
+@login_required
+def html_student_info():
+    return app.send_static_file('Student_Info.html')
+
+
+@app.route('/static/Student_Scores.html')
+@login_required
+def html_student_scores():
+    return app.send_static_file('Student_Scores.html')
+
+
+@app.route('/static/Student_ChangePassword.html')
+@login_required
+def html_student_change_password():
+    return app.send_static_file('Student_ChangePassword.html')
+
+
+@app.route('/static/Teacher_Info.html')
+@login_required
+def html_teacher_info():
+    return app.send_static_file('Teacher_Info.html')
+
+
+@app.route('/static/Teacher_Courses.html')
+@login_required
+def html_teacher_courses():
+    return app.send_static_file('Teacher_Courses.html')
+
+
+@app.route('/static/Teacher_CourseInfo.html')
+@login_required
+def html_course_info():
+    return app.send_static_file('Teacher_CourseInfo.html')
+
+
+@app.route('/static/Teacher_ChangePassword.html')
+@login_required
+def html_teacher_change_password():
+    return app.send_static_file('Teacher_ChangePassword.html')
+
+
+@app.route('/static/Teacher_Statistics.html')
+@login_required
+def html_teacher_statistics():
+    return app.send_static_file('Teacher_Statistics.html')
+
+
+if __name__ == '__main__':
+    app.config['DEBUG'] = True
+    app.config['SECRET_KEY'] = '123456'
+    app.config['DATABASE_USER'] = 'root'
+    app.config['DATABASE_PASSWORD'] = '330501'
+    app.run(host='0.0.0.0', port=6060)
