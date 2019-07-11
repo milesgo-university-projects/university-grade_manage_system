@@ -35,12 +35,7 @@
                         <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
-                        </li>
-                        <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li><a href="#"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        <li><a onclick=logout()><i class="fa fa-sign-out fa-fw"></i> 退出登录</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->
@@ -105,6 +100,11 @@
     <script src="js/create_element.js"></script>
     
     <script type="text/javascript">
+        function logout(){
+            if (confirm("您确定退出吗？")) {  
+                window.location.href = "Login.html";
+            }             
+        }
         var current_detail_type = localStorage.getItem("current_type");
         switch(current_detail_type) {
         case "change_student":
@@ -127,6 +127,7 @@
             var major_id = localStorage.getItem("major_id");
             var course_id = localStorage.getItem("course_id");
             getmajorcourseinfo(major_id, course_id);
+            break;
         case "add_student":
             addstudent();
             break;
