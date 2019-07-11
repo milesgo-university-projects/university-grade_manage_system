@@ -16,10 +16,11 @@ function process_student_info() {
             }
 
             var table=document.createElement("table");
-        
-            table.style.width = "750px";
+            table.style.width = "790px";
             table.style.borderCollapse = "collapse";
             table.border = 1;
+            table.className = "table table-striped table-bordered table-hover";
+
             var thead=document.createElement("thead");
 
             var row = document.createElement('tr');
@@ -39,7 +40,7 @@ function process_student_info() {
             sex.innerHTML = "性别";
             birth_year.innerHTML = "出生年份";
             province.innerHTML = "籍贯";
-            major_name.innerHTML = "专业名称";
+            major_name.innerHTML = "专业编号/名称";
             credits.innerHTML = "已获学分";
             number_of_courses.innerHTML = "课程数";
             average_grade.innerHTML = "加权平均分";
@@ -80,7 +81,7 @@ function process_student_info() {
                 sex.innerHTML = students[i].sex;
                 birth_year.innerHTML = students[i].birth_year;
                 province.innerHTML = students[i].province;
-                major_name.innerHTML = students[i].major_name;
+                major_name.innerHTML = students[i].major_id + "/" + students[i].major_name;
                 credits.innerHTML = students[i].credits;
                 number_of_courses.innerHTML = students[i].number_of_courses;
                 average_grade.innerHTML = students[i].average_grade;
@@ -118,6 +119,7 @@ function process_student_info() {
         }
     }
 }
+
 function process_teacher_info() {
     var ajaxObj = new XMLHttpRequest();
     ajaxObj.open('get', 'http://localhost:6060/admin/teacher/select');
@@ -136,10 +138,11 @@ function process_teacher_info() {
             }
 
             var table=document.createElement("table");
-        
-            table.style.width = "750px";
+            table.style.width = "790px";
             table.style.borderCollapse = "collapse";
             table.border = 1;
+            table.className = "table table-striped table-bordered table-hover";
+
             var thead=document.createElement("thead");
 
             var row = document.createElement('tr');
@@ -213,6 +216,7 @@ function process_teacher_info() {
         }
     }
 }
+
 function process_course_info() {
     var ajaxObj = new XMLHttpRequest();
     ajaxObj.open('get', 'http://localhost:6060/admin/course/select');
@@ -231,10 +235,11 @@ function process_course_info() {
             }
 
             var table=document.createElement("table");
-        
-            table.style.width = "750px";
+            table.style.width = "790px";
             table.style.borderCollapse = "collapse";
             table.border = 1;
+            table.className = "table table-striped table-bordered table-hover";
+
             var thead=document.createElement("thead");
 
             var row = document.createElement('tr');
@@ -252,7 +257,7 @@ function process_course_info() {
             course_name.innerHTML = "名称";
             year.innerHTML = "年份";
             semester.innerHTML = "学期";
-            teacher_id.innerHTML = "教师编号";
+            teacher_id.innerHTML = "教师编号/姓名";
             credit.innerHTML = "学分";
             number_of_students.innerHTML = "学生数量";
             average_grade.innerHTML = "平均成绩";
@@ -289,7 +294,7 @@ function process_course_info() {
                 course_name.innerHTML = courses[i].course_name;
                 year.innerHTML = courses[i].year;
                 semester.innerHTML = courses[i].semester;
-                teacher_id.innerHTML = courses[i].teacher_id;
+                teacher_id.innerHTML = courses[i].teacher_id + "/" + courses[i].teacher_name;
                 credit.innerHTML = courses[i].credit;
                 number_of_students.innerHTML = courses[i].number_of_students;
                 average_grade.innerHTML = courses[i].average_grade;
@@ -326,6 +331,7 @@ function process_course_info() {
         }
     }
 }
+
 function process_major_info() {
     var ajaxObj = new XMLHttpRequest();
     ajaxObj.open('get', 'http://localhost:6060/admin/major/select');
@@ -344,10 +350,11 @@ function process_major_info() {
             }
 
             var table=document.createElement("table");
-        
-            table.style.width = "750px";
+            table.style.width = "790px";
             table.style.borderCollapse = "collapse";
             table.border = 1;
+            table.className = "table table-striped table-bordered table-hover";
+
             var thead=document.createElement("thead");
 
             var row = document.createElement('tr');
@@ -410,6 +417,7 @@ function process_major_info() {
         }
     }
 }
+
 function process_major_course_info() {
     var ajaxObj = new XMLHttpRequest();
     ajaxObj.open('get', 'http://localhost:6060/admin/major_course/select');
@@ -428,10 +436,11 @@ function process_major_course_info() {
             }
 
             var table=document.createElement("table");
-        
-            table.style.width = "750px";
+            table.style.width = "790px";
             table.style.borderCollapse = "collapse";
             table.border = 1;
+            table.className = "table table-striped table-bordered table-hover";
+
             var thead=document.createElement("thead");
 
             var row = document.createElement('tr');

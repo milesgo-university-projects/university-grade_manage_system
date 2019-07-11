@@ -7,7 +7,7 @@ from app.models.admin_student import StudentListReader, StudentUpdater, StudentI
 from app.validate.student import GetStudentInformationForm
 from app.models.student import StudentReader
 from app.web.general import transform_errors
-from app.models.admin_major import MajorIdReader
+from app.models.admin_major import MajorReader
 from app.validate.admin_student import UpdateStudentInformationForm, InsertStudentInformationForm
 
 
@@ -33,8 +33,8 @@ def admin_update_student():
             student_id = form.student_id.data
             student = StudentReader(student_id)
             result = student.data  # 获取学生基本信息
-            major_id = MajorIdReader()  # 获取可供选择的id列表
-            result = dict(result, **major_id.data)
+            majors = MajorReader()  # 获取可供选择的id列表
+            result = dict(result, **majors.data)
             return jsonify(result), 404 if result.get('error') else 200
         else:
             return jsonify(transform_errors(form.errors)), 404
@@ -61,8 +61,8 @@ def admin_insert_student():
     if authority.get('error'):
         return jsonify(authority), 404
     if request.method == 'GET':
-        major_id = MajorIdReader()  # 获取可供选择的id列表
-        return jsonify(major_id.data), 404 if major_id.data.get('error') else 200
+        majors = MajorReader()  # 获取可供选择的id列表
+        return jsonify(majors.data), 404 if majors.data.get('error') else 200
     else:
         form = InsertStudentInformationForm(request.args)
         if form.validate():

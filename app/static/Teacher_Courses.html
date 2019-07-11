@@ -42,7 +42,7 @@
                         <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a onclick=logout()><i class="fa fa-sign-out fa-fw"></i> 退出登录</a>
+                        <li><a onclick=logout() style="cursor:pointer"><i class="fa fa-sign-out fa-fw"></i> 退出登录</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->
@@ -79,7 +79,7 @@
 			 <div class="row">
                     <div class="col-md-12">
                         <h1 class="page-header">
-                            	课程管理 <small>课程管理</small>
+                            	课程管理 <small>这是您所授的课程信息</small>
                         </h1>
                     </div>
                 </div> 
@@ -230,11 +230,13 @@
                         detail.style = "cursor:pointer";
                         detail.setAttribute('row',i.toString);
                         detail.setAttribute("course_id",courses[i].course_id);
-                        
+                        detail.setAttribute("course_name", courses[i].course_name);
 
                         detail.onclick = function() {
                             let course_id = this.getAttribute("course_id");
+                            let course_name = this.getAttribute("course_name");
                             localStorage.setItem("course_id",course_id);
+                            localStorage.setItem("course_name", course_name);
                             window.location.href = "Teacher_CourseInfo.html";
                         }
 
@@ -242,11 +244,14 @@
                         statistics.style = "cursor:pointer";
                         statistics.setAttribute('row',i.toString);
                         statistics.setAttribute("course_id",courses[i].course_id);
+                        statistics.setAttribute("course_name", courses[i].course_name);
                         
 
                         statistics.onclick = function() {
                             let course_id = this.getAttribute("course_id");
-                            localStorage.setItem("course_id",course_id);
+                            let course_name = this.getAttribute("course_name");
+                            localStorage.setItem("course_id", course_id);
+                            localStorage.setItem("course_name", course_name);
                             window.location.href = "Teacher_Statistics.html";
                         }
          

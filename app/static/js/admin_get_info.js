@@ -17,13 +17,18 @@ function getstudentinfo(student_id) {
                 container.removeChild(container.firstChild);
             }
 
+            var major_list = new Array();
+            for (var i = 0; i < obj.majors.length; i ++) {
+                major_list[i] = obj.majors[i].major_id + "/" + obj.majors[i].major_name;
+            }
+
             container.appendChild(createDivWithInput("学号", "id", "true", obj.student_id));
             container.appendChild(createDivWithInput("姓名", "name", "false", obj.student_name));
             container.appendChild(createDivWithSelection("性别", "sexes", obj.sex, new Array("男","女")));
             container.appendChild(createDivWithInput("出生年份", "birth_year", "false", obj.birth_year));
             container.appendChild(createDivWithInput("籍贯", "province", "false", obj.province));
             container.appendChild(createDivWithInput("入学年份", "enter_year", "false", obj.enter_year));
-            container.appendChild(createDivWithSelection("专业编号", "major_ids", obj.major_id, obj.major_ids));
+            container.appendChild(createDivWithSelection("专业编号/名称", "major_ids", obj.major_id+"/"+obj.major_name, major_list));
             
             container.appendChild(createButton("修改", "25px", modifystudent));
             container.lastChild.appendChild(createButtonWithoutDiv("删除", "0px", deletestudent));
@@ -78,12 +83,17 @@ function getcourseinfo(course_id) {
                 container.removeChild(container.firstChild);
             }
 
+            var teacher_list = new Array();
+            for (var i = 0; i < obj.teachers.length; i ++) {
+                teacher_list[i] = obj.teachers[i].teacher_id + "/" + obj.teachers[i].teacher_name;
+            }
+
             container.appendChild(createDivWithInput("课程编号", "id", "true", obj.course_id));
             container.appendChild(createDivWithInput("课程名称", "name", "false", obj.course_name));
             container.appendChild(createDivWithInput("开课学年", "year", "false", obj.year));
             container.appendChild(createDivWithSelection("开课学期", "semester", obj.semester, new Array("春","秋")));
             container.appendChild(createDivWithInput("学分", "credit", "false", obj.credit));
-            container.appendChild(createDivWithSelection("授课教师id", "teacher_ids", obj.teacher_id, obj.teacher_ids));
+            container.appendChild(createDivWithSelection("授课教师编号/名称", "teacher_ids", obj.teacher_id+"/"+obj.teacher_name, teacher_list));
             
             container.appendChild(createButton("修改", "25px", modifycourse));
             container.lastChild.appendChild(createButtonWithoutDiv("删除", "0px", deletecourse));

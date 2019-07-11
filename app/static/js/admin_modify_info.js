@@ -14,6 +14,7 @@ function modifystudent() {
     var obj2 = document.getElementById("major_ids");
     var index2 = obj2.selectedIndex;
     var major_id = obj2.options[index2].value;
+    major_id = major_id.split('/')[0];
 
     var url = "http://localhost:6060/admin/student/update?student_id="+id+"&student_name="+name+"&sex="+sex+"&birth_year="+birth_year+"&province="+province+"&enter_year="+enter_year+"&major_id="+major_id;
     var ajaxObj = new XMLHttpRequest();
@@ -73,6 +74,7 @@ function modifycourse() {
     var obj2 = document.getElementById("teacher_ids"); //定位id
     var index2 = obj2.selectedIndex; // 选中索引
     var teacher_id = obj2.options[index2].value; // 选中值
+    teacher_id = teacher_id.split("/")[0];
 
     var credit = document.getElementById("credit").value;
     
