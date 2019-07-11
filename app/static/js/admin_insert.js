@@ -115,22 +115,18 @@ function insertmajor() {
 }
 
 //添加专业选课后提交到服务器
-function insertstudent() {
-    var name = document.getElementById("name").value;
-
-    var obj1 = document.getElementById("sexes"); 
+function insertmajorcourse() {
+    var obj1 = document.getElementById("major"); 
     var index1 = obj1.selectedIndex;
-    var sex = obj1.options[index1].value;
+    var major_id = obj1.options[index1].value;
+    major_id = major_id.split('/')[0];
 
-    var birth_year =  parseInt(document.getElementById("birth_year").value);
-    var province =  document.getElementById("province").value;
-    var enter_year = document.getElementById("enter_year").value;
-
-    var obj2 = document.getElementById("major_ids");
+    var obj2 = document.getElementById("course");
     var index2 = obj2.selectedIndex;
-    var major_id = obj2.options[index2].value;
-    
-    var url = "http://localhost:6060/admin/student/insert?student_name="+name+"&sex="+sex+"&birth_year="+birth_year+"&province="+province+"&enter_year="+enter_year+"&major_id="+major_id;
+    var course_id = obj2.options[index2].value;
+    course_id = course_id.split('/')[0];
+
+    var url = "http://localhost:6060/admin/major_course/insert?major_id="+major_id+"&course_id="+course_id;
     var ajaxObj = new XMLHttpRequest();
     ajaxObj.open('post', url);
     ajaxObj.send();
@@ -143,8 +139,7 @@ function insertstudent() {
         else if(ajaxObj.readyState == 4 && ajaxObj.status == 404) {
             var last=ajaxObj.responseText; //将JSON对象转化为JSON字符
             var obj = JSON.parse(last);
-            alert(obj.error);
-            alert("添加失败");
+            alert("添加失败:" + obj.error);
         }
     }
 }

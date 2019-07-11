@@ -120,5 +120,15 @@ function getmajorinfo(major_id) {
 
 //获取专业选课信息，加载界面
 function getmajorcourseinfo(major_id, course_id) {
+    var title = document.getElementById("title");
+    title.innerHTML = "专业选课信息";
+    var container = document.getElementById("container");
+    while(container.hasChildNodes()) {
+        container.removeChild(container.firstChild);
+    }
 
+    container.appendChild(createDivWithInput("专业编号", "major_id", "true", major_id));
+    container.appendChild(createDivWithInput("课程编号", "course_id", "true", course_id));
+    
+    container.appendChild(createButton("删除", "0px", deletemajorcourse));
 }

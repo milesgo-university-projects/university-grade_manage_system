@@ -101,9 +101,9 @@ function addmajor() {
 //添加专业选课前的准备工作
 function addstudent() {
     var title = document.getElementById("title");
-    title.innerHTML = "添加学生";
+    title.innerHTML = "添加专业选课";
     var ajaxObj = new XMLHttpRequest();
-    ajaxObj.open('get', "http://localhost:6060/admin/student/insert");
+    ajaxObj.open('get', "http://localhost:6060/admin/major_course/insert");
     ajaxObj.send();
     ajaxObj.onreadystatechange = function () {
         if (ajaxObj.readyState == 4 && ajaxObj.status == 200) {
@@ -113,17 +113,21 @@ function addstudent() {
             var last=ajaxObj.responseText; //将JSON对象转化为JSON字符
             var obj = JSON.parse(last);
             var container = document.getElementById("container");
-
             while(container.hasChildNodes()) {
                 container.removeChild(container.firstChild);
             }
-            container.appendChild(createDivWithInput("姓名", "name", "false", ""));
-            container.appendChild(createDivWithSelection("性别", "sexes", "", new Array("男","女")));
-            container.appendChild(createDivWithInput("出生年份", "birth_year", "false", ""));
-            container.appendChild(createDivWithInput("籍贯", "province", "false", ""));
-            container.appendChild(createDivWithInput("入学年份", "enter_year", "false", ""));
-            container.appendChild(createDivWithSelection("专业编号", "major_ids", "", obj.major_ids));
-            container.appendChild(createButton("添加", "0px", insertstudent));
+
+            major_list = new Array();
+            for (var i = 0; i < obj.majors.length; i ++) {
+                major_list[i] = obj.majors[i].major_id + "/" + obj.majors[i].major_name;
+            }
+            course_list = new Array();
+            for (var i = 0; i < obj.courses.length; i ++) {
+                course_list[i] = obj.courses[i].course_id + "/" + obj.courses[i].course_name;
+            }
+            container.appendChild(createDivWithSelection("专业编号/名称", "major", "false", major_list));
+            container.appendChild(createDivWithSelection("课程编号/名称", "course", "false", course_list));
+            container.appendChild(createButton("添加", "0px", insertmajorcourse));
         }
         else if(ajaxObj.readyState == 4 && ajaxObj.status == 404) {
             var last=ajaxObj.responseText; //将JSON对象转化为JSON字符

@@ -86,7 +86,27 @@ function deletemajor() {
         }
     }
 }
+
 //删除专业选课
 function deletemajorcourse() {
-
+    var major_id = document.getElementById("major_id").value;
+    var course_id = document.getElementById("course_id").value;
+    var url = "http://localhost:6060/admin/major_course/delete?major_id="+major_id+"&course_id="+course_id;
+    var ajaxObj = new XMLHttpRequest();
+    ajaxObj.open('post', url);
+    ajaxObj.send();
+    ajaxObj.onreadystatechange = function () {
+        if (ajaxObj.readyState == 4 && ajaxObj.status == 200){
+            console.log('数据返回成功');
+            console.log(ajaxObj.responseText);
+            alert("删除成功");
+            localStorage("current_type", "major_course_info");
+            window.location.href = "Admin_Info.html";
+        }
+        else if(ajaxObj.readyState == 4 && ajaxObj.status == 404) {
+            var last=ajaxObj.responseText; //将JSON对象转化为JSON字符
+            var obj = JSON.parse(last);
+            alert("删除失败: " + obj.error);
+        }
+    }
 }
