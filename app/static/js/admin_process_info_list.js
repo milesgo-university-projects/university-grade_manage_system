@@ -477,7 +477,6 @@ function process_major_course_info() {
                 detail.setAttribute('row',i.toString);
                 detail.setAttribute("major_id", major_courses[i].major_id);
                 detail.setAttribute("course_id", major_courses[i].course_id);
-                
                 detail.onclick = function() {
                     localStorage.setItem("major_id", this.getAttribute("major_id"));
                     localStorage.setItem("course_id", this.getAttribute("course_id"));

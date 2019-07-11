@@ -52,6 +52,7 @@ function addteacher() {
 
 //添加课程前的准备工作
 function addcourse() {
+    alert("debug 1");
     var title = document.getElementById("title");
     title.innerHTML = "添加课程";
     var ajaxObj = new XMLHttpRequest();
@@ -99,7 +100,7 @@ function addmajor() {
 }
 
 //添加专业选课前的准备工作
-function addstudent() {
+function addmajorcourse() {
     var title = document.getElementById("title");
     title.innerHTML = "添加专业选课";
     var ajaxObj = new XMLHttpRequest();
