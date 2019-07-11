@@ -153,7 +153,7 @@
         ctx.font = '12px verdana';
 
         var PI2 = Math.PI * 2;
-        var myColor = ["Green", "Red", "Blue","Black","Purple"];
+        var myColor = ["Green", "Red", "Blue","Yellow","Purple"];
 
         var myData = [30, 60, 10];
         var cx = 150;
@@ -287,11 +287,11 @@
         // draw the label
         var midAngle = startAngle + (endAngle - startAngle) / 2;
         var labelRadius = radius * .75;
-        var x = cx + (labelRadius) * Math.cos(midAngle) - 10;
-        var y = cy + (labelRadius) * Math.sin(midAngle);
-        ctx.fillStyle = 'white';
+        var x = cx + 1.7*(labelRadius) * Math.cos(midAngle) - 10;
+        var y = cy + 1.7*(labelRadius) * Math.sin(midAngle);
+        ctx.fillStyle = 'black';
         ctx.fillText(label.name, x, y);
-        per = Math.round((label.value/total)*Math.pow(10,4))/Math.pow(10,4)*100;
+        per = Math.round((label.value/total)*Math.pow(10,2))/Math.pow(10,2)*100;
        // ctx.fillText(label.value % total + '%', x, y + 20);
         ctx.fillText(per + '%', x, y + 20);
 
