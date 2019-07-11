@@ -23,7 +23,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="TeacherInfo.html"><i class="fa fa-gear"></i> <strong>学生成绩管理系统</strong></a>
+                <a class="navbar-brand" ><i class="fa fa-gear"></i> <strong>学生成绩管理系统</strong></a>
             </div>
 
             <ul class="nav navbar-top-links navbar-right">
@@ -72,7 +72,7 @@
 			 <div class="row">
                     <div class="col-md-12">
                         <h1 class="page-header">
-                            	个人信息 <small>这是您的个人信息</small>
+                            	个人信息 
                         </h1>
                     </div>
                 </div> 
@@ -83,25 +83,22 @@
 
 			  <div class="col-md-12">
 			<div class="panel panel-default">
-				<div class="panel-heading">
-				 教师信息
-				</div>        
-							  
+    						  
 							<div class="panel-body"> 
+                                <label>工号</label>
 								<div class="alert alert-success" id = "id">
-									工号：
-								</div>
-								<div class="alert alert-info" id = "name">
-									姓名：
-								</div>
+                                </div>
+                                <label>姓名</label>
+								<div class="alert alert-info" id = "name">                                  
+                                </div>
+                                <label>性别</label>
 								<div class="alert alert-warning" id = "sex">
-									性别： 
-								</div>
+                                </div>
+                                <label>出生年份</label>
 								<div class="alert alert-danger" id = "birth_year">
-									出生年份： 
-								</div>
+                                </div>
+                                <label>所授课程数量</label>
 								<div class="alert alert-info" id = "number_of_courses">
-									所授课程数量：
 								</div>
 
 							</div>
@@ -164,11 +161,11 @@
 			   var last=ajaxObj.responseText; //将JSON对象转化为JSON字符			 
 			   var obj = JSON.parse(last);
 
-			   document.getElementById("id").innerHTML = "工号： "+obj.teacher_id;
-			   document.getElementById("name").innerHTML = "姓名： "+obj.teacher_name;
-			   document.getElementById("sex").innerHTML = "性别： "+obj.sex;
-			   document.getElementById("birth_year").innerHTML = "出生年月： "+obj.birth_year;
-			   document.getElementById("number_of_courses").innerHTML = "所授课程数量： "+obj.number_of_courses;
+			   document.getElementById("id").innerHTML = obj.teacher_id;
+			   document.getElementById("name").innerHTML = obj.teacher_name;
+			   document.getElementById("sex").innerHTML = obj.sex;
+			   document.getElementById("birth_year").innerHTML = obj.birth_year;
+			   document.getElementById("number_of_courses").innerHTML = obj.number_of_courses;
 			  
             }
             else if(ajaxObj.readyState == 4 && ajaxObj.status == 404) {

@@ -71,7 +71,7 @@
 			 <div class="row">
                     <div class="col-md-12">
                         <h1 class="page-header">
-                            	个人信息 <small>这是您的个人信息</small>
+                            	个人信息 
                         </h1>
                     </div>
                 </div> 
@@ -82,42 +82,34 @@
 
 			  <div class="col-md-12">
 			<div class="panel panel-default">
-				<div class="panel-heading">
-				 学生信息
-				</div>        
-							  
+     							  
 							<div class="panel-body"> 
+                                <label>学号</label>
 								<div class="alert alert-danger" id = "id">
-									学号： 
-								</div>
-								<div class="alert alert-success" id ="name">
-									姓名：
-								</div>
-								<div class="alert alert-info" id = "sex">
-									性别： 
-								</div>
-								<div class="alert alert-warning" id = "birth_year">
-									出生年份： 
-								</div>
-								<div class="alert alert-danger" id = "province">
-									籍贯： 
-								</div>
-                                <!--
-                                <div class="alert alert-success" id = "class_id">
-									班级： 
                                 </div>
-                                -->
+                                <label>姓名</label>
+								<div class="alert alert-success" id ="name">
+                                </div>
+                                <label>性别</label>
+								<div class="alert alert-info" id = "sex">
+                                </div>
+                                <label>出生年份</label>
+								<div class="alert alert-warning" id = "birth_year">
+                                </div>
+                                <label>籍贯</label>
+								<div class="alert alert-danger" id = "province">
+                                </div>
+                                <label>专业</label>
 								<div class="alert alert-info" id = "major_name">
-									专业： 
-								</div>
+                                </div>
+                                <label>已修学分</label>
 								<div class="alert alert-warning" id = "credits">
-									已修学分： 
-								</div>
+                                </div>
+                                <label>已选课程数量</label>
 								<div class="alert alert-success" id = "number_of_courses">
-									已选课程数量： 
-								</div>
+                                </div>
+                                <label>加权平均分</label>
 								<div class="alert alert-danger" id = "average_grade">
-									加权平均分： 
 								</div>
 							</div>
 				</div>
@@ -133,7 +125,7 @@
                 
 
                 <!-- /. ROW  -->
-				<footer><p>made by wangwen</p></footer>
+			
 				</div>
              <!-- /. PAGE INNER  -->
             </div>
@@ -193,15 +185,15 @@
                 
                 var obj = JSON.parse(last);
 
-                document.getElementById("id").innerHTML = "学号： "+obj.student_id;
-                document.getElementById("name").innerHTML = "姓名： "+obj.student_name;
-                document.getElementById("sex").innerHTML = "性别： "+obj.sex;
-                document.getElementById("birth_year").innerHTML = "出生年月： "+obj.birth_year;
-                document.getElementById("province").innerHTML = "籍贯： "+obj.province;
-                document.getElementById("major_name").innerHTML = "专业： "+obj.major_name;
-                document.getElementById("credits").innerHTML = "已修学分： "+obj.credits;
-                document.getElementById("number_of_courses").innerHTML = "已选课程数量： "+obj.number_of_courses;
-                document.getElementById("average_grade").innerHTML = "加权平均学分： "+obj.average_grade;
+                document.getElementById("id").innerHTML = obj.student_id;
+                document.getElementById("name").innerHTML = obj.student_name;
+                document.getElementById("sex").innerHTML = obj.sex;
+                document.getElementById("birth_year").innerHTML = obj.birth_year;
+                document.getElementById("province").innerHTML = obj.province;
+                document.getElementById("major_name").innerHTML = obj.major_name;
+                document.getElementById("credits").innerHTML = obj.credits;
+                document.getElementById("number_of_courses").innerHTML = obj.number_of_courses;
+                document.getElementById("average_grade").innerHTML = obj.average_grade;
             }
             else if(ajaxObj.readyState == 4 && ajaxObj.status == 404) {
 				var last=ajaxObj.responseText; //将JSON对象转化为JSON字符

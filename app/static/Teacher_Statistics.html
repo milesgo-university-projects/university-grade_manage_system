@@ -27,7 +27,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="StudentInfo.html"><i class="fa fa-gear"></i> <strong>学生成绩管理系统</strong></a>
+                <a class="navbar-brand" ><i class="fa fa-gear"></i> <strong>学生成绩管理系统</strong></a>
             </div>
 
             <ul class="nav navbar-top-links navbar-right">
@@ -177,7 +177,6 @@
 
                 var last=ajaxObj.responseText; //将JSON对象转化为JSON字符
                 var obj = JSON.parse(last); 
-
                 var container = document.getElementById("container");
                 var table=document.createElement("table");
                 table.className = "table table-striped table-bordered table-hover";
@@ -262,8 +261,12 @@
 
         var accumAngle = 0;
         for (var i = 0; i < sweeps.length; i++) {
-            drawWedge(accumAngle, accumAngle + sweeps[i], colors[i], data[i], total);
-            accumAngle += sweeps[i];
+            if(data[i].value != 0 )
+            {
+                drawWedge(accumAngle, accumAngle + sweeps[i], colors[i], data[i], total);
+                accumAngle += sweeps[i];
+            }
+
         }
 
 
@@ -288,15 +291,8 @@
         var y = cy + (labelRadius) * Math.sin(midAngle);
         ctx.fillStyle = 'white';
         ctx.fillText(label.name, x, y);
-        var per;
-        if(label.value == total)
-        {
-            per = 100;
-        }
-        else{
-            per = label.value % total;
-        }
-        //ctx.fillText(label.value % total + '%', x, y + 20);
+        per = Math.round((label.value/total)*Math.pow(10,4))/Math.pow(10,4)*100;
+       // ctx.fillText(label.value % total + '%', x, y + 20);
         ctx.fillText(per + '%', x, y + 20);
 
 

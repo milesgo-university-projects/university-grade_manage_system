@@ -16,7 +16,7 @@ function process_student_info() {
             }
 
             var table=document.createElement("table");
-            table.style.width = "790px";
+            table.style.width = "1000px";
             table.style.borderCollapse = "collapse";
             table.border = 1;
             table.className = "table table-striped table-bordered table-hover";
