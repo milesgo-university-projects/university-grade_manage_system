@@ -86,6 +86,7 @@
                             <div class="table-responsive" id = "container">
                             
                             </div>
+                            <div>  <canvas id="canvas" width=400 height=300></canvas></div>
                             
                         </div>
                     </div>
@@ -137,6 +138,28 @@
             }             
         }
 
+
+        //画图要用的全局变量
+
+        var canvas = document.getElementById("canvas");
+        var ctx = canvas.getContext("2d");
+        var cw = canvas.width;
+        var ch = canvas.height;
+
+        ctx.lineWidth = 2;
+        ctx.font = '12px verdana';
+
+        var PI2 = Math.PI * 2;
+        var myColor = ["Green", "Red", "Blue","Black","Purple"];
+
+        var myData = [30, 60, 10];
+        var cx = 150;
+        var cy = 150;
+        var radius = 100;
+
+
+
+
         var course_id = localStorage.getItem("course_id");
         url = "http://localhost:6060/teacher/course_statistic?course_id="+course_id;
     
@@ -170,6 +193,9 @@
                 table.appendChild(thead);
                 
                 var tbody = document.createElement('tbody');
+                var keyArray = new Array();
+                var valArray = new Array();
+                var i = 0;
                 for(var key in obj){  
                     // alert(key); //json对象的key  
                     // alert(obj[key]); //json对象的值  
@@ -181,9 +207,35 @@
                     row.appendChild(grade);
                     row.appendChild(number);     
                     tbody.appendChild(row);
+                    keyArray[i] = key;
+                    valArray[i] = obj[key];
+                    i++;
                 }                          
                 table.appendChild(tbody);
-                container.appendChild(table);                 
+                container.appendChild(table);  
+
+
+                var pieData = [{
+                    name: keyArray[0],
+                    value: valArray[0]
+                }, {
+                    name: keyArray[1],
+                    value: valArray[1]
+                }, {
+                    name: keyArray[2],
+                    value: valArray[2]
+                }, {
+                    name: keyArray[3],
+                    value: valArray[3]
+                }, {
+                    name: keyArray[4],
+                    value: valArray[4]
+                }]
+
+
+                pieChart(pieData, myColor);  
+                
+                
             }
             else if(ajaxObj.readyState == 4 && ajaxObj.status == 404) {
 				var last=ajaxObj.responseText; //将JSON对象转化为JSON字符
@@ -191,6 +243,61 @@
 				alert(obj.error);
             }
         }
+
+
+
+
+        function pieChart(data, colors) {
+        var total = 0;
+        for (var i = 0; i < data.length; i++) {
+            total += +data[i].value;
+        }
+        var sweeps = []
+        for (var i = 0; i < data.length; i++) {
+            sweeps.push(data[i].value / total * PI2);
+        }
+
+        var accumAngle = 0;
+        for (var i = 0; i < sweeps.length; i++) {
+            drawWedge(accumAngle, accumAngle + sweeps[i], colors[i], data[i], total);
+            accumAngle += sweeps[i];
+        }
+
+
+    }
+
+    function drawWedge(startAngle, endAngle, fill, label, total) {
+
+        // draw the wedge
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.arc(cx, cy, radius, startAngle, endAngle, false);
+        ctx.closePath();
+        ctx.fillStyle = fill;
+        ctx.strokeStyle = 'white';
+        ctx.fill();
+        ctx.stroke();
+
+        // draw the label
+        var midAngle = startAngle + (endAngle - startAngle) / 2;
+        var labelRadius = radius * .75;
+        var x = cx + (labelRadius) * Math.cos(midAngle) - 10;
+        var y = cy + (labelRadius) * Math.sin(midAngle);
+        ctx.fillStyle = 'white';
+        ctx.fillText(label.name, x, y);
+        var per;
+        if(label.value == total)
+        {
+            per = 100;
+        }
+        else{
+            per = label.value % total;
+        }
+        //ctx.fillText(label.value % total + '%', x, y + 20);
+        ctx.fillText(per + '%', x, y + 20);
+
+
+    }
         
 
 
