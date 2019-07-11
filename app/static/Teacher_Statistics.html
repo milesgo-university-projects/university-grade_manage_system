@@ -42,12 +42,7 @@
                         <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
-                        </li>
-                        <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li><a href="#"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        <li><a onclick=logout()><i class="fa fa-sign-out fa-fw"></i> 退出登录</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->
@@ -133,6 +128,13 @@
 
         document.getElementById("a").onclick = function () {
             window.location.href = "Teacher_Courses.html";
+        }
+
+        function logout()
+        {
+            if (confirm("您确定退出吗？")) {  
+                window.location.href = "Login.html";
+            }             
         }
 
         var course_id = localStorage.getItem("course_id");
