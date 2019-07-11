@@ -65,4 +65,8 @@ def html_teacher_statistics():
 
 
 if __name__ == '__main__':
+    app.config['DEBUG'] = True
+    app.config['SECRET_KEY'] = '123456'
+    app.config['DATABASE_USER'] = 'root'
+    app.config[''] = '330501'
     app.run(host='0.0.0.0', port=6060)
