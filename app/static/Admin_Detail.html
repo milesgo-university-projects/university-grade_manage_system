@@ -127,14 +127,15 @@
             var major_id = localStorage.getItem("major_id");
             var course_id = localStorage.getItem("course_id");
             getmajorcourseinfo(major_id, course_id);
+            break;
         case "add_student":
             addstudent();
             break;
         case "add_teacher":
             addteacher();
             break;
-        case "add_cousre":
-            addteacher();
+        case "add_course":
+            addcourse();
             break;
         case "add_major":
             addmajor();
