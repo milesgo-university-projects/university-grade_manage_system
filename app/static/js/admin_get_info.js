@@ -84,8 +84,12 @@ function getcourseinfo(course_id) {
             }
 
             var teacher_list = new Array();
+            var default_value;
             for (var i = 0; i < obj.teachers.length; i ++) {
                 teacher_list[i] = obj.teachers[i].teacher_id + "/" + obj.teachers[i].teacher_name;
+                if (teacher_list[i].match(obj.teacher_id)) {
+                    default_value = teacher_list[i];
+                }
             }
 
             container.appendChild(createDivWithInput("课程编号", "id", "true", obj.course_id));
@@ -93,7 +97,7 @@ function getcourseinfo(course_id) {
             container.appendChild(createDivWithInput("开课学年", "year", "false", obj.year));
             container.appendChild(createDivWithSelection("开课学期", "semester", obj.semester, new Array("春","秋")));
             container.appendChild(createDivWithInput("学分", "credit", "false", obj.credit));
-            container.appendChild(createDivWithSelection("授课教师编号/名称", "teacher_ids", obj.teacher_id+"/"+obj.teacher_name, teacher_list));
+            container.appendChild(createDivWithSelection("授课教师编号/名称", "teacher_ids", default_value, teacher_list));
             
             container.appendChild(createButton("修改", "25px", modifycourse));
             container.lastChild.appendChild(createButtonWithoutDiv("删除", "0px", deletecourse));

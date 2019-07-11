@@ -33,9 +33,11 @@ def insert_major_course(major_id, course_id):
         with connection.cursor() as cursor:
             sql = 'insert into major_course values(\'%s\', \'%s\');' % (major_id, course_id)
             cursor.execute(sql)
+            """
             sql = 'insert into student_course ( select student_id, \'%s\', ' \
                   'null from student where major_id = \'%s\');' % (course_id, major_id)
             cursor.execute(sql)
+            """
             connection.commit()
     except Exception as e:
         data['error'] = str(e)
@@ -50,6 +52,7 @@ def delete_major_course(major_id, course_id):
     data = {}
     try:
         with connection.cursor() as cursor:
+            """
             sql = 'delete from student_course ' \
                   'where student_id in ( ' \
                       'select student_id ' \
@@ -57,6 +60,7 @@ def delete_major_course(major_id, course_id):
                       'where major_id = \'%s\') ' \
                   'and course_id = \'%s\'; ' % (major_id, course_id)
             cursor.execute(sql)
+            """
             sql = 'delete from major_course ' \
                   'where major_id = \'%s\' and course_id = \'%s\' ' % (major_id, course_id)
             cursor.execute(sql)
