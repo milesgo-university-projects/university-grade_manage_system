@@ -86,5 +86,5 @@ if __name__ == '__main__':
     app.config['DEBUG'] = True
     app.config['SECRET_KEY'] = '123456'
     app.config['DATABASE_USER'] = 'root'
-    app.config['DATABASE_PASSWORD'] = '330501'
+    app.config['DATABASE_PASSWORD'] = 'asdfg13579'
     app.run(host='0.0.0.0', port=6060)
