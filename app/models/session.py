@@ -88,7 +88,7 @@ def teacher_login_check(teacher_id, password):
 
 def admin_login_check(password):
     data = {}
-    if password != '330501':
+    if password != 'asdfg13579':
         data['error'] = '密码错误，登陆失败'
     return data
 
